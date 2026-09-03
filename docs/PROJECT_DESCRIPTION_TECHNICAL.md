@@ -10,7 +10,7 @@ The **Rapid AI Drug Repurposing Discovery Lab** is a high-performance computatio
 
 > [!TIP]
 > **[FIGURE 1: System Architecture Overview]**
-> *Description: A high-level block diagram showing the flow from raw DRKG data input, through the 5-step preprocessing and training pipeline, ending with the Streamlit Dashboard and AI Rationalization output.*
+> *Description: A high-level block diagram showing the flow from raw PrimeKG data input, through the 5-step preprocessing and training pipeline, ending with the Streamlit Dashboard and AI Rationalization output.*
 
 ### 1. Multi-Modal Feature Engineering (`step1`)
 The system transforms heterogeneous biomedical raw data into a high-dimensional unified feature space ($\mathbb{R}^{131}$):
@@ -149,4 +149,4 @@ Building a high-performance drug repurposing system requires balancing computati
 - **Impact**: Prioritized **data sovereignty and offline capability**, allowing the system to run in secure lab environments without external dependencies.
 
 ---
-*Technical Specification Document - DRKG Discovery Pipeline v3.1*
+*Technical Specification Document - Rapid AI PrimeKG Discovery Pipeline v3.1*

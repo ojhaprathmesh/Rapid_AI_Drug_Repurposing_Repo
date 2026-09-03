@@ -3,15 +3,17 @@
 An end-to-end, high-performance drug repurposing pipeline using **Heterogeneous Graph Neural Networks (GraphSAGE)** and **LLaMA 3.2** for clinical rationalization.
 
 ## 🚀 Overview
-This repository contains a complete pipeline to predict novel therapeutic uses for existing drugs using the **Biomedical Knowledge Graph (DRKG)**. It features a modern Streamlit dashboard for real-time hypothesis testing and biological evidence verification.
+This repository contains a complete pipeline to predict novel therapeutic uses for existing drugs using the **Precision Medicine Knowledge Graph (PrimeKG)**. It features a modern Streamlit dashboard for real-time hypothesis testing and biological evidence verification.
 
 ## 🛠️ Project Structure
 - `step1_preprocess.py`: Extracts chemical features and text encodings (TF-IDF).
 - `step2_build_graph.py`: Constructs the Heterogeneous GNN topology.
-- `step3_train.py`: Optimizes the GraphSAGE model (96.95% AUC).
+- `step3_train.py`: Optimizes the GraphSAGE model (97.34% AUC, 96.52% AUPRC on PrimeKG).
 - `step4_predict.py`: Generates the ranked prediction board.
-- `web.py`: The interactive AI Discovery Dashboard.
-- `lab_utils.py`: Backend engine for GNN inference and external API (PubChem/ClinicalTrials) integrations.
+- `step5_rationalize.py`: Grounded multimodal clinical reasoning with degree-penalized path saliency.
+- `verify_paper_claims.py`: Standalone replication suite verifying all 28 paper claims in 0.04s.
+- `web.py`: The interactive Clinical Discovery Intelligence Lab dashboard.
+- `lab_utils.py`: Backend engine for GNN inference, 2-hop degree-penalized path extraction, and external API (PubChem/ClinicalTrials) integrations.
 
 ---
 

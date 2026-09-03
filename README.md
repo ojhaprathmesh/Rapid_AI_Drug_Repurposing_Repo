@@ -48,7 +48,7 @@ Evaluated against classical heuristics and neural architectures on the held-out 
 ## 📁 Repository Structure
 
 ```text
-DRKG/
+Rapid_AI_Drug_Repurposing/
 ├── .gitignore                          # Centralized rules (blocks >100MB files, keeps curated data)
 ├── README.md                           # Project overview & documentation
 ├── LICENSE                             # MIT open-source license

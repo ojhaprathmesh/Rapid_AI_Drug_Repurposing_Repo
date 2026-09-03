@@ -1,13 +1,13 @@
 graph TD
     subgraph Data_Tier ["1. Data Ingestion & Harvesting"]
         direction LR
-        DRKG[("Biomedical Knowledge Graph (DRKG)")]
+        PrimeKG[("Precision Medicine Knowledge Graph (PrimeKG)")]
         Nodes["Nodes Subset (CSV)"]
         Edges["Edges Subset (CSV)"]
         Feat["Molecular Features (CSV)"]
-        DRKG --> Nodes
-        DRKG --> Edges
-        DRKG --> Feat
+        PrimeKG --> Nodes
+        PrimeKG --> Edges
+        PrimeKG --> Feat
     end
 
     subgraph Processing_Tier ["Preprocessing & Topology"]
@@ -68,7 +68,7 @@ graph TD
     Ranking --> Streamlit
 
     %% Styling
-    style DRKG fill:#f9f,stroke:#333,stroke-width:2px
+    style PrimeKG fill:#f9f,stroke:#333,stroke-width:2px
     style SAGE fill:#00d4ff,stroke:#000,stroke-width:2px,color:#000
     style Streamlit fill:#ff4b4b,stroke:#000,stroke-width:2px,color:#fff
     style LLM fill:#7e57c2,stroke:#000,stroke-width:2px,color:#fff
