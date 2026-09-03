@@ -1,11 +1,11 @@
 \documentclass[conference,a4paper]{IEEEtran}
 
 \usepackage{graphicx}
-\graphicspath{{images/}}
 \usepackage{float}
 \usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{stfloats}
+\graphicspath{{images/}}
 \hyphenation{op-tical net-works semi-conduc-tor}
 
 \DeclareRobustCommand*{\IEEEauthorrefmark}[1]{\raisebox{0pt}[0pt][0pt]{\textsuperscript{\footnotesize #1}}}
@@ -301,9 +301,10 @@ The model was trained for 100 epochs using the Adam optimizer with Binary Cross-
 
 \begin{table}[!t]
 \centering
-\renewcommand{\arraystretch}{1.2}
+\renewcommand{\arraystretch}{1.15}
 \caption{Experimental Hyperparameters and Model Configuration}
 \label{tab:hyperparameters}
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lc}
 \toprule
 \textbf{Configuration Parameter} & \textbf{Value / Specification} \\
@@ -325,7 +326,8 @@ Negative Sampling Ratio & 1:1 balanced \\
 Classification Threshold ($\tau$) & 0.50 \\
 Local LLM Reasoning Engine & Llama 3.2 (via Ollama runtime) \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 \subsection{Quantitative Performance Evaluation and Baseline Comparison}
@@ -336,6 +338,7 @@ The predictive performance of the proposed GraphSAGE framework was evaluated aga
 \renewcommand{\arraystretch}{1.2}
 \caption{Performance Comparison Across Architectural Paradigms on Held-Out Test Set (1,880 Samples)}
 \label{tab:metrics}
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lcccc}
 \toprule
 \textbf{Model Architecture} & \textbf{AUC-ROC} & \textbf{Accuracy} & \textbf{Precision} & \textbf{F1-Score} \\
@@ -347,7 +350,8 @@ GAT (Veli\v{c}kovi\'c \textit{et al.})~\cite{ref_gat} & 95.80\% & 90.15\% & 89.6
 \midrule
 \textbf{GraphSAGE (Proposed)}     & \textbf{97.34\%} & \textbf{91.97\%} & \textbf{90.71\%} & \textbf{92.09\%} \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 The comparative results are summarized in Table~\ref{tab:metrics} and illustrated in Fig.~\ref{fig:performance_metrics}. The proposed GraphSAGE model achieves superior discriminative accuracy across all evaluation metrics, attaining an AUC-ROC of 0.9734, an Accuracy of 91.97\%, and an F1-score of 92.09\%.
@@ -449,16 +453,18 @@ To evaluate the translational utility of the trained GraphSAGE model beyond retr
 \renewcommand{\arraystretch}{1.25}
 \caption{Representative Novel Drug Repurposing Candidates Prioritized by Rapid AI}
 \label{tab:case_studies}
-\begin{tabular}{lllllc}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lp{3.5cm}p{3.2cm}p{5.4cm}lc}
 \toprule
-\textbf{Candidate Drug} & \textbf{Primary Approved Indication} & \textbf{Predicted Repurposed Target} & \textbf{Intermediary Biological Mechanism} & \textbf{Literature Support} & $\mathbf{\hat{y}_{uv}}$ \\
+\textbf{Candidate Drug} & \textbf{Primary Indication} & \textbf{Predicted Indication} & \textbf{Intermediary Biological Mechanism} & \textbf{Literature Support} & $\mathbf{\hat{y}_{uv}}$ \\
 \midrule
-Somatotropin & Growth hormone deficiency & Tibia fracture repair & GHR/IGF-1 stimulation of osteoblast proliferation & Clinical trial evidence~\cite{ref_gh} & 0.999 \\
-Menatetrenone & Secondary osteoporosis & Traumatic bone fracture & Osteocalcin $\gamma$-carboxylation \& mineral matrix binding & Clinical trial support~\cite{ref_vk2} & 0.998 \\
-Anakinra & Rheumatoid arthritis & Fracture non-union repair & IL-1R1 blockade of hyper-inflammatory osteoclastogenesis & Mechanistic validation~\cite{ref_il1} & 0.996 \\
-Mecasermin & Primary IGF-1 deficiency & Tibial bone union & Direct IGF-1R tyrosine kinase activation \& chondrogenesis & Preclinical evidence & 0.999 \\
+Somatotropin & Growth hormone deficiency & Tibia fracture repair & GHR/IGF-1 stimulation of osteoblast proliferation & Clinical trial~\cite{ref_gh} & 0.999 \\
+Menatetrenone & Secondary osteoporosis & Traumatic bone fracture & Osteocalcin $\gamma$-carboxylation \& mineral matrix binding & Clinical trial~\cite{ref_vk2} & 0.998 \\
+Anakinra & Rheumatoid arthritis & Fracture non-union repair & IL-1R1 blockade of hyper-inflammatory osteoclastogenesis & Mechanistic~\cite{ref_il1} & 0.996 \\
+Mecasermin & Primary IGF-1 deficiency & Tibial bone union & Direct IGF-1R tyrosine kinase activation \& chondrogenesis & Preclinical & 0.999 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table*}
 
 \subsubsection{Somatotropin in Accelerating Tibia Fracture Union}
