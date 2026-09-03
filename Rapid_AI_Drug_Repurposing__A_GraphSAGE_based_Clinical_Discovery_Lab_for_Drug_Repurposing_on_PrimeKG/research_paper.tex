@@ -359,7 +359,7 @@ Among graph neural architectures, GraphSAGE consistently outperforms both GCN (9
 
 \begin{figure*}[!t]
 \centering
-\includegraphics[width=0.95\textwidth]{metrics.jpeg}
+\includegraphics[width=0.95\textwidth]{metrics.png}
 \caption{Quantitative performance evaluation across multiple classification metrics including Accuracy, Precision, Recall, and F1-score.}
 \label{fig:performance_metrics}
 \end{figure*}
@@ -408,7 +408,7 @@ To evaluate whether the model's classification performance is fragile or sensiti
 The optimization trajectory demonstrates stable gradient descent, with the training loss steadily decreasing from 0.6993 at epoch 1 to 0.0373 at epoch 100 (Fig.~\ref{fig:training_loss}). Validation loss reached an optimal minimum of 0.2282 at epoch 62. Beyond epoch 62, a gradual increase in validation loss (reaching 0.2746 at epoch 100) indicated the onset of mild empirical overfitting. To prevent generalization degradation, model weights corresponding to the optimal validation checkpoint at epoch 62 were restored for final performance evaluation on the held-out test set.
 
 \subsection{Quantitative Error Analysis and Confusion Matrix Decomposition}
-To rigorously quantify classification characteristics on the held-out test set, we decomposed the model's predictions into an empirical confusion matrix across the 1,880 test pairs (940 true indications and 940 negative pairs), as detailed in Table~\ref{tab:confusion_matrix}.
+To rigorously quantify classification characteristics on the held-out test set, we decomposed the model's predictions into an empirical confusion matrix across the 1,880 test pairs (940 true indications and 940 negative pairs), as detailed in Table~\ref{tab:confusion_matrix} and illustrated in Fig.~\ref{fig:confusion_matrix}.
 
 \begin{table}[!t]
 \centering
@@ -424,6 +424,13 @@ To rigorously quantify classification characteristics on the held-out test set, 
 \bottomrule
 \end{tabular}
 \end{table}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.88\linewidth]{confusion_matrix.png}
+\caption{Empirical Confusion Matrix on the held-out test set (1,880 samples), illustrating 93.51\% sensitivity (879/940) and 90.43\% specificity (850/940).}
+\label{fig:confusion_matrix}
+\end{figure}
 
 The model achieves a high sensitivity (recall) of $93.51\%$ ($879/940$) and a specificity of $90.43\%$ ($850/940$), with a Positive Predictive Value (precision) of $90.71\%$ ($879/969$) and a Negative Predictive Value (NPV) of $93.30\%$ ($850/911$). 
 
