@@ -1,11 +1,25 @@
 import os
-import torch
 import pandas as pd
 import json
-import requests
 import difflib
-from torch_geometric.nn import SAGEConv
 import warnings
+import urllib.request
+
+try:
+    import requests
+    REQUESTS_AVAILABLE = True
+except ImportError:
+    requests = None
+    REQUESTS_AVAILABLE = False
+
+try:
+    import torch
+    from torch_geometric.nn import SAGEConv
+    TORCH_AVAILABLE = True
+except ImportError:
+    torch = None
+    SAGEConv = object
+    TORCH_AVAILABLE = False
 
 warnings.filterwarnings('ignore')
 
@@ -34,11 +48,10 @@ NODES_PATH = os.path.join(DATAVERSE_DIR, "nodes_subset.csv")
 MODEL_PATH = os.path.join(DATA_DIR, "best_graphsage_model.pth")
 
 
-# ---------------------------------------------------------
-# MODEL ARCHITECTURE (Exact match to Step 3)
-# ---------------------------------------------------------
-class LinkPredictorSAGE(torch.nn.Module):
-    def __init__(self, in_channels, hidden_channels, out_channels):
+_ModuleBase = torch.nn.Module if TORCH_AVAILABLE else object
+
+class LinkPredictorSAGE(_ModuleBase):
+    def __init__(self, in_channels=131, hidden_channels=64, out_channels=32):
         super().__init__()
         self.conv1 = SAGEConv(in_channels, hidden_channels)
         self.conv2 = SAGEConv(hidden_channels, out_channels)
@@ -151,6 +164,12 @@ class DiscoveryEngine:
         results = sorted(results, key=lambda x: x['score'], reverse=True)[:top_k]
         return results
 
+    def explain_prediction(self, drug_name, disease_name, top_k=5):
+        """Extracts hub-penalized 2-hop biological pathways bridging drug and disease."""
+        if not hasattr(self, '_saliency_engine'):
+            self._saliency_engine = PathSaliencyEngine()
+        return self._saliency_engine.extract_paths(drug_name, disease_name, top_k=top_k)
+
 # ---------------------------------------------------------
 # EXTERNAL API HELPERS
 # ---------------------------------------------------------
@@ -204,7 +223,162 @@ def get_clinical_trials_data(drug, disease):
 def check_ollama_status():
     """Checks if Ollama server is responsive on localhost."""
     try:
-        resp = requests.get("http://127.0.0.1:11434/api/tags", timeout=2)
-        return resp.status_code == 200
+        if REQUESTS_AVAILABLE:
+            resp = requests.get("http://127.0.0.1:11434/api/tags", timeout=2)
+            return resp.status_code == 200
+        else:
+            req = urllib.request.Request("http://127.0.0.1:11434/api/tags")
+            with urllib.request.urlopen(req, timeout=2) as resp:
+                return resp.status == 200
     except:
         return False
+
+# ---------------------------------------------------------
+# HUB-PENALIZED 2-HOP PATH SALIENCY ENGINE (Section VI-G)
+# ---------------------------------------------------------
+class PathSaliencyEngine:
+    """
+    Implements degree-penalized path saliency S(u -> p -> v) to extract
+    pathway-specific target proteins while down-weighting promiscuous hubs.
+    Formalized in Section VI-G of the Rapid AI manuscript.
+    """
+    def __init__(self):
+        import numpy as np
+        self.np = np
+        self.nodes_df = pd.read_csv(NODES_PATH)
+        self.edges_path = os.path.join(DATAVERSE_DIR, "edges_subset.csv")
+        self.edges_df = pd.read_csv(self.edges_path) if os.path.exists(self.edges_path) else pd.DataFrame()
+
+        drug_feat_path = os.path.join(DATAVERSE_DIR, "drug_features.csv")
+        disease_feat_path = os.path.join(DATAVERSE_DIR, "disease_features.csv")
+
+        self.drug_feat_df = pd.read_csv(drug_feat_path).set_index('node_index') if os.path.exists(drug_feat_path) else None
+        self.disease_feat_df = pd.read_csv(disease_feat_path).set_index('node_index') if os.path.exists(disease_feat_path) else None
+
+        # Precompute degree counts for hub penalization: 1 / sqrt(deg(p))
+        if not self.edges_df.empty:
+            degree_counts = pd.concat([self.edges_df['x_index'], self.edges_df['y_index']]).value_counts()
+            self.degrees = degree_counts.to_dict()
+        else:
+            self.degrees = {}
+
+        # Precompute entity mappings
+        self.name_to_node = {}
+        self.idx_to_name = {}
+        self.idx_to_type = {}
+        for _, row in self.nodes_df.iterrows():
+            n_idx = int(row['node_index'])
+            n_name = str(row['node_name'])
+            n_type = str(row['node_type'])
+            self.name_to_node[n_name.lower()] = (n_idx, n_type, n_name)
+            self.idx_to_name[n_idx] = n_name
+            self.idx_to_type[n_idx] = n_type
+
+        # Build adjacency for fast 2-hop lookup
+        self.adj = {}
+        if not self.edges_df.empty:
+            for _, row in self.edges_df.iterrows():
+                u = int(row['x_index'])
+                v = int(row['y_index'])
+                rel = str(row['display_relation'])
+                if u not in self.adj: self.adj[u] = []
+                if v not in self.adj: self.adj[v] = []
+                self.adj[u].append((v, rel))
+                self.adj[v].append((u, rel))
+
+    def extract_paths(self, drug_name, disease_name, top_k=5):
+        """
+        Extracts 2-hop biological bridges (Drug -> Protein -> Disease) penalized
+        by inverse square-root structural degree: S(u -> p -> v) = 1 / sqrt(deg(p)).
+        """
+        drug_match = self.name_to_node.get(str(drug_name).lower())
+        dis_match = self.name_to_node.get(str(disease_name).lower())
+
+        if not drug_match or not dis_match:
+            return {
+                "paths": [],
+                "physicochemical": {},
+                "disease_summary": "",
+                "has_direct_paths": False
+            }
+
+        drug_idx, _, drug_canonical = drug_match
+        dis_idx, _, dis_canonical = dis_match
+
+        # 1. Candidate proteins connected to drug
+        drug_neighbors = self.adj.get(drug_idx, [])
+        drug_targets = {}
+        for tgt_idx, rel in drug_neighbors:
+            if self.idx_to_type.get(tgt_idx) == "gene/protein":
+                drug_targets[tgt_idx] = rel
+
+        # 2. Candidate proteins connected to disease
+        dis_neighbors = self.adj.get(dis_idx, [])
+        dis_proteins = {}
+        for tgt_idx, rel in dis_neighbors:
+            if self.idx_to_type.get(tgt_idx) == "gene/protein":
+                dis_proteins[tgt_idx] = rel
+
+        # 3. Direct 2-hop bridging proteins
+        shared_proteins = set(drug_targets.keys()).intersection(set(dis_proteins.keys()))
+
+        scored_paths = []
+        if shared_proteins:
+            for p_idx in shared_proteins:
+                deg = self.degrees.get(p_idx, 1)
+                saliency = 1.0 / self.np.sqrt(deg)
+                scored_paths.append({
+                    "protein_idx": p_idx,
+                    "protein_name": self.idx_to_name.get(p_idx, f"Protein_{p_idx}"),
+                    "drug_relation": drug_targets[p_idx],
+                    "disease_relation": dis_proteins[p_idx],
+                    "degree": deg,
+                    "saliency": round(float(saliency), 4),
+                    "is_direct_bridge": True
+                })
+            scored_paths = sorted(scored_paths, key=lambda x: x["saliency"], reverse=True)[:top_k]
+            has_direct = True
+        else:
+            # Novel Repurposing Candidate: direct 2-hop unannotated in graph
+            # Rank drug targets by degree specificity to identify primary mechanism
+            for p_idx, rel in drug_targets.items():
+                deg = self.degrees.get(p_idx, 1)
+                saliency = 1.0 / self.np.sqrt(deg)
+                scored_paths.append({
+                    "protein_idx": p_idx,
+                    "protein_name": self.idx_to_name.get(p_idx, f"Protein_{p_idx}"),
+                    "drug_relation": rel,
+                    "disease_relation": "latent inductive proximity",
+                    "degree": deg,
+                    "saliency": round(float(saliency), 4),
+                    "is_direct_bridge": False
+                })
+            scored_paths = sorted(scored_paths, key=lambda x: x["saliency"], reverse=True)[:top_k]
+            has_direct = False
+
+        # 4. Extract physicochemical properties
+        physicochem = {}
+        if self.drug_feat_df is not None and drug_idx in self.drug_feat_df.index:
+            row = self.drug_feat_df.loc[drug_idx]
+            physicochem = {
+                "molecular_weight": str(row.get("molecular_weight", "N/A")),
+                "tpsa": str(row.get("tpsa", "N/A")),
+                "clogp": str(row.get("clogp", "N/A")),
+                "half_life": str(row.get("half_life", "N/A")),
+                "mechanism_of_action": str(row.get("mechanism_of_action", "N/A"))
+            }
+
+        # 5. Extract disease clinical phenotype
+        dis_summary = ""
+        if self.disease_feat_df is not None and dis_idx in self.disease_feat_df.index:
+            d_row = self.disease_feat_df.loc[dis_idx]
+            dis_summary = str(d_row.get("mondo_definition", d_row.get("umls_description", d_row.get("mayo_symptoms", ""))))
+
+        return {
+            "drug_name": drug_canonical,
+            "disease_name": dis_canonical,
+            "paths": scored_paths,
+            "physicochemical": physicochem,
+            "disease_summary": dis_summary,
+            "has_direct_paths": has_direct
+        }
