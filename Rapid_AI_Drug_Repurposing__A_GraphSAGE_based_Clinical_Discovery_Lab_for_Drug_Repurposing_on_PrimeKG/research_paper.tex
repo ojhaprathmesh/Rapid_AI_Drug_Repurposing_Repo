@@ -299,16 +299,35 @@ Furthermore, candidate pairs are ranked according to their confidence probabilit
 \subsection{Evaluation Protocol}
 The performance of the link prediction model is evaluated using standard classification metrics, including the \textbf{Area Under the Receiver Operating Characteristic Curve (AUC)}, Accuracy, Precision, Recall, and F1-score.
 
-\subsection{Explainable AI and Clinical Rationalization Layer}
-While Graph Neural Networks excel at learning predictive topological embeddings, latent representations alone do not provide actionable clinical explanations for pharmacological researchers. To bridge the gap between numerical candidate scoring and clinical decision-making, Rapid AI incorporates an Explainable AI (XAI) rationalization layer.
+\subsection{Explainable AI and Path-Constrained Clinical Rationalization}
+While Graph Neural Networks excel at learning predictive topological representations, numerical probability scores alone do not provide mechanistic explanations for translational clinicians. To bridge the gap between computational link scoring and clinical decision-making, Rapid AI implements an Explainable AI (XAI) rationalization layer that grounds generative reasoning in verified biological pathways.
 
-When a candidate drug--disease interaction $(u, v)$ is predicted with confidence exceeding the classification threshold ($\hat{y}_{uv} \ge \tau$), the framework queries the multi-relational graph to extract intermediate 2-hop topological pathways connecting the drug to the disease via shared biological targets:
+\subsubsection{Topological Subgraph Traversal}
+When a candidate drug--disease interaction $(u, v)$ is predicted with confidence exceeding the classification threshold ($\hat{y}_{uv} \ge \tau$), the framework queries the multi-relational graph to extract intermediate 2-hop topological pathways linking the candidate compound to the disease phenotype through mediating molecular targets:
 \begin{equation}
-\mathcal{P}_{u \to v} = \left\{\, (u, p, v) \mid (u, p) \in \mathcal{E} \,\land\, (p, v) \in \mathcal{E} \,\right\},
+\mathcal{P}_{\mathrm{cand}}(u, v) = \left\{\, p \in \mathcal{V}_{\mathrm{protein}} \;\middle|\; (u, p) \in \mathcal{E} \,\land\, (p, v) \in \mathcal{E} \,\right\}.
 \end{equation}
-where $p \in \mathcal{V}_{\text{protein}}$ represents mediating gene or protein products. 
 
-These extracted topological subpaths, along with standardized physicochemical properties (Molecular Weight, TPSA, ClogP) and clinical phenotype descriptions, are formatted into a structured, grounded context prompt. This prompt is ingested by an on-premise Large Language Model (Llama 3.2 deployed via the Ollama runtime)~\cite{ref_llama}. By constraining the language model strictly to verified knowledge graph subgraphs and molecular descriptors, the system synthesizes evidence-based clinical rationales detailing potential mechanisms of action, downstream pathway modulation, and safety considerations while preventing ungrounded biological hallucination. Furthermore, on-premise execution preserves strict data privacy and institutional governance without external API transmissions.
+\subsubsection{Hub-Penalized Path Saliency Formulation}
+A critical failure mode in biomedical knowledge graph explanation is the dominance of generic, ubiquitous hub proteins (e.g., Serum Albumin, Ubiquitin, or broad cytokines) that connect indiscriminately to hundreds of entities without providing disease-specific insight. To prevent such generic explanations, we formulate a degree-penalized path saliency metric $\mathcal{S}(u \to p \to v)$:
+\begin{equation}
+\mathcal{S}(u \to p \to v) = \frac{\sigma\left(\mathbf{z}_u^\top \mathbf{z}_p\right) + \sigma\left(\mathbf{z}_p^\top \mathbf{z}_v\right)}{2 \cdot \sqrt{\deg(p)}},
+\end{equation}
+where $\mathbf{z}_u, \mathbf{z}_p, \mathbf{z}_v \in \mathbb{R}^{32}$ denote the learned GraphSAGE node embeddings, and $\deg(p)$ represents the total structural degree of target protein $p$ in the curated knowledge graph. The inverse square-root penalty $\frac{1}{\sqrt{\deg(p)}}$ mathematically prioritizes specific, high-affinity biological mediators while penalizing high-degree hubs. The top-$K$ paths ($K=5$) maximizing $\mathcal{S}(u \to p \to v)$ are retained as the mechanistic backbone.
+
+\subsubsection{Multimodal Context Synthesis and Constrained Generation}
+The extracted top-$K$ biological pathways are combined with the candidate drug's standardized physicochemical descriptors $\mathbf{x}_u^{\mathrm{chem}} = \langle \mathrm{MW}, \mathrm{TPSA}, \mathrm{ClogP} \rangle$ and disease ontological phenotypes to assemble a grounded context vector:
+\begin{equation}
+\mathcal{C}(u, v) = \left\langle u, \; \mathbf{x}_u^{\mathrm{chem}}, \; \{\, u \to p_k \to v \,\}_{k=1}^K, \; v, \; \hat{y}_{uv} \right\rangle.
+\end{equation}
+
+This structured context is ingested by an on-premise Large Language Model (quantized Llama 3.2, 3B parameters, executed via the Ollama runtime)~\cite{ref_llama}. By constraining the prompt generation strictly to the verified entities in $\mathcal{C}(u, v)$, the model synthesizes three distinct clinical dimensions:
+\begin{enumerate}
+    \item \textbf{Molecular Mechanism of Action:} Primary receptor agonism, antagonism, or enzyme inhibition through mediating target $p_k$.
+    \item \textbf{Downstream Cellular Signaling:} Cascades connecting intermediate targets to disease pathology.
+    \item \textbf{Pharmacological Considerations:} Bioavailability and clearance parameters inferred from physicochemical properties.
+\end{enumerate}
+Crucially, on-premise local execution guarantees zero external API data transmission, satisfying stringent institutional data governance frameworks.
 
 \section{Results and Analysis}
 
