@@ -1,0 +1,58 @@
+# ==============================================================================
+# Rapid AI Drug Repurposing - .gitignore
+# ==============================================================================
+
+# --- Python & Virtual Environments ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+ENV/
+
+# --- Operating System & IDE ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# --- Jupyter Notebooks ---
+.ipynb_checkpoints
+*-checkpoint.ipynb
+
+# --- Giant Unprocessed Raw Datasets (>100MB, Harvard Dataverse) ---
+# Raw multi-gigabyte files exceeding GitHub's 100MB limit:
+dataverse_files/kg.csv
+dataverse_files/kg_*.csv
+dataverse_files/edges.csv
+dataverse_files/disease_features.csv
+dataverse_files/drug_features.csv
+dataverse_files/nodes.csv
+
+# --- Giant Generated Cross-Predictions (>100MB) ---
+*all_repurposing_predictions.csv
+
+# --- LaTeX Auxiliary Build Files ---
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# --- Temporary Caches ---
+scratch/
+brain/

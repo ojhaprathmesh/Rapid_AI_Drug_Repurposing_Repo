@@ -1,0 +1,75 @@
+graph TD
+    subgraph Data_Tier ["1. Data Ingestion & Harvesting"]
+        direction LR
+        DRKG[("Biomedical Knowledge Graph (DRKG)")]
+        Nodes["Nodes Subset (CSV)"]
+        Edges["Edges Subset (CSV)"]
+        Feat["Molecular Features (CSV)"]
+        DRKG --> Nodes
+        DRKG --> Edges
+        DRKG --> Feat
+    end
+
+    subgraph Processing_Tier ["Preprocessing & Topology"]
+        direction LR
+        subgraph Feature_Engineering ["2. Feature Pipeline (Step 1)"]
+            direction TB
+            TFIDF["TF-IDF Vectorizer<br/>(128-dim)"]
+            Scaler["StandardScaler<br/>(3-dim)"]
+            Concat["Concatenation Engine<br/>(131-dim Tensor)"]
+            TFIDF & Scaler --> Concat
+        end
+
+        subgraph Graph_Logic ["3. Heterogeneous Topology (Step 2)"]
+            direction TB
+            Undirected["Undirected Edge Mapping<br/>(r + r_rev)"]
+            Split["Disjoint Data Split<br/>(80/10/10)"]
+            NegSamp["Collision-Free<br/>Neg. Sampling"]
+            Undirected --> Split --> NegSamp
+        end
+    end
+
+    Nodes --> TFIDF
+    Feat --> Scaler
+    Edges --> Undirected
+
+    subgraph Model_Tier ["4. Neural Training & Inference"]
+        direction LR
+        subgraph Model_Engine ["4. Training (Step 3)"]
+            direction TB
+            SAGE["Hetero GraphSAGE<br/>(Encoder-Decoder)"]
+            Loss["BCEWithLogitsLoss"]
+            Weights["Model State (PTH)"]
+            SAGE --> Loss --> Weights
+        end
+
+        subgraph Discovery_Inference ["5. Discovery (Step 4)"]
+            direction TB
+            Inference["Embedding Inference"]
+            Scoring["Novel Pair Scoring"]
+            Ranking["Top 50 Candidates"]
+            Inference --> Scoring --> Ranking
+        end
+    end
+
+    Concat & NegSamp --> SAGE
+    Weights --> Inference
+
+    subgraph Dashboard_UX ["6. Discovery Lab Interface (web.py)"]
+        direction LR
+        Streamlit["Interactive Dashboard<br/>(Streamlit UI)"]
+        LLM["Ollama / LLaMA 3.2<br/>(Rationalization)"]
+        APIs["External APIs<br/>(PubChem/Clinical)"]
+        
+        Streamlit <--> LLM
+        Streamlit <--> APIs
+    end
+
+    Ranking --> Streamlit
+
+    %% Styling
+    style DRKG fill:#f9f,stroke:#333,stroke-width:2px
+    style SAGE fill:#00d4ff,stroke:#000,stroke-width:2px,color:#000
+    style Streamlit fill:#ff4b4b,stroke:#000,stroke-width:2px,color:#fff
+    style LLM fill:#7e57c2,stroke:#000,stroke-width:2px,color:#fff
+    style Ranking fill:#ffcc00,stroke:#333,stroke-width:2px,color:#000

@@ -1,0 +1,21 @@
+rank,drug_name,disease_name,probability,raw_logit
+1,Nusinersen,Laron syndrome,1.0,16.118816
+2,Nusinersen,tibia fracture,1.0,30.536266
+3,Insulin glulisine,tibia fracture,1.0,19.775093
+4,Insulin aspart,tibia fracture,1.0,19.698509
+5,Anakinra,congenital generalized lipodystrophy,1.0,19.958593
+6,Anakinra,neurotrophic keratopathy,1.0,32.995136
+7,Anakinra,Turner syndrome,1.0,27.772354
+8,Anakinra,monosomy X,1.0,35.527218
+9,Anakinra,Laron syndrome,1.0,113.351082
+10,Anakinra,growth hormone insensitivity syndrome,1.0,110.115494
+11,Anakinra,Berardinelli-Seip congenital lipodystrophy,1.0,22.461529
+12,Anakinra,cancer,1.0,15.233456
+13,Anakinra,soft tissue sarcoma,1.0,17.94453
+14,Anakinra,pituitary dwarfism,1.0,35.8274
+15,Anakinra,gonadal dysgenesis,1.0,25.578337
+16,Anakinra,intervertebral disc degenerative disorder,1.0,34.797726
+17,Anakinra,tibia fracture,1.0,189.521088
+18,Insulin detemir,tibia fracture,1.0,19.344822
+19,Sermorelin,Laron syndrome,1.0,32.866558
+20,Sermorelin,growth hormone insensitivity syndrome,1.0,30.217659

@@ -1,0 +1,21 @@
+Drug_Name,Disease_Name,probability
+Somatrem,monosomy X,1.0
+Somatrem,gonadal dysgenesis,1.0
+Somatrem,Turner syndrome,1.0
+Somatrem,intervertebral disc degenerative disorder,1.0
+Sermorelin,monosomy X,1.0
+Sermorelin,gonadal dysgenesis,1.0
+Nusinersen,Laron syndrome,1.0
+Mecasermin rinfabate,CINCA syndrome,1.0
+Somatotropin,tibia fracture,1.0
+Dibotermin alfa,pituitary dwarfism,1.0
+Dibotermin alfa,cholestasis,1.0
+Dibotermin alfa,gonadal dysgenesis,1.0
+Dibotermin alfa,sarcoma,1.0
+Nusinersen,congenital generalized lipodystrophy,1.0
+Mecasermin rinfabate,cryopyrin-associated periodic syndrome,1.0
+Dibotermin alfa,cryopyrin-associated periodic syndrome,1.0
+Mecasermin rinfabate,intervertebral disc degenerative disorder,1.0
+Mecasermin rinfabate,pituitary dwarfism,1.0
+Mecasermin rinfabate,Turner syndrome,1.0
+Mecasermin rinfabate,monosomy X,1.0

@@ -1,0 +1,9 @@
+torch
+torch-geometric
+pandas
+scikit-learn
+streamlit
+ollama
+requests
+numpy
+fuzz
