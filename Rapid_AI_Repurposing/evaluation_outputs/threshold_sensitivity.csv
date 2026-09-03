@@ -1,0 +1,10 @@
+threshold,clinical_regime,precision,recall,specificity,f1_score,accuracy,true_positives,false_positives,false_negatives,true_negatives
+0.3,High-Sensitivity Screening,0.8804,0.9628,0.8691,0.9197,0.916,905,123,35,817
+0.35,High-Sensitivity Screening,0.8887,0.9596,0.8798,0.9228,0.9197,902,113,38,827
+0.4,High-Sensitivity Screening,0.896,0.9532,0.8894,0.9237,0.9213,896,104,44,836
+0.45,Balanced Prioritization,0.9018,0.9479,0.8968,0.9243,0.9223,891,97,49,843
+0.5,Balanced Prioritization (Default),0.9071,0.9351,0.9043,0.9209,0.9197,879,90,61,850
+0.55,Balanced Prioritization,0.9205,0.9234,0.9202,0.9219,0.9218,868,75,72,865
+0.6,High-Confidence Validation,0.9257,0.9149,0.9266,0.9203,0.9207,860,69,80,871
+0.65,High-Confidence Validation,0.9308,0.9011,0.933,0.9157,0.917,847,63,93,877
+0.7,High-Confidence Validation,0.9359,0.8851,0.9394,0.9098,0.9122,832,57,108,883

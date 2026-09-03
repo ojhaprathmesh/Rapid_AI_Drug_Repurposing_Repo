@@ -30,7 +30,8 @@ import matplotlib.pyplot as plt
 from torch_geometric.nn import SAGEConv
 from sklearn.metrics import (
     roc_auc_score, precision_score, recall_score,
-    f1_score, accuracy_score, roc_curve, classification_report
+    f1_score, accuracy_score, roc_curve, classification_report,
+    average_precision_score, confusion_matrix
 )
 
 # ─────────────────────────────────────────────
@@ -145,20 +146,76 @@ y_pred = (y_prob >= 0.5).astype(int)
 
 # ── Metric calculations ──────────────────────
 auc       = roc_auc_score(y_true, y_prob)
+auprc     = average_precision_score(y_true, y_prob)
 precision = precision_score(y_true, y_pred, zero_division=0)
 recall    = recall_score(y_true, y_pred, zero_division=0)
 f1        = f1_score(y_true, y_pred, zero_division=0)
 accuracy  = accuracy_score(y_true, y_pred)
 fpr, tpr, roc_thresholds = roc_curve(y_true, y_prob)
 
-print(f"\n   ── Test-Set Metrics ──────────────────────")
-print(f"   AUC-ROC   : {auc:.4f}")
-print(f"   Accuracy  : {accuracy:.4f}")
-print(f"   Precision : {precision:.4f}")
-print(f"   Recall    : {recall:.4f}")
-print(f"   F1-Score  : {f1:.4f}")
+tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+specificity = tn / (tn + fp) if (tn + fp) > 0 else 0.0
+npv         = tn / (tn + fn) if (tn + fn) > 0 else 0.0
+
+print(f"\n   ── Test-Set Core Performance Metrics ──────────────────────")
+print(f"   AUC-ROC          : {auc:.4f}")
+print(f"   PR-AUC (AUPRC)   : {auprc:.4f}")
+print(f"   Accuracy         : {accuracy:.4f}")
+print(f"   Sensitivity (Rec): {recall:.4f}")
+print(f"   Specificity      : {specificity:.4f}")
+print(f"   Precision (PPV)  : {precision:.4f}")
+print(f"   NPV              : {npv:.4f}")
+print(f"   F1-Score         : {f1:.4f}")
+print(f"\n   Confusion Matrix Breakdown:")
+print(f"   True Positives (TP) : {tp:4d} ({tp/len(y_true)*100:5.2f}%)")
+print(f"   True Negatives (TN) : {tn:4d} ({tn/len(y_true)*100:5.2f}%)")
+print(f"   False Positives (FP): {fp:4d} ({fp/len(y_true)*100:5.2f}%)")
+print(f"   False Negatives (FN): {fn:4d} ({fn/len(y_true)*100:5.2f}%)")
 print(f"\n   Full Classification Report:")
 print(classification_report(y_true, y_pred, target_names=["Negative", "Positive"]))
+
+# Multi-threshold clinical sensitivity evaluation
+thresholds_list = [0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70]
+regime_map = {
+    0.30: "High-Sensitivity Screening",
+    0.35: "High-Sensitivity Screening",
+    0.40: "High-Sensitivity Screening",
+    0.45: "Balanced Prioritization",
+    0.50: "Balanced Prioritization (Default)",
+    0.55: "Balanced Prioritization",
+    0.60: "High-Confidence Validation",
+    0.65: "High-Confidence Validation",
+    0.70: "High-Confidence Validation"
+}
+
+thresh_rows = []
+for t_val in thresholds_list:
+    t_pred = (y_prob >= t_val).astype(int)
+    t_tp   = int(np.sum((y_true == 1) & (t_pred == 1)))
+    t_tn   = int(np.sum((y_true == 0) & (t_pred == 0)))
+    t_fp   = int(np.sum((y_true == 0) & (t_pred == 1)))
+    t_fn   = int(np.sum((y_true == 1) & (t_pred == 0)))
+
+    t_prec = t_tp / (t_tp + t_fp) if (t_tp + t_fp) > 0 else 0.0
+    t_rec  = t_tp / (t_tp + t_fn) if (t_tp + t_fn) > 0 else 0.0
+    t_spec = t_tn / (t_tn + t_fp) if (t_tn + t_fp) > 0 else 0.0
+    t_f1   = 2 * t_prec * t_rec / (t_prec + t_rec) if (t_prec + t_rec) > 0 else 0.0
+    t_acc  = (t_tp + t_tn) / len(y_true)
+
+    thresh_rows.append({
+        "threshold"          : t_val,
+        "clinical_regime"    : regime_map.get(t_val, ""),
+        "precision"          : round(t_prec, 4),
+        "recall"             : round(t_rec, 4),
+        "specificity"        : round(t_spec, 4),
+        "f1_score"           : round(t_f1, 4),
+        "accuracy"           : round(t_acc, 4),
+        "true_positives"     : t_tp,
+        "false_positives"    : t_fp,
+        "false_negatives"    : t_fn,
+        "true_negatives"     : t_tn
+    })
+thresh_df = pd.DataFrame(thresh_rows)
 
 # ─────────────────────────────────────────────
 # 5. Top-20 Drug-Disease Predictions
@@ -245,13 +302,31 @@ np.save(os.path.join(OUT_DIR, "val_losses.npy"),      np.array(val_losses))
 
 # ── Scalar metrics CSV ──────────────────────
 metrics_df = pd.DataFrame([{
-    "AUC_ROC"   : round(auc,       4),
-    "Accuracy"  : round(accuracy,  4),
-    "Precision" : round(precision, 4),
-    "Recall"    : round(recall,    4),
-    "F1_Score"  : round(f1,        4),
+    "AUC_ROC"            : round(float(auc),         4),
+    "AUPRC"              : round(float(auprc),       4),
+    "Accuracy"           : round(float(accuracy),    4),
+    "Precision"          : round(float(precision),   4),
+    "Recall"             : round(float(recall),      4),
+    "Specificity"        : round(float(specificity), 4),
+    "F1_Score"           : round(float(f1),          4),
+    "NPV"                : round(float(npv),         4),
+    "True_Positives"     : int(tp),
+    "True_Negatives"     : int(tn),
+    "False_Positives"    : int(fp),
+    "False_Negatives"    : int(fn),
+    "Total_Test_Samples" : int(len(y_true)),
 }])
 metrics_df.to_csv(os.path.join(OUT_DIR, "scalar_metrics.csv"), index=False)
+
+# ── Threshold Sensitivity CSV ───────────────
+thresh_df.to_csv(os.path.join(OUT_DIR, "threshold_sensitivity.csv"), index=False)
+
+# ── Confusion Matrix CSV ────────────────────
+cm_df = pd.DataFrame([
+    {"Actual_Class": "Ground Truth Positive (Indication)",  "Predicted_Positive": int(tp), "Predicted_Negative": int(fn), "Total": int(tp + fn), "Class_Recall": f"{recall*100:.2f}%"},
+    {"Actual_Class": "Ground Truth Negative (Non-Indication)", "Predicted_Positive": int(fp), "Predicted_Negative": int(tn), "Total": int(fp + tn), "Class_Recall": f"{specificity*100:.2f}%"}
+])
+cm_df.to_csv(os.path.join(OUT_DIR, "confusion_matrix.csv"), index=False)
 
 # ── Per-epoch loss CSV ──────────────────────
 loss_df = pd.DataFrame({
