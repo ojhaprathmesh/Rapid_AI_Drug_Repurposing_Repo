@@ -14,18 +14,37 @@ except ImportError:
 
 try:
     import torch
-    from torch_geometric.nn import SAGEConv
     TORCH_AVAILABLE = True
 except ImportError:
     torch = None
-    SAGEConv = object
     TORCH_AVAILABLE = False
+
+try:
+    from torch_geometric.nn import SAGEConv
+except ImportError:
+    if TORCH_AVAILABLE:
+        class SAGEConv(torch.nn.Module):
+            def __init__(self, in_channels, out_channels):
+                super().__init__()
+                self.lin_l = torch.nn.Linear(in_channels, out_channels, bias=True)
+                self.lin_r = torch.nn.Linear(in_channels, out_channels, bias=False)
+
+            def forward(self, x, edge_index):
+                row, col = edge_index[0], edge_index[1]
+                num_nodes = x.size(0)
+                deg = torch.zeros(num_nodes, dtype=torch.float, device=x.device)
+                deg.scatter_add_(0, col, torch.ones_like(col, dtype=torch.float))
+                deg.clamp_(min=1.0)
+                out = torch.zeros(num_nodes, x.size(1), dtype=torch.float, device=x.device).scatter_add_(
+                    0, col.unsqueeze(-1).expand(-1, x.size(1)), x[row]
+                )
+                out = out / deg.unsqueeze(-1)
+                return self.lin_l(out) + self.lin_r(x)
+    else:
+        SAGEConv = object
 
 warnings.filterwarnings('ignore')
 
-# ---------------------------------------------------------
-# CONSTANTS & PATHS
-# ---------------------------------------------------------
 # ---------------------------------------------------------
 # CONSTANTS & PATHS
 # ---------------------------------------------------------
