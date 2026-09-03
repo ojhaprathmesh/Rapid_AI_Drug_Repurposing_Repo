@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{stfloats}
+\usepackage{url}
 \graphicspath{{images/}}
 \hyphenation{op-tical net-works semi-conduc-tor}
 
@@ -332,7 +333,7 @@ Crucially, on-premise local execution guarantees zero external API data transmis
 \section{Results and Analysis}
 
 \subsection{Experimental Setup and Implementation Parameters}
-The proposed framework was evaluated on the curated PrimeKG knowledge graph comprising 10,597 nodes and 161,632 edges. For the link prediction benchmark, the 9,397 unique drug--disease indication pairs were partitioned into disjoint training (80\%, 7,518 pairs), validation (10\%, 939 pairs), and testing (10\%, 940 pairs) sets under an 80/10/10 split protocol. A balanced 1:1 negative sampling ratio was maintained across all splits, resulting in a held-out test set of 1,880 evaluation pairs (940 positive indications and 940 negative pairs). Empirical split integrity auditing confirmed complete absence of label leakage across partitions ($|\mathcal{E}_{\mathrm{train}} \cap \mathcal{E}_{\mathrm{val}}| = 0$, $|\mathcal{E}_{\mathrm{train}} \cap \mathcal{E}_{\mathrm{test}}| = 0$, $|\mathcal{E}_{\mathrm{val}} \cap \mathcal{E}_{\mathrm{test}}| = 0$), strictly guaranteeing that the reported performance reflects genuine out-of-sample inductive link prediction. To facilitate immediate independent replication, all reported empirical tables, confusion matrices, and split integrity bounds can be verified via the automated audit suite (\texttt{verify\_paper\_claims.py}) provided in the project repository.
+The proposed framework was evaluated on the curated PrimeKG knowledge graph comprising 10,597 nodes and 161,632 edges. For the link prediction benchmark, the 9,397 unique drug--disease indication pairs were partitioned into disjoint training (80\%, 7,518 pairs), validation (10\%, 939 pairs), and testing (10\%, 940 pairs) sets under an 80/10/10 split protocol. A balanced 1:1 negative sampling ratio was maintained across all splits, resulting in a held-out test set of 1,880 evaluation pairs (940 positive indications and 940 negative pairs). Empirical split integrity auditing confirmed complete absence of label leakage across partitions ($|\mathcal{E}_{\mathrm{train}} \cap \mathcal{E}_{\mathrm{val}}| = 0$, $|\mathcal{E}_{\mathrm{train}} \cap \mathcal{E}_{\mathrm{test}}| = 0$, $|\mathcal{E}_{\mathrm{val}} \cap \mathcal{E}_{\mathrm{test}}| = 0$), strictly guaranteeing that the reported performance reflects genuine out-of-sample inductive link prediction.
 
 The model was trained for 100 epochs using the Adam optimizer with Binary Cross-Entropy loss. Comprehensive architectural and experimental hyperparameters are detailed in Table~\ref{tab:hyperparameters}.
 
@@ -574,6 +575,9 @@ In this paper, we presented Rapid AI, an end-to-end framework to predict and rat
 The findings highlight the efficacy of graph-based representation learning in computational pharmacology, where multi-modal biomedical knowledge is naturally modeled as networks~\cite{ref3,ref4}. Inductive neighborhood aggregation provides scalable representation learning suitable for evolving biomedical graphs~\cite{ref1}. Furthermore, integrating structured knowledge graphs such as PrimeKG is essential for systematic hypothesis generation in drug discovery~\cite{ref6,ref7,ref29}.
 
 While challenges regarding knowledge graph sparsity and qualitative LLM grounding remain, Rapid AI demonstrates that combining Graph Neural Networks with biomedical knowledge graphs offers a scalable, data-driven approach to accelerate therapeutic discovery.
+
+\section*{Data and Code Availability}
+To guarantee complete scientific reproducibility and facilitate independent replication, all curated PrimeKG benchmark partitions, preprocessed PyTorch Geometric tensors, pre-trained GraphSAGE checkpoints, clinical discovery web tools, and an automated verification suite reproducing all reported empirical tables, confusion matrices, and split integrity guarantees are openly accessible in the project repository: \url{https://github.com/ojhaprathmesh/Rapid_AI_Drug_Repurposing_Repo}.
 
 \begin{thebibliography}{99}
 
