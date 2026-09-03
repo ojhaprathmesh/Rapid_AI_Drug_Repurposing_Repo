@@ -1,6 +1,7 @@
 \documentclass[conference,a4paper]{IEEEtran}
 
 \usepackage{graphicx}
+\graphicspath{{images/}}
 \usepackage{float}
 \usepackage{amsmath}
 \usepackage{booktabs}
@@ -85,7 +86,7 @@ The proposed framework, Rapid AI, is designed as an end-to-end pipeline for pred
 \begin{figure*}[!t]
 
     \centering
-    \includegraphics[width=0.95\textwidth]{system_arch.png}
+    \includegraphics[width=0.95\textwidth]{images/system_arch.png}
     \caption{End-to-end framework architecture for Rapid AI Drug Repurposing, illustrating the pipeline from data ingestion to the interactive discovery interface.}
     \label{fig:system_arch}
 \end{figure*}
@@ -94,7 +95,7 @@ The workflow begins with the ingestion of large-scale biomedical data derived fr
 
 \begin{figure}[!t]
     \centering
-    \includegraphics[width=\linewidth]{interaction_workflow.png}
+    \includegraphics[width=\linewidth]{images/interaction_workflow.png}
     \caption{Sequence diagram of the interaction workflow between the researcher, the Streamlit dashboard, and the discovery engine.}
     \label{fig:interaction_workflow}
 \end{figure}
@@ -119,14 +120,14 @@ For the link prediction objective, the framework focuses on canonical drug--dise
 
 \begin{figure}[!t]
     \centering
-    \includegraphics[width=\linewidth]{dataset_split_distribution.png}
-    \caption{Distribution of dataset splits across the 18,794 evaluated drug--disease candidate instances (80\% Training: 15,036; 10\% Validation: 1,878; 10\% Testing: 1,880) and balanced 1:1 positive-to-negative sample distribution, operating over the 161,632-edge knowledge graph topology.}
+    \includegraphics[width=\linewidth]{images/dataset_split_distribution.png}
+    \caption{Distribution of drug--disease indication pairs across the 80/10/10 split.}
     \label{fig:dataset_split}
 \end{figure}
 
 \begin{figure}[!t]
     \centering
-    \includegraphics[width=\linewidth]{graph_entities_schema.png}
+    \includegraphics[width=\linewidth]{images/graph_entities_schema.png}
     \caption{Schema of the heterogeneous knowledge graph illustrating the biological entities (Drugs, Diseases, Proteins) and their interaction types.}
     \label{fig:graph_schema}
 \end{figure}
@@ -195,7 +196,7 @@ The finalized graph topology serves as the input to the neural encoder. By encod
 
 \begin{figure}[!t]
     \centering
-    \includegraphics[width=\linewidth]{graph_visualization_primekg.png}
+    \includegraphics[width=\linewidth]{images/graph_visualization_primekg.png}
     \caption{Visualization of the PrimeKG heterogeneous network structure, showing clusters of drugs, diseases, and proteins.}
     \label{fig:graph_viz}
 \end{figure}
@@ -359,7 +360,7 @@ Among graph neural architectures, GraphSAGE consistently outperforms both GCN (9
 
 \begin{figure*}[!t]
 \centering
-\includegraphics[width=0.95\textwidth]{metrics.png}
+\includegraphics[width=0.95\textwidth]{images/metrics.png}
 \caption{Quantitative performance evaluation across multiple classification metrics including Accuracy, Precision, Recall, and F1-score.}
 \label{fig:performance_metrics}
 \end{figure*}
@@ -370,7 +371,7 @@ The proposed framework achieves an AUC score of 0.9734, significantly outperform
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.95\linewidth]{roc_curve_final.png}
+\includegraphics[width=0.95\linewidth]{images/roc_curve_final.png}
 \caption{Final ROC Curve for Drug-Disease Link Prediction (AUC = 0.9734).}
 \label{fig:roc_curve}
 \end{figure}
@@ -400,7 +401,7 @@ To evaluate whether the model's classification performance is fragile or sensiti
 \subsection{Training Dynamics and Checkpoint Selection}
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.95\linewidth]{model_convergence.png}
+\includegraphics[width=0.95\linewidth]{images/model_convergence.png}
 \caption{Training and validation loss trajectories across 100 epochs, illustrating optimal validation loss at epoch 62 followed by checkpoint selection.}
 \label{fig:training_loss}
 \end{figure}
@@ -427,7 +428,7 @@ To rigorously quantify classification characteristics on the held-out test set, 
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.88\linewidth]{confusion_matrix.png}
+\includegraphics[width=0.88\linewidth]{images/confusion_matrix.png}
 \caption{Empirical Confusion Matrix on the held-out test set (1,880 samples), illustrating 93.51\% sensitivity (879/940) and 90.43\% specificity (850/940).}
 \label{fig:confusion_matrix}
 \end{figure}
