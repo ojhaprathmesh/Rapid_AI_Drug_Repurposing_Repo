@@ -3,6 +3,8 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
 \usepackage{booktabs}
 \usepackage{stfloats}
 \usepackage{url}
@@ -17,21 +19,20 @@
 
 \author{
     \IEEEauthorblockN{
-        Prathmesh Ojha\IEEEauthorrefmark{1}\IEEEauthorrefmark{*},
-        Jhankar Bansal\IEEEauthorrefmark{1}
+        Prathmesh Ojha\IEEEauthorrefmark{1},
+        Jhankar Bansal\IEEEauthorrefmark{1},
+        Nikhil Kumar\IEEEauthorrefmark{1}\IEEEauthorrefmark{*}
     }
 
     \IEEEauthorblockA{
         \IEEEauthorrefmark{1}
-        Department of Computer Science and Engineering\\
         School of Engineering and Technology\\
         BML Munjal University, Gurugram, India\\
-        prathmesh.ojha.23cse@bmu.edu.in,
-        jhankar.bansal.23cse@bmu.edu.in
+        \{prathmesh.ojha.23cse, jhankar.bansal.23cse, nikhil.kumar\}@bmu.edu.in
     }
 
     \IEEEauthorblockA{
-        \IEEEauthorrefmark{*}Corresponding Author
+        \IEEEauthorrefmark{*}Corresponding Author: nikhil.kumar@bmu.edu.in
     }
 }
 
@@ -94,12 +95,12 @@ The proposed framework, Rapid AI, is designed as an end-to-end pipeline for pred
 
 The workflow begins with the ingestion of large-scale biomedical data derived from a knowledge graph. This data is processed and transformed into a graph structure, where entities such as drugs, diseases, and genes are represented as nodes, and their relationships are modeled as edges. The sequence of interactions within the system is detailed in Fig.~\ref{fig:interaction_workflow}. A Graph Neural Network, specifically GraphSAGE, is then employed to learn meaningful representations of these entities by aggregating information from their local neighborhoods. These learned representations are subsequently used for link prediction, enabling the identification of potential drug-disease associations.
 
-\begin{figure}[!t]
+\begin{figure*}[!t]
     \centering
-    \includegraphics[width=\linewidth]{images/interaction_workflow.png}
+    \includegraphics[width=0.95\textwidth]{images/interaction_workflow.png}
     \caption{Sequence diagram of the interaction workflow between the researcher, the Streamlit dashboard, and the discovery engine.}
     \label{fig:interaction_workflow}
-\end{figure}
+\end{figure*}
 
 \subsection{Dataset Description and Knowledge Graph Curation}
 
@@ -119,12 +120,12 @@ The curated biomedical knowledge graph integrates multiple entity and relation t
 
 For the link prediction objective, the framework focuses on canonical drug--disease indication pairs, identifying 9,397 unique positive associations in the dataset. To ensure robust model training and unbiased evaluation, these positive associations were partitioned into three disjoint subsets under an 80/10/10 ratio: 7,518 for training, 939 for validation, and 940 for testing. A balanced 1:1 negative sampling strategy was employed, generating an equal number of non-interacting candidate pairs for each split (15,036 training, 1,878 validation, and 1,880 testing samples, totaling 18,794 evaluated candidate pairs), as illustrated in Fig.~\ref{fig:dataset_split}. The training split was utilized for parameter optimization, the validation split guided checkpoint selection, and the test split was reserved strictly for final performance evaluation.
 
-\begin{figure}[!t]
+\begin{figure*}[!t]
     \centering
-    \includegraphics[width=\linewidth]{images/dataset_split_distribution.png}
+    \includegraphics[width=0.88\textwidth]{images/dataset_split_distribution.png}
     \caption{Distribution of drug--disease indication pairs across the 80/10/10 split.}
     \label{fig:dataset_split}
-\end{figure}
+\end{figure*}
 
 \begin{figure}[!t]
     \centering

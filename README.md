@@ -67,22 +67,24 @@ Rapid_AI_Drug_Repurposing/
 │   └── model_convergence.png           # Training dynamics & epoch 62 checkpoint
 │
 ├── Rapid_AI_Repurposing/               # Discovery Lab Engine & Web Dashboard
+│   ├── pipeline/                       # End-to-end ML pipeline (preprocess -> train -> evaluate)
+│   │   ├── step1_preprocess.py         # Subgraph extraction & TF-IDF feature scaling
+│   │   ├── step2_build_graph.py        # PyTorch Geometric heterogeneous graph construction
+│   │   ├── step3_train.py              # Inductive GraphSAGE neural model training
+│   │   ├── step4_predict.py            # Latent candidate scoring and ranking
+│   │   ├── step5_rationalize.py        # Grounded LLM clinical reasoning
+│   │   └── step_evaluate.py            # Benchmark evaluation & metrics generation
+│   ├── visualization/                  # Unified publication & report asset generation
+│   │   └── generate_all_figures.py     # Master 300 DPI figure generator for paper & docs
+│   ├── tests/                          # Independent verification & audit suite
+│   │   ├── verify_paper_claims.py      # Standalone replication suite (28/28 passed)
+│   │   ├── verify_leakage.py           # Split leakage verification
+│   │   ├── audit_graph.py              # Graph topology auditing
+│   │   └── test_connectivity.py       # API & Ollama connectivity suite
+│   ├── reports/                        # Clinical reports & research documentation
 │   ├── web.py                          # Interactive Streamlit discovery lab
-│   ├── lab_utils.py                    # Resilient data loading engine
-│   ├── step1_preprocess.py             # Subgraph extraction & TF-IDF feature scaling
-│   ├── step2_build_graph.py            # PyTorch Geometric heterogeneous graph construction
-│   ├── step3_train.py                  # Inductive GraphSAGE neural model training
-│   ├── step4_predict.py                # Latent candidate scoring and ranking
-│   ├── step5_rationalize.py            # Grounded LLM clinical reasoning
-│   ├── step_evaluate.py                # Full evaluation suite (calculates exact test metrics)
-│   ├── audit_graph.py                  # Knowledge graph topology auditing
-│   ├── verify_leakage.py               # Split leakage verification
-│   ├── top_50_repurposing_predictions.csv
-│   ├── preprocessed_data/              # All PyG tensors & trained model weights (85 KB)
-│   │   ├── best_graphsage_model.pth    # Trained checkpoint for instant inference
-│   │   ├── node_map.json               # Entity ID to index mapping
-│   │   ├── edge_rel_map.json           # Relational edge mappings
-│   │   └── *.pt                        # Node features & split dataloaders
+│   ├── lab_utils.py                    # Standalone GNN inference engine & 2-hop explorer
+│   ├── preprocessed_data/              # All PyG tensors & trained weights (85 KB)
 │   └── evaluation_outputs/             # Test evaluation curves, metrics, and CSVs
 │
 ├── dataverse_files/                    # Curated datasets (all clone-and-run)
