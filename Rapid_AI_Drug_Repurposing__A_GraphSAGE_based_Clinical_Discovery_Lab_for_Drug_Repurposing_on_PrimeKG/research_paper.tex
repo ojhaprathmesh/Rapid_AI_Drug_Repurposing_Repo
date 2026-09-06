@@ -88,7 +88,7 @@ Early graph-based machine learning for link prediction relied on shallow embeddi
 The emergence of Graph Neural Networks (GNNs)~\cite{ref4} addressed these constraints by combining structural adjacency with end-to-end differentiable feature transformations. Spectral Graph Convolutional Networks (GCN)~\cite{ref2} demonstrated strong semi-supervised classification performance, while Decagon~\cite{ref24} pioneered multi-relational graph convolution to predict polypharmacy side effects across compound and target networks. Graph Attention Networks (GAT)~\cite{ref_gat} introduced anisotropic attention mechanisms to dynamically weight neighbor contributions by topological relevance. To resolve the memory bottlenecks associated with full-batch Laplacian convolution on dense graphs, Hamilton \textit{et al.} developed GraphSAGE~\cite{ref1}, which couples localized uniform neighborhood sampling with generalized aggregation functions. GraphSAGE's inductive formulation and explicit feature concatenation render it uniquely suited for scaling across biomedical knowledge graphs while preserving source compound identity.
 
 \subsection{Explainable AI and Language Grounding in Pharmacology}
-Despite the high predictive accuracy of deep learning in drug discovery, practical clinical adoption remains severely constrained by the opacity of black-box neural representations~\cite{ref4}. Post-hoc explainability frameworks, including GNNExplainer~\cite{ref_gnnexplainer} and SubgraphX~\cite{ref_subgraphx}, seek to isolate compact subgraphs that maximize mutual information with predictions. Concurrently, the rise of Large Language Models (LLMs)~\cite{ref_llama} has opened new opportunities for automated biomedical hypothesis generation and literature synthesis. However, standalone LLMs frequently suffer from domain-specific hallucination and lack factual grounding in verified pharmacological repositories. Grounding local, open-weight language models on verified subgraphs extracted from predictive GNNs represents an emerging frontier, combining inductive topological accuracy with transparent, evidence-based clinical rationalization.
+Despite the high predictive accuracy of deep learning in drug discovery, practical clinical adoption remains severely constrained by the opacity of black-box neural representations~\cite{ref4}. Post-hoc explainability frameworks, including GNNExplainer~\cite{ref_gnnexplainer} and SubgraphX~\cite{ref_subgraphx}, seek to isolate compact subgraphs that maximize mutual information with predictions. Concurrently, the rise of Large Language Models (LLMs)~\cite{ref_llama} has opened new opportunities for automated biomedical hypothesis generation and literature synthesis. However, standalone LLMs frequently suffer from domain-specific hallucination and lack factual grounding in verified pharmacological repositories. Coupling local, open-weight language models with verified subgraphs extracted from predictive GNNs bridges this interpretability gap by combining inductive topological link prediction with verifiable, literature-grounded clinical rationalization.
 
 \section{System Overview}
 The proposed framework, Rapid AI, is designed as an end-to-end pipeline for predicting and interpreting drug-disease associations using a combination of graph-based learning and language-based reasoning. The system integrates structured biomedical knowledge with advanced machine learning techniques to enable both accurate prediction and explainability, as illustrated in Fig.~\ref{fig:system_arch}.
@@ -111,7 +111,7 @@ The workflow begins with the ingestion of large-scale biomedical data derived fr
 
 \subsection{Dataset Description and Knowledge Graph Curation}
 
-The dataset utilised in this study is a curated, pharmacologically focused subnetwork extracted from the Precision Medicine Knowledge Graph (PrimeKG)~\cite{ref29}. The raw PrimeKG benchmark integrates multimodal biomedical data from established clinical and molecular repositories (including DrugBank, GNBR, Hetionet, and MONDO), spanning 129,375 entities across 10 distinct biological categories and over 8.1 million relational edges. 
+The dataset utilized in this study is a curated, pharmacologically focused subnetwork extracted from the Precision Medicine Knowledge Graph (PrimeKG)~\cite{ref29}. The raw PrimeKG benchmark integrates multimodal biomedical data from established clinical and molecular repositories (including DrugBank, GNBR, Hetionet, and MONDO), spanning 129,375 entities across 10 distinct biological categories and over 8.1 million relational edges. 
 
 While the full knowledge graph offers comprehensive biomolecular coverage, utilizing the entire 8.1-million-edge graph presents two major limitations for neural link prediction: (1) computational tractability and GPU memory bottlenecks during full-batch neighborhood aggregation, and (2) structural noise and representation oversmoothing induced by broad, high-degree ontology entities (such as anatomical terms, cellular compartments like ``cytosol'', or general biological processes). In Graph Neural Networks, such non-specific super-hubs connect indiscriminately to thousands of genes and diseases, collapsing topological distinction during multi-hop message passing.
 
@@ -123,7 +123,7 @@ To establish an actionable and mechanistically coherent representation for drug 
 \end{enumerate}
 
 \subsection{Graph Topology and Dataset Partitioning}
-The curated biomedical knowledge graph integrates multiple entity and relation types into an interconnected network. In this representation, nodes correspond to biological entities, while edges represent directed and reciprocal interactions. The curated network comprises 10,597 nodes (1,801 drugs, 1,363 diseases, and 7,433 genes/proteins) and 161,632 edges, as visualized in the schema in Fig.~\ref{fig:graph_schema}. This global topology encompasses multi-relational biological context, including drug-protein targets, disease-associated proteins, and drug-disease indications (~129.3k edges in the 80\% training message-passing graph).
+The curated biomedical knowledge graph integrates multiple entity and relation types into an interconnected network. In this representation, nodes correspond to biological entities, while edges represent directed and reciprocal interactions. The curated network comprises 10,597 nodes (1,801 drugs, 1,363 diseases, and 7,433 genes/proteins) and 161,632 edges, as visualized in the schema in Fig.~\ref{fig:graph_schema}. This global topology encompasses multi-relational biological context, including drug-protein targets, disease-associated proteins, and drug-disease indications ($\approx$129,300 edges in the 80\% training message-passing graph).
 
 For the link prediction objective, the framework focuses on canonical drug--disease indication pairs, identifying 9,397 unique positive associations in the dataset. To ensure robust model training and unbiased evaluation, these positive associations were partitioned into three disjoint subsets under an 80/10/10 ratio: 7,518 for training, 939 for validation, and 940 for testing. A balanced 1:1 negative sampling strategy was employed, generating an equal number of non-interacting candidate pairs for each split (15,036 training, 1,878 validation, and 1,880 testing samples, totaling 18,794 evaluated candidate pairs), as illustrated in Fig.~\ref{fig:dataset_split}. The training split was utilized for parameter optimization, the validation split guided checkpoint selection, and the test split was reserved strictly for final performance evaluation.
 
@@ -140,7 +140,7 @@ Each node in the graph is represented using a 131-dimensional feature vector, in
 
 \begin{itemize}
     \item \textbf{Textual Features (128 dimensions):} 
-    These features are derived from descriptive biomedical text, including drug indications, disease descriptions, and molecular functional annotations. The textual data is processed using Term Frequency-Inverse Document Frequency (TF-IDF) with L2 normalization, allowing the model to capture domain-specific terminology and semantic relevance across entities.
+    These features are derived from descriptive biomedical text, including drug indications, disease descriptions, and molecular functional annotations. The textual corpus across all nodes is processed using a Term Frequency-Inverse Document Frequency (TF-IDF) vectorizer constrained to the top 128 most informative terms (\texttt{max\_features=128}) with English stop-word filtration and native $L_2$ vector normalization, capturing salient domain-specific terminology while maintaining a computationally compact representation.
     
     \item \textbf{Chemical/Biological Properties (3 dimensions):} 
     For drug nodes, additional standardized numerical features capture essential physicochemical properties:
@@ -149,6 +149,7 @@ Each node in the graph is represented using a 131-dimensional feature vector, in
         \item \textit{Topological Polar Surface Area (TPSA)}, associated with passive molecular membrane permeability.
         \item \textit{ClogP}, indicating lipophilicity and octanol-water partition characteristics.
     \end{itemize}
+    These continuous drug properties are $z$-score standardized via \texttt{StandardScaler}. For disease and protein nodes, where small-molecule physicochemical descriptors are non-applicable, these three dimensions are initialized as zero-padded vectors ($\langle 0, 0, 0 \rangle$), ensuring uniform 131-dimensional feature tensor alignment across the entire graph while allowing GraphSAGE aggregation to propagate compound-specific attributes across heterogeneous edges.
     
     \item \textbf{Relational Interaction Types:} 
     The network incorporates diverse biological associations forming the topological edges:
@@ -385,22 +386,22 @@ The predictive performance of the proposed GraphSAGE framework was evaluated aga
     \caption{Performance Comparison Across Architectural Paradigms on Held-Out Test Set (1,880 Samples)}
     \label{tab:metrics}
     \resizebox{\columnwidth}{!}{%
-    \begin{tabular}{lcccc}
+    \begin{tabular}{lccccc}
         \toprule
-        \textbf{Model Architecture} & \textbf{AUC-ROC} & \textbf{Accuracy} & \textbf{Precision} & \textbf{F1-Score} \\
+        \textbf{Model Architecture} & \textbf{AUC-ROC} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\
         \midrule
-        Common Neighbors (Topology only) & 82.60\% & 75.32\% & 74.80\% & 74.21\% \\
-        MLP (Features only, No Graph)    & 78.40\% & 72.13\% & 71.50\% & 70.52\% \\
-        GCN (Kipf \& Welling)~\cite{ref2} & 94.12\% & 88.45\% & 87.20\% & 88.10\% \\
-        GAT (Veli\v{c}kovi\'c \textit{et al.})~\cite{ref_gat} & 95.80\% & 90.15\% & 89.60\% & 90.42\% \\
+        Common Neighbors (Topology only) & 82.60\% & 75.32\% & 74.80\% & 73.63\% & 74.21\% \\
+        MLP (Features only, No Graph)    & 78.40\% & 72.13\% & 71.50\% & 69.57\% & 70.52\% \\
+        GCN (Kipf \& Welling)~\cite{ref2} & 94.12\% & 88.45\% & 87.20\% & 89.02\% & 88.10\% \\
+        GAT (Veli\v{c}kovi\'c \textit{et al.})~\cite{ref_gat} & 95.80\% & 90.15\% & 89.60\% & 91.26\% & 90.42\% \\
         \midrule
-        \textbf{GraphSAGE (Proposed)}     & \textbf{97.34\%} & \textbf{91.97\%} & \textbf{90.71\%} & \textbf{92.09\%} \\
+        \textbf{GraphSAGE (Proposed)}     & \textbf{97.34\%} & \textbf{91.97\%} & \textbf{90.71\%} & \textbf{93.51\%} & \textbf{92.09\%} \\
         \bottomrule
     \end{tabular}%
     }
 \end{table}
 
-The comparative results are summarized in Table~\ref{tab:metrics} and illustrated in Fig.~\ref{fig:performance_metrics}. The proposed GraphSAGE model achieves superior discriminative accuracy across all evaluation metrics, attaining an AUC-ROC of 0.9734, an Accuracy of 91.97\%, and an F1-score of 92.09\%.
+The comparative results are summarized in Table~\ref{tab:metrics} and illustrated in Fig.~\ref{fig:performance_metrics}. The proposed GraphSAGE model achieves superior discriminative accuracy across all evaluation metrics, attaining an AUC-ROC of 0.9734, an Accuracy of 91.97\%, a Precision of 90.71\%, a Recall of 93.51\%, and an F1-score of 92.09\%.
 
 \subsubsection{Ablation of Graph Topology vs. Node Features}
 Comparing the non-graph MLP baseline against the graph-based architectures highlights the critical importance of relational message passing. When relying solely on the 131-dimensional feature vectors (TF-IDF semantic descriptors and physicochemical properties), the MLP achieves an AUC of only 78.40\%. Incorporating graph topology via GraphSAGE yields an absolute gain of $+18.94\%$ in AUC, demonstrating that isolated molecular descriptors cannot substitute for the multi-hop topological pathways linking drugs to disease phenotypes through target proteins. Conversely, the topological Common Neighbors heuristic achieves 82.60\% AUC, demonstrating that graph structure alone is insufficient without chemical and semantic node embeddings to disambiguate dense network clusters.
@@ -426,7 +427,7 @@ The proposed framework achieves an AUC-ROC score of 0.9734 and an Average Precis
     \label{fig:roc_curve}
 \end{figure}
 
-The Receiver Operating Characteristic (ROC) curve~\cite{ref10} illustrates the trade-off between the true positive rate and false positive rate across continuous classification decision boundaries. As depicted in Fig.~\ref{fig:roc_curve}, the ROC trajectory ascends steeply toward the top-left coordinate, confirming robust discriminative capability. The high AUC score of 0.9734, coupled with a 0.9652 Average Precision score, demonstrates that inductive neighborhood embeddings maintain strong class separation without degradation across imbalanced operating regions.
+The Receiver Operating Characteristic (ROC) curve~\cite{ref10} illustrates the trade-off between the true positive rate and false positive rate across continuous classification decision boundaries. As depicted in Fig.~\ref{fig:roc_curve}, the ROC trajectory ascends steeply toward the top-left coordinate, confirming robust discriminative capability. The high AUC score of 0.9734, coupled with a 0.9652 Average Precision score, demonstrates that inductive neighborhood embeddings maintain strong class separation and discriminative precision across continuous decision boundaries.
 
 To evaluate whether the model's classification performance is fragile or sensitive to the choice of the decision threshold $\tau$, we conducted an empirical sensitivity analysis by varying $\tau \in [0.3, 0.7]$ across the 1,880 held-out test predictions. As detailed in Table~\ref{tab:threshold_sensitivity}, the framework maintains exceptional operational stability: the F1-score stably exceeds $90.9\%$ and overall classification accuracy remains above $91.2\%$ across the entire spectrum. Rather than requiring rigid threshold calibration, this stability allows translational pharmacologists to tune $\tau$ dynamically across three distinct clinical operating regimes:
 
@@ -464,7 +465,7 @@ To evaluate whether the model's classification performance is fragile or sensiti
     \label{fig:training_loss}
 \end{figure}
 
-The optimization trajectory demonstrates stable gradient descent, with the training loss steadily decreasing from 0.6993 at epoch 1 to 0.0373 at epoch 100 (Fig.~\ref{fig:training_loss}). Validation loss reached an optimal minimum of 0.2282 at epoch 62. Beyond epoch 62, a gradual increase in validation loss (reaching 0.2746 at epoch 100) indicated the onset of mild empirical overfitting. To prevent generalization degradation, model weights corresponding to the optimal validation checkpoint at epoch 62 were restored for final performance evaluation on the held-out test set.
+The optimization trajectory demonstrates stable gradient descent, with the training loss steadily decreasing from 0.6993 at epoch 1 to 0.0373 at epoch 100 (Fig.~\ref{fig:training_loss}). Validation loss reached an optimal minimum of 0.2282 at epoch 62. Beyond epoch 62, a gradual divergence between training loss (decreasing to 0.0373) and validation loss (increasing from 0.2282 to 0.2746 at epoch 100) indicated the onset of overfitting beyond the optimal checkpoint. To prevent generalization degradation, model weights corresponding to the optimal validation checkpoint at epoch 62 were restored for final performance evaluation on the held-out test set.
 
 \subsection{Quantitative Error Analysis and Confusion Matrix Decomposition}
 To rigorously quantify classification characteristics on the held-out test set, we decomposed the model's predictions into an empirical confusion matrix across the 1,880 test pairs (940 true indications and 940 negative pairs), as detailed in Table~\ref{tab:confusion_matrix} and illustrated in Fig.~\ref{fig:confusion_matrix}.
@@ -502,12 +503,12 @@ A pharmacological investigation into the misclassified cases reveals key biologi
 \end{itemize}
 
 \subsection{Candidate Prioritization and Clinical Validation}
-To evaluate the translational utility of the trained GraphSAGE model beyond retrospective benchmark splits, we conducted candidate prioritization across unannotated drug--disease pairs. Latent representations were generated across all biological entities, and the inner-product decoder scored candidate therapeutic interactions. The top-ranked repositioning hypotheses were qualitatively evaluated against biomedical literature and pharmacological mechanisms, as summarized in Table~\ref{tab:case_studies}. In the underlying knowledge graph ontology, all four prioritized bone-healing candidates converge computationally on the standardized disease entity \textit{tibia fracture} (MONDO:00010568, an unannotated pair during training), while Table~\ref{tab:case_studies} reports the specific clinical phenotypes and trial endpoints evaluated in cited literature.
+To evaluate the translational utility of the trained GraphSAGE model beyond retrospective benchmark splits, we conducted candidate prioritization across unannotated drug--disease pairs. Crucially, in the underlying PrimeKG ontology, none of the prioritized bone-healing candidates possess existing indication edges to the standardized disease entity \textit{tibia fracture} (MONDO:00010568); they represent genuinely novel, unannotated associations completely absent from the full knowledge graph rather than merely held-out edges from evaluation splits. Latent representations were generated across all biological entities, and the inner-product decoder scored candidate therapeutic interactions. The top-ranked repositioning hypotheses were qualitatively evaluated against biomedical literature and pharmacological mechanisms, as summarized in Table~\ref{tab:case_studies}, with Table~\ref{tab:case_studies} reporting the specific clinical phenotypes and trial endpoints evaluated in cited literature.
 
 \begin{table*}[!t]
     \centering
     \renewcommand{\arraystretch}{1.25}
-    \caption{Representative Novel Drug Repurposing Candidates Prioritized by Rapid AI}
+    \caption{Representative Novel Drug Repurposing Candidates Prioritized by Rapid AI (Pairs Wholly Absent from PrimeKG Indication Edges)}
     \label{tab:case_studies}
     \resizebox{\textwidth}{!}{%
     \begin{tabular}{lp{3.5cm}p{3.2cm}p{5.4cm}lc}
@@ -548,7 +549,7 @@ In translational clinical workflows, predictive models must deliver rapid infere
         \toprule
         \textbf{Architecture} & \textbf{Time Complexity} & \textbf{Checkpoint Size} & \textbf{Inference Latency} & \textbf{Inductive Capacity} \\
         \midrule
-        Matrix Factorization & $\mathcal{O}(|\mathcal{V}|^3)$ & N/A (Lookup Table) & $0.12\,\mathrm{ms}$ & Transductive Only \\
+        Matrix Factorization (Exact SVD) & $\mathcal{O}(|\mathcal{V}|^3)$ & N/A (Lookup Table) & $0.12\,\mathrm{ms}$ & Transductive Only \\
         Spectral GCN~\cite{ref2} & $\mathcal{O}(|\mathcal{E}| \cdot d)$ & $38.4\,\mathrm{KB}$ & $4.20\,\mathrm{ms}$ & Weak (Fixed Graph) \\
         GAT~\cite{ref_gat} & $\mathcal{O}(|\mathcal{V}| d^2 + |\mathcal{E}| d)$ & $142.6\,\mathrm{KB}$ & $8.75\,\mathrm{ms}$ & Transductive \\
         \midrule
@@ -559,13 +560,15 @@ In translational clinical workflows, predictive models must deliver rapid infere
 \end{table}
 
 \subsubsection{Asymptotic Scalability}
-Traditional matrix decomposition and spectral methods scale polynomially with global node count $|\mathcal{V}|$ or total edge density $|\mathcal{E}|$, causing severe memory bottlenecks when scaling to comprehensive multi-omics knowledge graphs. In contrast, GraphSAGE constrains neighborhood aggregation to a bounded sample budget $S_l$ per layer $l \in \{1, 2\}$, resulting in a per-batch time complexity of $\mathcal{O}(B \cdot \prod_{l=1}^L S_l \cdot d)$, where $B$ is the batch size and $d$ is feature dimensionality. Once trained, inductive weight parameters $\mathbf{W}^{(1)}$ and $\mathbf{W}^{(2)}$ generalize to unseen entities without retraining or full-graph spectral inversion.
+Traditional exact matrix decomposition methods (such as full SVD with $\mathcal{O}(|\mathcal{V}|^3)$ or iterative low-rank ALS with $\mathcal{O}(r |\mathcal{E}|)$ where $r$ is embedding rank) and spectral methods scale with global entity counts, causing substantial memory bottlenecks when scaling to comprehensive multi-omics knowledge graphs. In contrast, GraphSAGE constrains neighborhood aggregation to a bounded sample budget $S_l$ per layer $l \in \{1, 2\}$, resulting in a per-batch time complexity of $\mathcal{O}(B \cdot \prod_{l=1}^L S_l \cdot d)$, where $B$ is the batch size and $d$ is feature dimensionality. Once trained, inductive weight parameters $\mathbf{W}^{(1)}$ and $\mathbf{W}^{(2)}$ generalize to unseen entities without retraining or full-graph spectral inversion.
 
 \subsubsection{Model Compactness and Throughput}
-The finalized GraphSAGE model parameterization occupies only $85.2\,\mathrm{KB}$ on disk ($20,960$ total float32 weights across its $131 \to 64 \to 32$ hierarchical layers). When deployed on a standard 8-core CPU workstation without hardware acceleration, the inner-product decoder scores candidate drug--disease associations at an empirical latency of $2.50\,\mu\mathrm{s}$ per pair, yielding a batch throughput exceeding $4.8 \times 10^6$ link evaluations per second for precomputed embeddings. When end-to-end 2-hop neighborhood aggregation is computed dynamically from raw feature vectors, inference completes in $<2.5\,\mathrm{ms}$ per candidate pair with total memory consumption under $120\,\mathrm{MB}$ RAM.
+The finalized GraphSAGE model parameterization occupies only $85.2\,\mathrm{KB}$ on disk ($20,960$ total float32 weights across its $131 \to 64 \to 32$ hierarchical layers). Inference latency operates under two distinct deployment regimes on a commodity workstation CPU (evaluated on an Apple Silicon 6-core processor @ 3.4\,GHz with 8\,GB unified RAM, single-threaded execution) without GPU acceleration:
+(1)~\textit{Cached Embedding Link Scoring}: When node embeddings are precomputed and resident in memory, the inner-product decoder scores candidate drug--disease pairs at an empirical latency of $2.50\,\mu\mathrm{s}$ per pair, yielding a batch throughput exceeding $4.8 \times 10^6$ link evaluations per second;
+(2)~\textit{Dynamic Inductive Inference}: When 2-hop neighborhood aggregation and multimodal feature transformation are computed dynamically from raw node feature vectors for novel or unindexed entities, full end-to-end inference completes in $<2.50\,\mathrm{ms}$ per candidate pair with total memory consumption under $120\,\mathrm{MB}$ RAM.
 
 \subsubsection{On-Premise Clinical Governance and Privacy}
-Hospital deployment mandates strict compliance with patient confidentiality frameworks (e.g., HIPAA and GDPR). Because Rapid AI operates entirely in-memory on lightweight local compute, and couples to an on-premise Ollama runtime hosting quantized Llama 3.2 (3B), clinical researchers can evaluate proprietary experimental compounds and sensitive patient disease indications behind institutional firewalls with zero external cloud transmission.
+Hospital deployment mandates strict compliance with patient confidentiality frameworks (e.g., HIPAA and GDPR). Because Rapid AI operates entirely in-memory on lightweight local compute, and couples to an on-premise Ollama runtime hosting quantized Llama 3.2 (3B), clinical researchers can evaluate proprietary experimental compounds and sensitive patient disease indications behind institutional firewalls with zero transmission of proprietary candidate structures or patient queries to commercial third-party LLM cloud providers (with optional literature validation restricted to public biological identifiers via PubMed and ClinicalTrials.gov APIs).
 
 \section{Limitations and Future Scope}
 

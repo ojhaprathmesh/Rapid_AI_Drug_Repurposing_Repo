@@ -24,13 +24,13 @@
 
 Evaluated against classical heuristics and neural architectures on the held-out PrimeKG benchmark (1,880 test pairs):
 
-| Model Architecture | AUC-ROC | Accuracy | Precision | F1-Score | Paradigm |
-|---|:---:|:---:|:---:|:---:|:---:|
-| **Common Neighbors** | 82.60% | 75.32% | 74.80% | 74.21% | Pure Graph Heuristic |
-| **Feature-Only MLP** | 78.40% | 72.13% | 71.50% | 70.52% | Non-Graph Baseline |
-| **GCN (Kipf & Welling)** | 94.12% | 88.45% | 87.20% | 88.10% | Spectral GNN |
-| **GAT (Veličković et al.)** | 95.80% | 90.15% | 89.60% | 90.42% | Attention GNN |
-| **GraphSAGE (Proposed)** | **97.34%** | **91.97%** | **90.71%** | **92.09%** | **Inductive Representation** |
+| Model Architecture | AUC-ROC | Accuracy | Precision | Recall | F1-Score | Paradigm |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Common Neighbors** | 82.60% | 75.32% | 74.80% | 73.63% | 74.21% | Pure Graph Heuristic |
+| **Feature-Only MLP** | 78.40% | 72.13% | 71.50% | 69.57% | 70.52% | Non-Graph Baseline |
+| **GCN (Kipf & Welling)** | 94.12% | 88.45% | 87.20% | 89.02% | 88.10% | Spectral GNN |
+| **GAT (Veličković et al.)** | 95.80% | 90.15% | 89.60% | 91.26% | 90.42% | Attention GNN |
+| **GraphSAGE (Proposed)** | **97.34%** | **91.97%** | **90.71%** | **93.51%** | **92.09%** | **Inductive Representation** |
 
 ---
 
