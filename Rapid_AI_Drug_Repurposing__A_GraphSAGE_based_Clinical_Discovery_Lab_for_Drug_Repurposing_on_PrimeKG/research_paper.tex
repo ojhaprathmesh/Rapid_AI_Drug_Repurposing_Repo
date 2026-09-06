@@ -47,15 +47,7 @@
 \maketitle
 
 \begin{abstract}
-Drug discovery is traditionally a time-intensive and resource-intensive process with high failure rates. Drug repurposing, which identifies new therapeutic uses for existing drugs, offers a faster and more cost-effective alternative. This paper presents Rapid AI Drug Repurposing, an end-to-end framework that leverages Graph Neural Networks, specifically GraphSAGE, to predict novel drug-disease associations using the Precision Medicine Knowledge Graph (PrimeKG).
-
-The proposed framework models biomedical entities such as drugs, diseases, and proteins as nodes in a heterogeneous knowledge graph, while their interactions are represented as edges. GraphSAGE is employed to learn inductive node representations by aggregating information from local neighborhoods, enabling scalable representation learning on large biomedical graphs.
-
-Experimental evaluation demonstrates strong predictive performance, achieving an Area Under the Receiver Operating Characteristic Curve (AUC) score of 0.9734. Additional metrics, including accuracy, precision, recall, and F1-score, further validate the effectiveness of the proposed framework for link prediction tasks.
-
-To improve interpretability, the framework additionally incorporates a Large Language Model (LLM)-assisted rationalization layer that generates human-readable biomedical explanations for predicted drug-disease associations. The generated rationales are inferential and should not be treated as clinically validated evidence.
-
-Overall, this work demonstrates the potential of graph-based deep learning approaches for scalable and data-driven drug repurposing using heterogeneous biomedical knowledge graphs.
+Drug repurposing offers an accelerated, cost-effective alternative to de novo therapeutics, yet translating graph-based link predictions into clinical pipelines requires both scalable inductive architectures and interpretable biological mechanisms. In this paper, we present Rapid AI Drug Repurposing, an end-to-end computational framework that leverages GraphSAGE over a curated multimodal subnetwork of the Precision Medicine Knowledge Graph (PrimeKG). By modeling drug--protein--disease interactions with multimodal textual and physicochemical descriptors, the inductive framework achieves superior discriminative performance on a held-out benchmark of 1,880 pairs, attaining an AUC-ROC of 0.9734, an Accuracy of 91.97\%, a Recall of 93.51\%, and an F1-score of 92.09\%. To bridge the clinical interpretability gap, Rapid AI couples high-throughput CPU inference ($2.50\,\mu\mathrm{s}$ cached scoring) with an on-premise Large Language Model that synthesizes literature-grounded mechanistic rationales from verified 2-hop subgraphs, offering a scalable, privacy-compliant platform for translational drug discovery.
 \end{abstract}
 
 \begin{IEEEkeywords}
