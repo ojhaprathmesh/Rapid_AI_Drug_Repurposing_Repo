@@ -64,7 +64,7 @@ Drug Repurposing, Knowledge Graphs, Graph Neural Networks, GraphSAGE, Link Predi
 
 \section{Introduction}
 
-The pharmaceutical industry is currently facing an ``Eroom's Law'' phenomenon, where the cost of developing a new drug doubles every nine years despite technological progress. Drug repurposing offers a strategic bypass by leveraging the known safety profiles of existing compounds~\cite{ref6,ref7}.
+The pharmaceutical industry is currently facing an ``Eroom's Law'' phenomenon, where R\&D productivity halves approximately every nine years despite rapid technological progress~\cite{ref_eroom}. Drug repurposing offers a strategic bypass by leveraging the known safety profiles of existing compounds~\cite{ref6,ref7}.
 
 Drug discovery is widely recognized as a complex, time-intensive, and costly process, often taking more than a decade to bring a new drug to market. Despite continuous advancements in biomedical science, the probability of failure during clinical trials remains high, leading to significant financial and resource losses~\cite{ref6}. In response to these challenges, drug repurposing has emerged as an effective alternative approach. Instead of developing new drugs from scratch, this approach focuses on identifying new therapeutic uses for approved or investigational drugs, thereby substantially reducing both development timelines and safety risks~\cite{ref7}.
 
@@ -77,10 +77,10 @@ In this work, we present Rapid AI, an integrated framework that combines the pre
 \section{Related Work}
 
 \subsection{Computational Drug Repurposing and Network Medicine}
-Traditional computational drug repurposing primarily relied on chemical structure similarity matching, high-throughput phenotypic screening, and transcriptional expression profiling (such as the Connectivity Map)~\cite{ref6,ref7}. While insightful, ligand-centric and differential expression approaches often fail to account for the multi-target, system-level mechanisms that underlie complex multifactorial diseases. Network medicine emerged as an alternative paradigm, conceptualizing human pathologies not as localized molecular lesions, but as emergent perturbations propagated through the human cellular interactome~\cite{ref3}. Early network-based methods utilized Random Walk with Restart (RWR), diffusion state metrics, and shortest-path proximity to prioritize molecules based on topological proximity to disease-associated gene modules. However, these classical topological heuristics operate transductively, struggle with multi-relational edge semantics, and cannot integrate continuous physicochemical molecular properties with network connectivity.
+Traditional computational drug repurposing primarily relied on chemical structure similarity matching, high-throughput phenotypic screening, and transcriptional expression profiling (such as the Connectivity Map~\cite{ref_cmap})~\cite{ref6,ref7}. While insightful, ligand-centric and differential expression approaches often fail to account for the multi-target, system-level mechanisms that underlie complex multifactorial diseases. Network medicine emerged as an alternative paradigm, conceptualizing human pathologies not as localized molecular lesions, but as emergent perturbations propagated through the human cellular interactome~\cite{ref3}. Early network-based methods utilized Random Walk with Restart (RWR)~\cite{ref_rwr}, diffusion state metrics, and shortest-path proximity to prioritize molecules based on topological proximity to disease-associated gene modules. However, these classical topological heuristics operate transductively, struggle with multi-relational edge semantics, and cannot integrate continuous physicochemical molecular properties with network connectivity.
 
 \subsection{Biomedical Knowledge Graphs in Precision Medicine}
-The integration of disparate biomedical databases into unified Knowledge Graphs (KGs) has significantly advanced translational bioinformatics. Foundational benchmarks such as Hetionet~\cite{ref18} integrated compound, gene, disease, and pharmacological side-effect ontologies to systematically evaluate disease indication mechanisms. More recently, multi-modal precision medicine knowledge graphs have synthesized clinical registries, experimental bioassays, and high-throughput multi-omics repositories into dense networks. Prominent resources include the Drug Repurposing Knowledge Graph (DRKG) and the Precision Medicine Knowledge Graph (PrimeKG)~\cite{ref29}. PrimeKG, in particular, integrates 20 primary biomedical databases across 129,375 entities and over 8.1 million relational interactions, capturing curated indications, contraindications, and molecular mechanisms across diverse clinical conditions. Nonetheless, navigating PrimeKG's vast multi-relational topology presents substantial computational challenges, demanding principled subgraph curation protocols and scalable message-passing architectures.
+The integration of disparate biomedical databases into unified Knowledge Graphs (KGs) has significantly advanced translational bioinformatics. Foundational benchmarks such as Hetionet~\cite{ref_hetio} integrated compound, gene, disease, and pharmacological side-effect ontologies to systematically evaluate disease indication mechanisms. More recently, multi-modal precision medicine knowledge graphs have synthesized clinical registries, experimental bioassays, and high-throughput multi-omics repositories into dense networks. Prominent resources include the Drug Repurposing Knowledge Graph (DRKG)~\cite{ref_drkg} and the Precision Medicine Knowledge Graph (PrimeKG)~\cite{ref29}. PrimeKG, in particular, integrates 20 primary biomedical databases across 129,375 entities and over 8.1 million relational interactions, capturing curated indications, contraindications, and molecular mechanisms across diverse clinical conditions. Nonetheless, navigating PrimeKG's vast multi-relational topology presents substantial computational challenges, demanding principled subgraph curation protocols and scalable message-passing architectures.
 
 \subsection{Graph Representation Learning for Interaction Prediction}
 Early graph-based machine learning for link prediction relied on shallow embedding techniques, including matrix factorization, translational distance formulations (TransE, RotatE), and random-walk-based skip-gram models (Node2Vec)~\cite{ref18}. While computationally lightweight, these methods are intrinsically transductive; they cannot infer representations for novel, unobserved compounds without re-optimizing the global objective, nor can they effectively parameterize high-dimensional node feature vectors.
@@ -88,7 +88,7 @@ Early graph-based machine learning for link prediction relied on shallow embeddi
 The emergence of Graph Neural Networks (GNNs)~\cite{ref4} addressed these constraints by combining structural adjacency with end-to-end differentiable feature transformations. Spectral Graph Convolutional Networks (GCN)~\cite{ref2} demonstrated strong semi-supervised classification performance, while Decagon~\cite{ref24} pioneered multi-relational graph convolution to predict polypharmacy side effects across compound and target networks. Graph Attention Networks (GAT)~\cite{ref_gat} introduced anisotropic attention mechanisms to dynamically weight neighbor contributions by topological relevance. To resolve the memory bottlenecks associated with full-batch Laplacian convolution on dense graphs, Hamilton \textit{et al.} developed GraphSAGE~\cite{ref1}, which couples localized uniform neighborhood sampling with generalized aggregation functions. GraphSAGE's inductive formulation and explicit feature concatenation render it uniquely suited for scaling across biomedical knowledge graphs while preserving source compound identity.
 
 \subsection{Explainable AI and Language Grounding in Pharmacology}
-Despite the high predictive accuracy of deep learning in drug discovery, practical clinical adoption remains severely constrained by the opacity of black-box neural representations~\cite{ref4}. Post-hoc explainability frameworks, including GNNExplainer and SubgraphX, seek to isolate compact subgraphs that maximize mutual information with predictions. Concurrently, the rise of Large Language Models (LLMs)~\cite{ref_llama} has opened new opportunities for automated biomedical hypothesis generation and literature synthesis. However, standalone LLMs frequently suffer from domain-specific hallucination and lack factual grounding in verified pharmacological repositories. Grounding local, open-weight language models on verified subgraphs extracted from predictive GNNs represents an emerging frontier, combining inductive topological accuracy with transparent, evidence-based clinical rationalization.
+Despite the high predictive accuracy of deep learning in drug discovery, practical clinical adoption remains severely constrained by the opacity of black-box neural representations~\cite{ref4}. Post-hoc explainability frameworks, including GNNExplainer~\cite{ref_gnnexplainer} and SubgraphX~\cite{ref_subgraphx}, seek to isolate compact subgraphs that maximize mutual information with predictions. Concurrently, the rise of Large Language Models (LLMs)~\cite{ref_llama} has opened new opportunities for automated biomedical hypothesis generation and literature synthesis. However, standalone LLMs frequently suffer from domain-specific hallucination and lack factual grounding in verified pharmacological repositories. Grounding local, open-weight language models on verified subgraphs extracted from predictive GNNs represents an emerging frontier, combining inductive topological accuracy with transparent, evidence-based clinical rationalization.
 
 \section{System Overview}
 The proposed framework, Rapid AI, is designed as an end-to-end pipeline for predicting and interpreting drug-disease associations using a combination of graph-based learning and language-based reasoning. The system integrates structured biomedical knowledge with advanced machine learning techniques to enable both accurate prediction and explainability, as illustrated in Fig.~\ref{fig:system_arch}.
@@ -517,7 +517,7 @@ To evaluate the translational utility of the trained GraphSAGE model beyond retr
         Somatotropin & Growth hormone deficiency & Tibia fracture repair & GHR/IGF-1 stimulation of osteoblast proliferation & Clinical trial~\cite{ref_gh} & 0.999 \\
         Menatetrenone & Secondary osteoporosis & Traumatic bone fracture & Osteocalcin $\gamma$-carboxylation \& mineral matrix binding & Randomized trial~\cite{ref_vk2} & 0.998 \\
         Anakinra & Rheumatoid arthritis & Fracture non-union repair & IL-1R1 blockade of hyper-inflammatory osteoclastogenesis & Mechanistic review~\cite{ref_il1} & 0.996 \\
-        Mecasermin & Primary IGF-1 deficiency & Tibial bone union & Direct IGF-1R tyrosine kinase activation \& chondrogenesis & Preclinical trial~\cite{ref_igf} & 0.999 \\
+        Mecasermin & Primary IGF-1 deficiency & Tibial bone union & Direct IGF-1R tyrosine kinase activation \& chondrogenesis & Mechanistic animal study~\cite{ref_igf} & 0.999 \\
         \bottomrule
     \end{tabular}%
     }
@@ -585,7 +585,7 @@ The findings highlight the efficacy of graph-based representation learning in co
 While challenges regarding knowledge graph sparsity and qualitative LLM grounding remain, Rapid AI demonstrates that combining Graph Neural Networks with biomedical knowledge graphs offers a scalable, data-driven approach to accelerate therapeutic discovery.
 
 \section*{Data and Code Availability}
-To guarantee complete scientific reproducibility and facilitate independent replication, all curated PrimeKG benchmark partitions, preprocessed PyTorch Geometric tensors, pre-trained GraphSAGE checkpoints, clinical discovery web tools, and an automated verification suite reproducing all reported empirical tables, confusion matrices, and split integrity guarantees are openly accessible in the project repository: \url{https://github.com/ojhaprathmesh/Rapid_AI_Drug_Repurposing_Repo}.
+To guarantee complete scientific reproducibility and facilitate independent replication, all curated PrimeKG benchmark partitions, preprocessed PyTorch Geometric~\cite{ref_pyg} tensors, pre-trained GraphSAGE checkpoints, clinical discovery web tools, and an automated verification suite reproducing all reported empirical tables, confusion matrices, and split integrity guarantees are openly accessible in the project repository: \url{https://github.com/ojhaprathmesh/Rapid_AI_Drug_Repurposing_Repo}.
 
 \begin{thebibliography}{99}
 
@@ -595,7 +595,7 @@ To guarantee complete scientific reproducibility and facilitate independent repl
 \textit{Advances in Neural Information Processing Systems (NeurIPS)}, 2017.
 
 \bibitem{ref2} T. Kipf and M. Welling, 
-``Semi-supervised classification with graph convolutional networks,'' 
+``Semi-supervised classification with graph convolutional networks,''
 \textit{International Conference on Learning Representations (ICLR)}, 2017.
 
 \bibitem{ref3} M. Nickel, K. Murphy, V. Tresp, and E. Gabrilovich, 
@@ -631,8 +631,13 @@ To guarantee complete scientific reproducibility and facilitate independent repl
 \textit{IEEE Transactions on Knowledge and Data Engineering}, 2018.
 
 \bibitem{ref24} M. Zitnik, M. Agrawal, and J. Leskovec, 
-``Modeling polypharmacy side effects with graph convolutional networks,'' 
+``Modeling polypharmacy side effects with graph convolutional networks,''
 \textit{Bioinformatics}, 2018.
+
+
+\bibitem{ref_hetio} D. S. Himmelstein \textit{et al.}, 
+``Systematic integration of biomedical knowledge prioritizes drugs for repurposing,''
+\textit{eLife}, vol. 6, p. e26726, 2017.
 
 \bibitem{ref29} P. Chandak, K. Huang, and M. Zitnik, 
 ``Building a knowledge graph to enable precision medicine,'' 
@@ -655,12 +660,41 @@ To guarantee complete scientific reproducibility and facilitate independent repl
 \textit{The Journal of Clinical Investigation}, vol. 110, no. 6, pp. 771--781, 2002. [PMID: 12235108].
 
 \bibitem{ref_gat} P. Veli{\v{c}}kovi{\'c}, G. Cucurull, A. Casanova, A. Romero, P. Li{\`o}, and Y. Bengio, 
-``Graph attention networks,'' 
+``Graph attention networks,''
 \textit{International Conference on Learning Representations (ICLR)}, 2018.
 
-\bibitem{ref_llama} H. Touvron \textit{et al.}, 
-``Llama 2: Open foundation and fine-tuned chat models,'' 
-\textit{arXiv preprint arXiv:2307.09288}, 2023.
+\bibitem{ref_llama} A. Dubey \textit{et al.}, 
+``The Llama 3 herd of models,''
+\textit{arXiv preprint arXiv:2407.21783}, 2024.
+
+
+\bibitem{ref_eroom} J. W. Scannell, A. Blanckley, H. Boldon, and B. Warrington, 
+``Diagnosing the decline in pharmaceutical R\&D efficiency,''
+\textit{Nature Reviews Drug Discovery}, vol. 11, no. 3, pp. 191--200, 2012.
+
+\bibitem{ref_cmap} J. Lamb \textit{et al.}, 
+``The Connectivity Map: Using gene-expression signatures to connect small molecules, genes, and disease,''
+\textit{Science}, vol. 313, no. 5795, pp. 1929--1935, 2006.
+
+\bibitem{ref_rwr} S. K{\"o}hler, S. Bauer, D. Horn, and P. N. Robinson, 
+``Walking the interactome for candidate priorization in exome sequencing and complex disease genetics,''
+\textit{The American Journal of Human Genetics}, vol. 82, no. 4, pp. 949--958, 2008.
+
+\bibitem{ref_drkg} V. N. Ioannidis \textit{et al.}, 
+``DRKG - Drug Repurposing Knowledge Graph for COVID-19,''
+\textit{arXiv preprint arXiv:2010.09600}, 2020.
+
+\bibitem{ref_gnnexplainer} Z. Ying, D. Bourgeois, J. You, M. Zitnik, and J. Leskovec, 
+``GNNExplainer: Generating explanations for graph neural networks,''
+\textit{Advances in Neural Information Processing Systems (NeurIPS)}, vol. 32, 2019.
+
+\bibitem{ref_subgraphx} H. Yuan, H. Yu, J. Wang, K. Li, and S. Ji, 
+``On explainability of graph neural networks via subgraph explorations,''
+\textit{International Conference on Machine Learning (ICML)}, pp. 12241--12252, 2021.
+
+\bibitem{ref_pyg} M. Fey and J. E. Lenssen, 
+``Fast graph representation learning with PyTorch Geometric,''
+\textit{ICLR Workshop on Representation Learning on Graphs and Manifolds}, 2019.
 
 \end{thebibliography}
 
