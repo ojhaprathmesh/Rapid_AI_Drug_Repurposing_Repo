@@ -3,7 +3,7 @@ config:
   layout: dagre
   theme: redux-color
   themeVariables:
-    fontSize: "15px"
+    fontSize: "16px"
     primaryColor: "#dbeafe"
     primaryBorderColor: "#1d4ed8"
     primaryTextColor: "#000000ff"
@@ -14,25 +14,25 @@ config:
 ---
 erDiagram
 	direction LR
-	DRUG {
-		string node_name  ""  
-		float mol_weight  ""  
-		float tpsa  ""  
-		float clogp  ""  
-		vector embedding_32d  ""  
+	"**DRUG**" {
+		`**string**` `**node_name**`  ""  
+		`**float**` `**mol_weight**`  ""  
+		`**float**` `**tpsa**`  ""  
+		`**float**` `**clogp**`  ""  
+		`**vector**` `**embedding_32d**`  ""  
 	}
 
-	DISEASE {
-		string mondo_id  ""  
-		string description  ""  
-		vector embedding_32d  ""  
+	"**DISEASE**" {
+		`**string**` `**mondo_id**`  ""  
+		`**string**` `**description**`  ""  
+		`**vector**` `**embedding_32d**`  ""  
 	}
 
-	PROTEIN {
+	"**PROTEIN**" {
 
 	}
 
-	DRUG||--o{DISEASE:"treats"
-	DRUG||--o{PROTEIN:"interacts_with"
-	DISEASE||--o{PROTEIN:"associated_with"
-	PROTEIN||--o{DRUG:"binds_to"
+	"**DRUG**"||--o{"**DISEASE**":"**treats**"
+	"**DRUG**"||--o{"**PROTEIN**":"**interacts_with**"
+	"**DISEASE**"||--o{"**PROTEIN**":"**associated_with**"
+	"**PROTEIN**"||--o{"**DRUG**":"**binds_to**"

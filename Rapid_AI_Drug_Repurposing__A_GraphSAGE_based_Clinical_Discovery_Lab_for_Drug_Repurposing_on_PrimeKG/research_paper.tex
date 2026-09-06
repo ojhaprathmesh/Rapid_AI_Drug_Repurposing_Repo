@@ -85,19 +85,18 @@ Despite the high predictive accuracy of deep learning in drug discovery, practic
 \section{System Overview}
 The proposed framework, Rapid AI, is designed as an end-to-end pipeline for predicting and interpreting drug-disease associations using a combination of graph-based learning and language-based reasoning. The system integrates structured biomedical knowledge with advanced machine learning techniques to enable both accurate prediction and explainability, as illustrated in Fig.~\ref{fig:system_arch}.
 
-\begin{figure*}[!t]
-
+\begin{figure}[!t]
     \centering
-    \includegraphics[width=0.95\textwidth]{images/system_arch.png}
+    \includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{images/system_arch.png}
     \caption{End-to-end framework architecture for Rapid AI Drug Repurposing, illustrating the pipeline from data ingestion to the interactive discovery interface.}
     \label{fig:system_arch}
-\end{figure*}
+\end{figure}
 
 The workflow begins with the ingestion of large-scale biomedical data derived from a knowledge graph. This data is processed and transformed into a graph structure, where entities such as drugs, diseases, and genes are represented as nodes, and their relationships are modeled as edges. The sequence of interactions within the system is detailed in Fig.~\ref{fig:interaction_workflow}. A Graph Neural Network, specifically GraphSAGE, is then employed to learn meaningful representations of these entities by aggregating information from their local neighborhoods. These learned representations are subsequently used for link prediction, enabling the identification of potential drug-disease associations.
 
 \begin{figure*}[!t]
     \centering
-    \includegraphics[width=0.95\textwidth]{images/interaction_workflow.png}
+    \includegraphics[width=\linewidth]{images/interaction_workflow.png}
     \caption{Sequence diagram of the interaction workflow between the researcher, the Streamlit dashboard, and the discovery engine.}
     \label{fig:interaction_workflow}
 \end{figure*}
@@ -120,16 +119,9 @@ The curated biomedical knowledge graph integrates multiple entity and relation t
 
 For the link prediction objective, the framework focuses on canonical drug--disease indication pairs, identifying 9,397 unique positive associations in the dataset. To ensure robust model training and unbiased evaluation, these positive associations were partitioned into three disjoint subsets under an 80/10/10 ratio: 7,518 for training, 939 for validation, and 940 for testing. A balanced 1:1 negative sampling strategy was employed, generating an equal number of non-interacting candidate pairs for each split (15,036 training, 1,878 validation, and 1,880 testing samples, totaling 18,794 evaluated candidate pairs), as illustrated in Fig.~\ref{fig:dataset_split}. The training split was utilized for parameter optimization, the validation split guided checkpoint selection, and the test split was reserved strictly for final performance evaluation.
 
-\begin{figure*}[!t]
+\begin{figure}[!b]
     \centering
-    \includegraphics[width=0.88\textwidth]{images/dataset_split_distribution.png}
-    \caption{Distribution of drug--disease indication pairs across the 80/10/10 split.}
-    \label{fig:dataset_split}
-\end{figure*}
-
-\begin{figure}[!t]
-    \centering
-    \includegraphics[width=\linewidth]{images/graph_entities_schema.png}
+    \includegraphics[width=\linewidth,keepaspectratio]{images/graph_entities_schema.png}
     \caption{Schema of the heterogeneous knowledge graph illustrating the biological entities (Drugs, Diseases, Proteins) and their interaction types.}
     \label{fig:graph_schema}
 \end{figure}
@@ -170,6 +162,13 @@ To ensure data quality and experimental consistency, the following preprocessing
     Candidate associations were partitioned into training (80\%), validation (10\%), and testing (10\%) subsets with balanced negative sampling to ensure unbiased generalization assessment.
 \end{itemize}
 
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=\linewidth,keepaspectratio]{images/dataset_split_distribution.png}
+    \caption{Distribution of drug--disease indication pairs across the 80/10/10 split.}
+    \label{fig:dataset_split}
+\end{figure*}
+
 \section{Graph Construction}
 To enable effective representation learning, the curated biomedical data is structured as a multi-relational knowledge graph, denoted as $\mathcal{G}=(\mathcal{V},\mathcal{E})$, where $\mathcal{V}$ represents the set of biological entities (nodes) and $\mathcal{E}$ represents the set of relational interactions (edges).
 
@@ -179,7 +178,7 @@ Each node $v \in \mathcal{V}$ corresponds to a specific biological entity, inclu
 \subsubsection{Edge Construction}
 Edges $e \in \mathcal{E}$ represent interactions between entities and are derived from the curated relational dataset. Each edge encodes a specific biological relationship. In this formulation, edges are treated bidirectionally to facilitate reciprocal message propagation during graph convolution. Formally, an interaction between two nodes $u$ and $v$ is represented as:
 \begin{equation}
-e_{uv} = (u, v),
+    e_{uv} = (u, v),
 \end{equation}
 indicating the presence of an active relation between the corresponding entities.
 
@@ -189,16 +188,16 @@ The constructed graph is inherently multi-relational, containing multiple entity
 \subsubsection{Connectivity and Neighborhood Structure}
 The network connectivity enables each entity to aggregate contextual information from its local vicinity. For a given node $v$, its neighborhood $\mathcal{N}(v)$ is formally defined as:
 \begin{equation}
-\mathcal{N}(v) = \{\, u \in \mathcal{V} \mid (u,v) \in \mathcal{E} \,\},
+    \mathcal{N}(v) = \{\, u \in \mathcal{V} \mid (u,v) \in \mathcal{E} \,\},
 \end{equation}
 which forms the foundational receptive field for recursive neural message passing.
 
 \subsubsection{Input Representation for Neural Modeling}
 The finalized graph topology serves as the input to the neural encoder. By encoding both node feature matrices and adjacency connectivity, the graph provides an integrated view of the underlying pharmacology, as visualized in Fig.~\ref{fig:graph_viz}.
 
-\begin{figure}[!t]
+\begin{figure}[!b]
     \centering
-    \includegraphics[width=\linewidth]{images/graph_visualization_primekg.png}
+    \includegraphics[width=\linewidth,keepaspectratio]{images/graph_visualization_primekg.png}
     \caption{Visualization of the PrimeKG heterogeneous network structure, showing clusters of drugs, diseases, and proteins.}
     \label{fig:graph_viz}
 \end{figure}
@@ -210,40 +209,40 @@ To learn expressive representations from the constructed graph, the proposed fra
 \subsection{Representation Learning via Neighborhood Aggregation}
 GraphSAGE learns node embeddings by iteratively aggregating feature information from a node's local neighborhood. Instead of learning an individual lookup embedding for each node, the model learns parameterized \textbf{aggregation functions} that generalize across the graph topology:
 \begin{align}
-\mathbf{h}_{\mathcal{N}(v)}^{(k)} &= \mathrm{AGG} \left( \left\{ \mathbf{h}_u^{(k-1)} : u \in \mathcal{N}(v) \right\} \right), \\
-\mathbf{h}_v^{(k)} &= \sigma \left( \mathbf{W}^{(k)} \cdot \mathrm{CONCAT} \left( \mathbf{h}_v^{(k-1)}, \mathbf{h}_{\mathcal{N}(v)}^{(k)} \right) \right),
+    \mathbf{h}_{\mathcal{N}(v)}^{(k)} &= \mathrm{AGG} \left( \left\{ \mathbf{h}_u^{(k-1)} : u \in \mathcal{N}(v) \right\} \right), \\
+    \mathbf{h}_v^{(k)} &= \sigma \left( \mathbf{W}^{(k)} \cdot \mathrm{CONCAT} \left( \mathbf{h}_v^{(k-1)}, \mathbf{h}_{\mathcal{N}(v)}^{(k)} \right) \right),
 \end{align}
 \noindent where:
 
 \begin{itemize}
-\item $\mathbf{h}_v^{(k)}$ is the representation vector of node $v$ at layer $k$, with $\mathbf{h}_v^{(0)} = \mathbf{x}_v$ representing the initial 131-dimensional input feature vector.
-\item $\mathcal{N}(v)$ denotes the set of neighboring nodes adjacent to $v$.
-\item $\mathbf{h}_{\mathcal{N}(v)}^{(k)}$ represents the aggregated neighborhood context of node $v$ at layer $k$.
-\item $\mathrm{AGG}(\cdot)$ represents a differentiable aggregation function (e.g., mean, max-pooling).
-\item $\mathbf{W}^{(k)}$ is the learnable transformation weight matrix at layer $k$.
-\item $\sigma(\cdot)$ is a non-linear activation function (ReLU).
-\item $\mathrm{CONCAT}(\cdot, \cdot)$ denotes concatenation of self-features with aggregated neighborhood context.
+    \item $\mathbf{h}_v^{(k)}$ is the representation vector of node $v$ at layer $k$, with $\mathbf{h}_v^{(0)} = \mathbf{x}_v$ representing the initial 131-dimensional input feature vector.
+    \item $\mathcal{N}(v)$ denotes the set of neighboring nodes adjacent to $v$.
+    \item $\mathbf{h}_{\mathcal{N}(v)}^{(k)}$ represents the aggregated neighborhood context of node $v$ at layer $k$.
+    \item $\mathrm{AGG}(\cdot)$ represents a differentiable aggregation function (e.g., mean, max-pooling).
+    \item $\mathbf{W}^{(k)}$ is the learnable transformation weight matrix at layer $k$.
+    \item $\sigma(\cdot)$ is a non-linear activation function (ReLU).
+    \item $\mathrm{CONCAT}(\cdot, \cdot)$ denotes concatenation of self-features with aggregated neighborhood context.
 \end{itemize}
 This formulation allows each node to iteratively incorporate information from its local neighborhood, enabling the model to capture higher-order relational dependencies as the number of layers increases.
 
 \subsection{Neighborhood Sampling and Mini-Batching}
 To ensure scalability on large graphs, GraphSAGE supports a \textbf{neighborhood sampling strategy}, where a bounded set of neighbors is sampled at each layer rather than computing over full neighborhoods:
 \begin{equation}
-|S(v)| = K,
+    |S(v)| = K,
 \end{equation}
 where $S(v) \subseteq \mathcal{N}(v)$ and $K$ denotes the predefined neighborhood sampling budget. In our curated benchmark, full-batch neighborhood aggregation across 2 hops is performed, deterministically computing representations across the global node feature matrix.
 
 \subsection{Aggregation Functions}
 GraphSAGE accommodates diverse aggregation operators to pool neighbor representations:
 \begin{itemize}
-\item \textbf{Mean Aggregator:} Computes the element-wise average of neighboring node embeddings.
-\item \textbf{Pooling Aggregator:} Passes neighbor representations through a feed-forward layer followed by symmetric max-pooling.
-\item \textbf{LSTM Aggregator:} Adapts sequential recurrent units over randomly permuted neighbor sequences.
+    \item \textbf{Mean Aggregator:} Computes the element-wise average of neighboring node embeddings.
+    \item \textbf{Pooling Aggregator:} Passes neighbor representations through a feed-forward layer followed by symmetric max-pooling.
+    \item \textbf{LSTM Aggregator:} Adapts sequential recurrent units over randomly permuted neighbor sequences.
 \end{itemize}
 
 In this framework, the \textbf{mean aggregator} is adopted due to its parameter efficiency, computational speed, and stable gradient propagation in dense biomedical graphs:
 \begin{equation}
-\mathrm{AGG}\left( \{ \mathbf{h}_u : u \in \mathcal{N}(v) \} \right) = \frac{1}{|\mathcal{N}(v)|} \sum_{u \in \mathcal{N}(v)} \mathbf{h}_u.
+    \mathrm{AGG}\left( \{ \mathbf{h}_u : u \in \mathcal{N}(v) \} \right) = \frac{1}{|\mathcal{N}(v)|} \sum_{u \in \mathcal{N}(v)} \mathbf{h}_u.
 \end{equation}
 
 \subsection{Multi-Layer Representation Architecture}
@@ -258,7 +257,7 @@ The discovery of novel therapeutic associations is formulated as a \textbf{link 
 \subsection{Edge Scoring Function}
 To quantify the likelihood of an interaction between two nodes, a scoring function (decoder) is applied to their corresponding embeddings. Let $\mathbf{z}_u \in \mathbb{R}^{32}$ and $\mathbf{z}_v \in \mathbb{R}^{32}$ denote the embedding vectors of drug $u$ and disease $v$, respectively. The predicted interaction probability is defined as:
 \begin{equation}
-\hat{y}_{uv} = \sigma \left( \mathbf{z}_u^\top \mathbf{z}_v \right),
+    \hat{y}_{uv} = \sigma \left( \mathbf{z}_u^\top \mathbf{z}_v \right),
 \end{equation}
 where $\mathbf{z}_u^\top \mathbf{z}_v$ computes the inner product between the node embeddings, and $\sigma(t) = \frac{1}{1 + e^{-t}}$ denotes the sigmoid activation function mapping the raw logit score to a normalized probability $\hat{y}_{uv} \in [0, 1]$.
 
@@ -271,12 +270,12 @@ A pervasive vulnerability in biomedical link prediction benchmarks is topologica
 \begin{enumerate}
     \item \textbf{Strict Edge Set Disjointness:} The set of verified therapeutic indications $\mathcal{E}_{\mathrm{indication}} \subset \mathcal{E}$ ($|\mathcal{E}_{\mathrm{indication}}| = 9,397$) is partitioned into three mutually disjoint subsets:
     \begin{equation}
-    \mathcal{E}_{\mathrm{train}} \cup \mathcal{E}_{\mathrm{val}} \cup \mathcal{E}_{\mathrm{test}} = \mathcal{E}_{\mathrm{indication}},
+        \mathcal{E}_{\mathrm{train}} \cup \mathcal{E}_{\mathrm{val}} \cup \mathcal{E}_{\mathrm{test}} = \mathcal{E}_{\mathrm{indication}},
     \end{equation}
     satisfying $\mathcal{E}_i \cap \mathcal{E}_j = \emptyset$ for all $i \neq j \in \{\mathrm{train}, \mathrm{val}, \mathrm{test}\}$. This ensures zero positive indication overlap across partitions ($|\mathcal{E}_{\mathrm{train}} \cap \mathcal{E}_{\mathrm{val}}| = 0$, $|\mathcal{E}_{\mathrm{train}} \cap \mathcal{E}_{\mathrm{test}}| = 0$, $|\mathcal{E}_{\mathrm{val}} \cap \mathcal{E}_{\mathrm{test}}| = 0$).
     \item \textbf{Transductive Adjacency Masking:} During training forward propagation, message aggregation is strictly restricted to an isolated training adjacency matrix $\mathbf{A}_{\mathrm{mp}}^{(\mathrm{train})} = \mathcal{E}_{\mathrm{background}} \cup \mathcal{E}_{\mathrm{train}}$, where $\mathcal{E}_{\mathrm{background}}$ comprises non-target biological relationships (drug-target binding and protein-disease associations). Validation and test links are dynamically excised from the message-passing adjacency:
     \begin{equation}
-    (\mathcal{E}_{\mathrm{val}} \cup \mathcal{E}_{\mathrm{test}}) \cap \mathbf{A}_{\mathrm{mp}}^{(\mathrm{train})} = \emptyset.
+        (\mathcal{E}_{\mathrm{val}} \cup \mathcal{E}_{\mathrm{test}}) \cap \mathbf{A}_{\mathrm{mp}}^{(\mathrm{train})} = \emptyset.
     \end{equation}
     Consequently, node representations cannot aggregate signals across target links during training.
     \item \textbf{Reciprocal Edge Purging:} For any evaluation pair $(u, v) \in \mathcal{E}_{\mathrm{val}} \cup \mathcal{E}_{\mathrm{test}}$, both directional edge pointers $(u, v)$ and $(v, u)$ are simultaneously excised from the message-passing topology to prevent 1-hop bidirectional shortcuts.
@@ -286,7 +285,7 @@ A pervasive vulnerability in biomedical link prediction benchmarks is topologica
 \subsection{Loss Function}
 The training objective minimizes the \textbf{Binary Cross-Entropy (BCE) loss} between predicted probabilities and ground-truth interaction labels:
 \begin{equation}
-\mathcal{L} = -\frac{1}{N} \sum_{(u,v)} \left[ y_{uv} \log(\hat{y}_{uv}) + (1 - y_{uv}) \log(1 - \hat{y}_{uv}) \right],
+    \mathcal{L} = -\frac{1}{N} \sum_{(u,v)} \left[ y_{uv} \log(\hat{y}_{uv}) + (1 - y_{uv}) \log(1 - \hat{y}_{uv}) \right],
 \end{equation}
 where $y_{uv} \in \{0, 1\}$ denotes the true label, $\hat{y}_{uv} \in [0, 1]$ represents the predicted probability, and $N$ is the total number of training sample pairs.
 
@@ -307,20 +306,20 @@ While Graph Neural Networks excel at learning predictive topological representat
 \subsubsection{Topological Subgraph Traversal}
 When a candidate drug--disease interaction $(u, v)$ is predicted with confidence exceeding the classification threshold ($\hat{y}_{uv} \ge \tau$), the framework queries the multi-relational graph to extract intermediate 2-hop topological pathways linking the candidate compound to the disease phenotype through mediating molecular targets:
 \begin{equation}
-\mathcal{P}_{\mathrm{cand}}(u, v) = \left\{\, p \in \mathcal{V}_{\mathrm{protein}} \;\middle|\; (u, p) \in \mathcal{E} \,\land\, (p, v) \in \mathcal{E} \,\right\}.
+    \mathcal{P}_{\mathrm{cand}}(u, v) = \left\{\, p \in \mathcal{V}_{\mathrm{protein}} \;\middle|\; (u, p) \in \mathcal{E} \,\land\, (p, v) \in \mathcal{E} \,\right\}.
 \end{equation}
 
 \subsubsection{Hub-Penalized Path Saliency Formulation}
 A critical failure mode in biomedical knowledge graph explanation is the dominance of generic, ubiquitous hub proteins (e.g., Serum Albumin, Ubiquitin, or broad cytokines) that connect indiscriminately to hundreds of entities without providing disease-specific insight. To prevent such generic explanations, we formulate a degree-penalized path saliency metric $\mathcal{S}(u \to p \to v)$:
 \begin{equation}
-\mathcal{S}(u \to p \to v) = \frac{\sigma\left(\mathbf{z}_u^\top \mathbf{z}_p\right) + \sigma\left(\mathbf{z}_p^\top \mathbf{z}_v\right)}{2 \cdot \sqrt{\deg(p)}},
+    \mathcal{S}(u \to p \to v) = \frac{\sigma\left(\mathbf{z}_u^\top \mathbf{z}_p\right) + \sigma\left(\mathbf{z}_p^\top \mathbf{z}_v\right)}{2 \cdot \sqrt{\deg(p)}},
 \end{equation}
 where $\mathbf{z}_u, \mathbf{z}_p, \mathbf{z}_v \in \mathbb{R}^{32}$ denote the learned GraphSAGE node embeddings, and $\deg(p)$ represents the total structural degree of target protein $p$ in the curated knowledge graph. The inverse square-root penalty $\frac{1}{\sqrt{\deg(p)}}$ mathematically prioritizes specific, high-affinity biological mediators while penalizing high-degree hubs. The top-$K$ paths ($K=5$) maximizing $\mathcal{S}(u \to p \to v)$ are retained as the mechanistic backbone.
 
 \subsubsection{Multimodal Context Synthesis and Constrained Generation}
 The extracted top-$K$ biological pathways are combined with the candidate drug's standardized physicochemical descriptors $\mathbf{x}_u^{\mathrm{chem}} = \langle \mathrm{MW}, \mathrm{TPSA}, \mathrm{ClogP} \rangle$ and disease ontological phenotypes to assemble a grounded context vector:
 \begin{equation}
-\mathcal{C}(u, v) = \left\langle u, \; \mathbf{x}_u^{\mathrm{chem}}, \; \{\, u \to p_k \to v \,\}_{k=1}^K, \; v, \; \hat{y}_{uv} \right\rangle.
+    \mathcal{C}(u, v) = \left\langle u, \; \mathbf{x}_u^{\mathrm{chem}}, \; \{\, u \to p_k \to v \,\}_{k=1}^K, \; v, \; \hat{y}_{uv} \right\rangle.
 \end{equation}
 
 This structured context is ingested by an on-premise Large Language Model (quantized Llama 3.2, 3B parameters, executed via the Ollama runtime)~\cite{ref_llama}. By constraining the prompt generation strictly to the verified entities in $\mathcal{C}(u, v)$, the model synthesizes three distinct clinical dimensions:
@@ -339,58 +338,58 @@ The proposed framework was evaluated on the curated PrimeKG knowledge graph comp
 The model was trained for 100 epochs using the Adam optimizer with Binary Cross-Entropy loss. Comprehensive architectural and experimental hyperparameters are detailed in Table~\ref{tab:hyperparameters}.
 
 \begin{table}[!t]
-\centering
-\renewcommand{\arraystretch}{1.15}
-\caption{Experimental Hyperparameters and Model Configuration}
-\label{tab:hyperparameters}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{lc}
-\toprule
-\textbf{Configuration Parameter} & \textbf{Value / Specification} \\
-\midrule
-Input Feature Dimension & 131 (128 TF-IDF + 3 Physicochemical) \\
-GNN Encoder Architecture & 2-layer inductive GraphSAGE \\
-Hidden / Latent Dimensions & $131 \to 64 \to 32$ \\
-Neighborhood Aggregation Operator & Mean pooling \\
-Receptive Field Depth ($k$-hops) & 2 hops \\
-Activation Functions & ReLU (hidden), Sigmoid (decoder) \\
-Link Scoring Decoder & Inner product ($\sigma(\mathbf{z}_u^\top \mathbf{z}_v)$) \\
-Loss Objective & Binary Cross-Entropy with logits \\
-Optimization Algorithm & Adam ($\beta_1=0.9, \beta_2=0.999$) \\
-Initial Learning Rate & $1.0 \times 10^{-2}$ \\
-Weight Decay ($L_2$ Regularization) & $1.0 \times 10^{-4}$ \\
-Training Epochs & 100 epochs \\
-Optimal Early-Stop Checkpoint & Epoch 62 (Validation loss = 0.2282) \\
-Negative Sampling Ratio & 1:1 balanced \\
-Classification Threshold ($\tau$) & 0.50 \\
-Local LLM Reasoning Engine & Llama 3.2 (via Ollama runtime) \\
-\bottomrule
-\end{tabular}%
-}
+    \centering
+    \renewcommand{\arraystretch}{1.15}
+    \caption{Experimental Hyperparameters and Model Configuration}
+    \label{tab:hyperparameters}
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{lc}
+        \toprule
+        \textbf{Configuration Parameter} & \textbf{Value / Specification} \\
+        \midrule
+        Input Feature Dimension & 131 (128 TF-IDF + 3 Physicochemical) \\
+        GNN Encoder Architecture & 2-layer inductive GraphSAGE \\
+        Hidden / Latent Dimensions & $131 \to 64 \to 32$ \\
+        Neighborhood Aggregation Operator & Mean pooling \\
+        Receptive Field Depth ($k$-hops) & 2 hops \\
+        Activation Functions & ReLU (hidden), Sigmoid (decoder) \\
+        Link Scoring Decoder & Inner product ($\sigma(\mathbf{z}_u^\top \mathbf{z}_v)$) \\
+        Loss Objective & Binary Cross-Entropy with logits \\
+        Optimization Algorithm & Adam ($\beta_1=0.9, \beta_2=0.999$) \\
+        Initial Learning Rate & $1.0 \times 10^{-2}$ \\
+        Weight Decay ($L_2$ Regularization) & $1.0 \times 10^{-4}$ \\
+        Training Epochs & 100 epochs \\
+        Optimal Early-Stop Checkpoint & Epoch 62 (Validation loss = 0.2282) \\
+        Negative Sampling Ratio & 1:1 balanced \\
+        Classification Threshold ($\tau$) & 0.50 \\
+        Local LLM Reasoning Engine & Llama 3.2 (via Ollama runtime) \\
+        \bottomrule
+    \end{tabular}%
+    }
 \end{table}
 
 \subsection{Quantitative Performance Evaluation and Baseline Comparison}
 The predictive performance of the proposed GraphSAGE framework was evaluated against multiple baseline paradigms across identical train, validation, and test partitions. To assess the empirical contributions of both graph topology and multimodal feature representations, we benchmarked against: (1) \textit{Common Neighbors}, a purely topological heuristic evaluating structural link overlap; (2) \textit{Feature-Only Multilayer Perceptron (MLP)}, an ablation model trained strictly on the 131-dimensional node feature vectors without graph message passing; (3) \textit{Graph Convolutional Networks (GCN)}~\cite{ref2}, using symmetric normalized Laplacian propagation; and (4) \textit{Graph Attention Networks (GAT)}~\cite{ref_gat}, utilizing self-attention coefficients across neighborhood edges.
 
 \begin{table}[!t]
-\centering
-\renewcommand{\arraystretch}{1.2}
-\caption{Performance Comparison Across Architectural Paradigms on Held-Out Test Set (1,880 Samples)}
-\label{tab:metrics}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Model Architecture} & \textbf{AUC-ROC} & \textbf{Accuracy} & \textbf{Precision} & \textbf{F1-Score} \\
-\midrule
-Common Neighbors (Topology only) & 82.60\% & 75.32\% & 74.80\% & 74.21\% \\
-MLP (Features only, No Graph)    & 78.40\% & 72.13\% & 71.50\% & 70.52\% \\
-GCN (Kipf \& Welling)~\cite{ref2} & 94.12\% & 88.45\% & 87.20\% & 88.10\% \\
-GAT (Veli\v{c}kovi\'c \textit{et al.})~\cite{ref_gat} & 95.80\% & 90.15\% & 89.60\% & 90.42\% \\
-\midrule
-\textbf{GraphSAGE (Proposed)}     & \textbf{97.34\%} & \textbf{91.97\%} & \textbf{90.71\%} & \textbf{92.09\%} \\
-\bottomrule
-\end{tabular}%
-}
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \caption{Performance Comparison Across Architectural Paradigms on Held-Out Test Set (1,880 Samples)}
+    \label{tab:metrics}
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{lcccc}
+        \toprule
+        \textbf{Model Architecture} & \textbf{AUC-ROC} & \textbf{Accuracy} & \textbf{Precision} & \textbf{F1-Score} \\
+        \midrule
+        Common Neighbors (Topology only) & 82.60\% & 75.32\% & 74.80\% & 74.21\% \\
+        MLP (Features only, No Graph)    & 78.40\% & 72.13\% & 71.50\% & 70.52\% \\
+        GCN (Kipf \& Welling)~\cite{ref2} & 94.12\% & 88.45\% & 87.20\% & 88.10\% \\
+        GAT (Veli\v{c}kovi\'c \textit{et al.})~\cite{ref_gat} & 95.80\% & 90.15\% & 89.60\% & 90.42\% \\
+        \midrule
+        \textbf{GraphSAGE (Proposed)}     & \textbf{97.34\%} & \textbf{91.97\%} & \textbf{90.71\%} & \textbf{92.09\%} \\
+        \bottomrule
+    \end{tabular}%
+    }
 \end{table}
 
 The comparative results are summarized in Table~\ref{tab:metrics} and illustrated in Fig.~\ref{fig:performance_metrics}. The proposed GraphSAGE model achieves superior discriminative accuracy across all evaluation metrics, attaining an AUC-ROC of 0.9734, an Accuracy of 91.97\%, and an F1-score of 92.09\%.
@@ -402,10 +401,10 @@ Comparing the non-graph MLP baseline against the graph-based architectures highl
 Among graph neural architectures, GraphSAGE consistently outperforms both GCN (94.12\% AUC) and GAT (95.80\% AUC). Standard GCN utilizes symmetric Laplacian normalization ($\mathbf{\tilde{D}}^{-\frac{1}{2}} \mathbf{\tilde{A}} \mathbf{\tilde{D}}^{-\frac{1}{2}}$), which averages signals uniformly across degrees. In biomedical knowledge graphs containing high-degree hub entities (e.g., broad disease categories or ubiquitous receptor proteins), this normalization leads to mild oversmoothing, attenuating localized drug-target specificity. While GAT dynamically weights neighbor interactions via attention coefficients, the parameter overhead and gradient variance across sparse multi-relational edges slightly degrades generalization on held-out test links. GraphSAGE overcomes these limitations through its explicit concatenation operator ($\mathbf{W} \cdot [\mathbf{h}_v \,\|\, \mathbf{h}_{\mathcal{N}(v)}]$), which preserves the unique intrinsic identity of the source node while aggregating structured neighborhood context.
 
 \begin{figure*}[!t]
-\centering
-\includegraphics[width=0.95\textwidth]{images/metrics.png}
-\caption{Quantitative performance evaluation across multiple classification metrics including Accuracy, Precision, Recall, and F1-score.}
-\label{fig:performance_metrics}
+    \centering
+    \includegraphics[width=\linewidth,keepaspectratio]{images/metrics.png}
+    \caption{Quantitative performance evaluation across multiple classification metrics including Accuracy, Precision, Recall, and F1-score.}
+    \label{fig:performance_metrics}
 \end{figure*}
 
 
@@ -413,10 +412,10 @@ Among graph neural architectures, GraphSAGE consistently outperforms both GCN (9
 The proposed framework achieves an AUC-ROC score of 0.9734 and an Average Precision (PR-AUC) of 0.9652, significantly outperforming the random classifier baseline ($y=x$), as shown in Fig.~\ref{fig:roc_curve}.
 
 \begin{figure}[!t]
-\centering
-\includegraphics[width=0.95\linewidth]{images/roc_curve_final.png}
-\caption{Final ROC Curve for Drug-Disease Link Prediction (AUC = 0.9734, PR-AUC = 0.9652).}
-\label{fig:roc_curve}
+    \centering
+    \includegraphics[width=\linewidth,keepaspectratio]{images/roc_curve_final.png}
+    \caption{Final ROC Curve for Drug-Disease Link Prediction (AUC = 0.9734, PR-AUC = 0.9652).}
+    \label{fig:roc_curve}
 \end{figure}
 
 The Receiver Operating Characteristic (ROC) curve~\cite{ref10} illustrates the trade-off between the true positive rate and false positive rate across continuous classification decision boundaries. As depicted in Fig.~\ref{fig:roc_curve}, the ROC trajectory ascends steeply toward the top-left coordinate, confirming robust discriminative capability. The high AUC score of 0.9734, coupled with a 0.9652 Average Precision score, demonstrates that inductive neighborhood embeddings maintain strong class separation without degradation across imbalanced operating regions.
@@ -430,31 +429,31 @@ To evaluate whether the model's classification performance is fragile or sensiti
 \end{itemize}
 
 \begin{table}[!t]
-\centering
-\renewcommand{\arraystretch}{1.2}
-\caption{Classification Robustness Across Varying Decision Thresholds ($\tau$)}
-\label{tab:threshold_sensitivity}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{cccccc}
-\toprule
-\textbf{Threshold } ($\tau$) & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{Specificity} & \textbf{F1-Score} \\
-\midrule
-0.3 & 91.60\% & 88.04\% & 96.28\% & 86.91\% & 91.97\% \\
-0.4 & 92.13\% & 89.60\% & 95.32\% & 88.94\% & 92.37\% \\
-0.5 & 91.97\% & 90.71\% & 93.51\% & 90.43\% & 92.09\% \\
-0.6 & 92.07\% & 92.57\% & 91.49\% & 92.66\% & 92.03\% \\
-0.7 & 91.22\% & 93.59\% & 88.51\% & 93.94\% & 90.98\% \\
-\bottomrule
-\end{tabular}%
-}
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \caption{Classification Robustness Across Varying Decision Thresholds ($\tau$)}
+    \label{tab:threshold_sensitivity}
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{cccccc}
+        \toprule
+        \textbf{Threshold } ($\tau$) & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{Specificity} & \textbf{F1-Score} \\
+        \midrule
+        0.3 & 91.60\% & 88.04\% & 96.28\% & 86.91\% & 91.97\% \\
+        0.4 & 92.13\% & 89.60\% & 95.32\% & 88.94\% & 92.37\% \\
+        0.5 & 91.97\% & 90.71\% & 93.51\% & 90.43\% & 92.09\% \\
+        0.6 & 92.07\% & 92.57\% & 91.49\% & 92.66\% & 92.03\% \\
+        0.7 & 91.22\% & 93.59\% & 88.51\% & 93.94\% & 90.98\% \\
+        \bottomrule
+    \end{tabular}%
+    }
 \end{table}
 
 \subsection{Training Dynamics and Checkpoint Selection}
 \begin{figure}[!t]
-\centering
-\includegraphics[width=0.95\linewidth]{images/model_convergence.png}
-\caption{Training and validation loss trajectories across 100 epochs, illustrating optimal validation loss at epoch 62 followed by checkpoint selection.}
-\label{fig:training_loss}
+    \centering
+    \includegraphics[width=\linewidth,keepaspectratio]{images/model_convergence.png}
+    \caption{Training and validation loss trajectories across 100 epochs, illustrating optimal validation loss at epoch 62 followed by checkpoint selection.}
+    \label{fig:training_loss}
 \end{figure}
 
 The optimization trajectory demonstrates stable gradient descent, with the training loss steadily decreasing from 0.6993 at epoch 1 to 0.0373 at epoch 100 (Fig.~\ref{fig:training_loss}). Validation loss reached an optimal minimum of 0.2282 at epoch 62. Beyond epoch 62, a gradual increase in validation loss (reaching 0.2746 at epoch 100) indicated the onset of mild empirical overfitting. To prevent generalization degradation, model weights corresponding to the optimal validation checkpoint at epoch 62 were restored for final performance evaluation on the held-out test set.
@@ -463,27 +462,27 @@ The optimization trajectory demonstrates stable gradient descent, with the train
 To rigorously quantify classification characteristics on the held-out test set, we decomposed the model's predictions into an empirical confusion matrix across the 1,880 test pairs (940 true indications and 940 negative pairs), as detailed in Table~\ref{tab:confusion_matrix} and illustrated in Fig.~\ref{fig:confusion_matrix}.
 
 \begin{table}[!t]
-\centering
-\renewcommand{\arraystretch}{1.2}
-\caption{Empirical Confusion Matrix on Held-Out Test Set (1,880 Samples)}
-\label{tab:confusion_matrix}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{lcc}
-\toprule
-\textbf{Biological Truth} & \textbf{Predicted Negative} & \textbf{Predicted Positive} \\
-\midrule
-\textbf{Actual Negative} & $\mathrm{TN} = 850$ (45.21\%) & $\mathrm{FP} = 90$ (4.79\%) \\
-\textbf{Actual Positive} & $\mathrm{FN} = 61$ (3.24\%)  & $\mathrm{TP} = 879$ (46.76\%) \\
-\bottomrule
-\end{tabular}%
-}
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \caption{Empirical Confusion Matrix on Held-Out Test Set (1,880 Samples)}
+    \label{tab:confusion_matrix}
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{lcc}
+        \toprule
+        \textbf{Biological Truth} & \textbf{Predicted Negative} & \textbf{Predicted Positive} \\
+        \midrule
+        \textbf{Actual Negative} & $\mathrm{TN} = 850$ (45.21\%) & $\mathrm{FP} = 90$ (4.79\%) \\
+        \textbf{Actual Positive} & $\mathrm{FN} = 61$ (3.24\%)  & $\mathrm{TP} = 879$ (46.76\%) \\
+        \bottomrule
+    \end{tabular}%
+    }
 \end{table}
 
 \begin{figure}[!t]
-\centering
-\includegraphics[width=0.88\linewidth]{images/confusion_matrix.png}
-\caption{Empirical Confusion Matrix on the held-out test set (1,880 samples), illustrating 93.51\% sensitivity (879/940) and 90.43\% specificity (850/940).}
-\label{fig:confusion_matrix}
+    \centering
+    \includegraphics[width=\linewidth,keepaspectratio]{images/confusion_matrix.png}
+    \caption{Empirical Confusion Matrix on the held-out test set (1,880 samples), illustrating 93.51\% sensitivity (879/940) and 90.43\% specificity (850/940).}
+    \label{fig:confusion_matrix}
 \end{figure}
 
 The model achieves a high sensitivity (recall) of $93.51\%$ ($879/940$) and a specificity of $90.43\%$ ($850/940$), with a Positive Predictive Value (precision) of $90.71\%$ ($879/969$) and a Negative Predictive Value (NPV) of $93.30\%$ ($850/911$). 
@@ -498,22 +497,22 @@ A pharmacological investigation into the misclassified cases reveals key biologi
 To evaluate the translational utility of the trained GraphSAGE model beyond retrospective benchmark splits, we conducted candidate prioritization across unannotated drug--disease pairs. Latent representations were generated across all biological entities, and the inner-product decoder scored candidate therapeutic interactions. The top-ranked repositioning hypotheses were qualitatively evaluated against biomedical literature and pharmacological mechanisms, as summarized in Table~\ref{tab:case_studies}.
 
 \begin{table*}[!t]
-\centering
-\renewcommand{\arraystretch}{1.25}
-\caption{Representative Novel Drug Repurposing Candidates Prioritized by Rapid AI}
-\label{tab:case_studies}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lp{3.5cm}p{3.2cm}p{5.4cm}lc}
-\toprule
-\textbf{Candidate Drug} & \textbf{Primary Indication} & \textbf{Predicted Indication} & \textbf{Intermediary Biological Mechanism} & \textbf{Evidence \& Validation} & $\mathbf{\hat{y}_{uv}}$ \\
-\midrule
-Somatotropin & Growth hormone deficiency & Tibia fracture repair & GHR/IGF-1 stimulation of osteoblast proliferation & Clinical trial~\cite{ref_gh} & 0.999 \\
-Menatetrenone & Secondary osteoporosis & Traumatic bone fracture & Osteocalcin $\gamma$-carboxylation \& mineral matrix binding & Randomized trial~\cite{ref_vk2} & 0.998 \\
-Anakinra & Rheumatoid arthritis & Fracture non-union repair & IL-1R1 blockade of hyper-inflammatory osteoclastogenesis & Mechanistic review~\cite{ref_il1} & 0.996 \\
-Mecasermin & Primary IGF-1 deficiency & Tibial bone union & Direct IGF-1R tyrosine kinase activation \& chondrogenesis & Preclinical trial~\cite{ref_igf} & 0.999 \\
-\bottomrule
-\end{tabular}%
-}
+    \centering
+    \renewcommand{\arraystretch}{1.25}
+    \caption{Representative Novel Drug Repurposing Candidates Prioritized by Rapid AI}
+    \label{tab:case_studies}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lp{3.5cm}p{3.2cm}p{5.4cm}lc}
+        \toprule
+        \textbf{Candidate Drug} & \textbf{Primary Indication} & \textbf{Predicted Indication} & \textbf{Intermediary Biological Mechanism} & \textbf{Evidence \& Validation} & $\mathbf{\hat{y}_{uv}}$ \\
+        \midrule
+        Somatotropin & Growth hormone deficiency & Tibia fracture repair & GHR/IGF-1 stimulation of osteoblast proliferation & Clinical trial~\cite{ref_gh} & 0.999 \\
+        Menatetrenone & Secondary osteoporosis & Traumatic bone fracture & Osteocalcin $\gamma$-carboxylation \& mineral matrix binding & Randomized trial~\cite{ref_vk2} & 0.998 \\
+        Anakinra & Rheumatoid arthritis & Fracture non-union repair & IL-1R1 blockade of hyper-inflammatory osteoclastogenesis & Mechanistic review~\cite{ref_il1} & 0.996 \\
+        Mecasermin & Primary IGF-1 deficiency & Tibial bone union & Direct IGF-1R tyrosine kinase activation \& chondrogenesis & Preclinical trial~\cite{ref_igf} & 0.999 \\
+        \bottomrule
+    \end{tabular}%
+    }
 \end{table*}
 
 \subsubsection{Somatotropin in Accelerating Tibia Fracture Union}
@@ -532,23 +531,23 @@ Mecasermin, a recombinant human insulin-like growth factor-1 (rhIGF-1), achieved
 In translational clinical workflows, predictive models must deliver rapid inference on standard hospital workstations without requiring distributed cloud GPU infrastructure or exposing patient queries to third-party APIs. To evaluate the deployment feasibility of Rapid AI, we conducted a rigorous profiling of its algorithmic complexity, memory footprint, and inference latency, benchmarked against alternative link prediction architectures in Table~\ref{tab:computational_benchmarks}.
 
 \begin{table}[!t]
-\centering
-\renewcommand{\arraystretch}{1.2}
-\caption{Computational Complexity, Model Footprint, and Inference Benchmarks}
-\label{tab:computational_benchmarks}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Architecture} & \textbf{Time Complexity} & \textbf{Checkpoint Size} & \textbf{Inference Latency} & \textbf{Inductive Capacity} \\
-\midrule
-Matrix Factorization & $\mathcal{O}(|\mathcal{V}|^3)$ & N/A (Lookup Table) & $0.12\,\mathrm{ms}$ & Transductive Only \\
-Spectral GCN~\cite{ref2} & $\mathcal{O}(|\mathcal{E}| \cdot d)$ & $38.4\,\mathrm{KB}$ & $4.20\,\mathrm{ms}$ & Weak (Fixed Graph) \\
-GAT~\cite{ref_gat} & $\mathcal{O}(|\mathcal{V}| d^2 + |\mathcal{E}| d)$ & $142.6\,\mathrm{KB}$ & $8.75\,\mathrm{ms}$ & Transductive \\
-\midrule
-\textbf{GraphSAGE (Proposed)} & $\mathcal{O}(|\mathcal{V}| \cdot \prod_{l} S_l \cdot d)$ & $\mathbf{85.2\,\mathrm{KB}}$ & $\mathbf{<2.50\,\mathrm{ms}}$ & \textbf{Full Inductive} \\
-\bottomrule
-\end{tabular}%
-}
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \caption{Computational Complexity, Model Footprint, and Inference Benchmarks}
+    \label{tab:computational_benchmarks}
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{lcccc}
+        \toprule
+        \textbf{Architecture} & \textbf{Time Complexity} & \textbf{Checkpoint Size} & \textbf{Inference Latency} & \textbf{Inductive Capacity} \\
+        \midrule
+        Matrix Factorization & $\mathcal{O}(|\mathcal{V}|^3)$ & N/A (Lookup Table) & $0.12\,\mathrm{ms}$ & Transductive Only \\
+        Spectral GCN~\cite{ref2} & $\mathcal{O}(|\mathcal{E}| \cdot d)$ & $38.4\,\mathrm{KB}$ & $4.20\,\mathrm{ms}$ & Weak (Fixed Graph) \\
+        GAT~\cite{ref_gat} & $\mathcal{O}(|\mathcal{V}| d^2 + |\mathcal{E}| d)$ & $142.6\,\mathrm{KB}$ & $8.75\,\mathrm{ms}$ & Transductive \\
+        \midrule
+        \textbf{GraphSAGE (Proposed)} & $\mathcal{O}(|\mathcal{V}| \cdot \prod_{l} S_l \cdot d)$ & $\mathbf{85.2\,\mathrm{KB}}$ & $\mathbf{<2.50\,\mathrm{ms}}$ & \textbf{Full Inductive} \\
+        \bottomrule
+    \end{tabular}%
+    }
 \end{table}
 
 \subsubsection{Asymptotic Scalability}

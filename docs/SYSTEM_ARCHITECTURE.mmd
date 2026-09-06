@@ -1,117 +1,111 @@
-%%{init: {
-  'theme': 'default',
-  'themeVariables': {
-    'fontSize': '18px',
-    'fontFamily': 'Helvetica Neue, Helvetica, Arial, sans-serif',
-    'textColor': '#000000',
-    'lineColor': '#0f172a',
-    'mainBkg': '#ffffff',
-    'nodeBorder': '#0f172a',
-    'clusterBkg': '#ffffff',
-    'clusterBorder': '#0f172a',
-    'titleColor': '#0f172a',
-    'edgeLabelBackground': '#ffffff'
-  }
-}}%%
-flowchart TB
-    %% ROW 1: INGESTION & PREPROCESSING
-    subgraph ROW1 [" "]
-        direction LR
-        subgraph Data_Tier ["&nbsp;<b>1. Data Ingestion & Harvesting (PrimeKG)</b>&nbsp;"]
-            direction TB
-            PrimeKG[("<b>&nbsp;Precision Medicine Knowledge Graph&nbsp;<br/>&nbsp;(PrimeKG Repository)&nbsp;</b>")]
-            Nodes["<b>&nbsp;Nodes Subset (CSV)&nbsp;</b>"]
-            Feat["<b>&nbsp;Molecular Features (CSV)&nbsp;</b>"]
-            Edges["<b>&nbsp;Edges Subset (CSV)&nbsp;</b>"]
-            PrimeKG --> Nodes
-            PrimeKG --> Feat
-            PrimeKG --> Edges
-        end
+---
+config:
+  layout: fixed
+---
+flowchart LR
+ subgraph DATA["**1. Data Ingestion &amp; Harvesting (PrimeKG)**"]
+    direction TB
+        PKG[("`**Precision Medicine<br>Knowledge Graph<br>(PrimeKG Repository)**`")]
+        NODES["`**Nodes Subset (CSV)**`"]
+        MOL["`**Molecular Features<br>(CSV)**`"]
+        EDGES["`**Edges Subset (CSV)**`"]
+  end
+ subgraph FEATURE["Step I: Feature Pipeline"]
+    direction TB
+        TFIDF["TF-IDF Vectorizer (128-dim)"]
+        SCALER["StandardScaler (3-dim)"]
+        CONCAT["Concatenation Engine<br>(131-dim Tensor)"]
+  end
+ subgraph TOPO["Step II: Topology & Sampling"]
+    direction TB
+        UNDIRECTED["Undirected Mapping<br>(r + r_rev)"]
+        SPLIT["Disjoint Split<br>(80/10/10)"]
+        NEG["Collision-Free<br>Neg. Sampling"]
+  end
+ subgraph PRE["2. Multimodal Preprocessing & Topology"]
+    direction LR
+        FEATURE
+        TOPO
+  end
+ subgraph TRAIN["Step III: GraphSAGE Training"]
+    direction TB
+        GSAGE["Hetero GraphSAGE<br>(Encoder-Decoder)"]
+        LOSS["BCEWithLogitsLoss"]
+        CHECK["Model Checkpoint (.pth)"]
+  end
+ subgraph DISCOVERY["3. Step IV: Discovery Inference"]
+    direction TB
+        EMB["Embedding Inference"]
+        SCORE["Novel Pair Scoring"]
+        TOP50["Top 50<br>Ranked Pairs"]
+  end
+ subgraph AI["Augmented Intelligence Services"]
+    direction TB
+        OLLAMA["Ollama / LLaMA 3.2<br>(Mechanistic Reasoning)"]
+        APIS["External APIs<br>(PubChem / PubMed)"]
+  end
+ subgraph LAB["4. Clinical Discovery Lab Interface (web.py)"]
+    direction TB
+        AI
+        DASH["Interactive Clinical<br>Dashboard<br>(Streamlit Web UI)"]
+  end
+ subgraph DOWNSTREAM[" "]
+    direction LR
+        DISCOVERY
+        LAB
+  end
+    PKG --> NODES & MOL & EDGES
+    TFIDF --> CONCAT
+    SCALER --> CONCAT
+    UNDIRECTED --> SPLIT
+    SPLIT --> NEG
+    NODES --> TFIDF
+    MOL --> SCALER
+    EDGES --> UNDIRECTED
+    CONCAT -- "131-dim Multimodal<br>Features &amp; Disjoint<br>Adjacency" --> GSAGE
+    NEG -- "131-dim Multimodal<br>Features &amp; Disjoint<br>Adjacency" --> GSAGE
+    GSAGE --> LOSS
+    LOSS --> CHECK
+    EMB --> SCORE
+    SCORE --> TOP50
+    OLLAMA --> DASH
+    APIS --> DASH
+    CHECK --> EMB
+    TOP50 -- Prioritized Repurposing<br>Candidates --> DASH
 
-        subgraph Processing_Tier ["&nbsp;<b>2. Multimodal Preprocessing & Topology</b>&nbsp;"]
-            direction LR
-            subgraph Feature_Engineering ["&nbsp;<b>Step 1: Feature Pipeline</b>&nbsp;"]
-                direction TB
-                TFIDF["<b>&nbsp;TF-IDF Vectorizer&nbsp;<br/>&nbsp;(128-dim)&nbsp;</b>"]
-                Scaler["<b>&nbsp;StandardScaler&nbsp;<br/>&nbsp;(3-dim)&nbsp;</b>"]
-                Concat["<b>&nbsp;Concatenation Engine&nbsp;<br/>&nbsp;(131-dim Tensor)&nbsp;</b>"]
-                TFIDF & Scaler --> Concat
-            end
-
-            subgraph Graph_Logic ["&nbsp;<b>Step 2: Topology & Sampling</b>&nbsp;"]
-                direction TB
-                Undirected["<b>&nbsp;Undirected Mapping&nbsp;<br/>&nbsp;(r + r_rev)&nbsp;</b>"]
-                Split["<b>&nbsp;Disjoint Split&nbsp;<br/>&nbsp;(80/10/10)&nbsp;</b>"]
-                NegSamp["<b>&nbsp;Collision-Free&nbsp;<br/>&nbsp;Neg. Sampling&nbsp;</b>"]
-                Undirected --> Split --> NegSamp
-            end
-        end
-
-        Nodes --> TFIDF
-        Feat --> Scaler
-        Edges --> Undirected
-    end
-
-    %% ROW 2: NEURAL ENGINE & CLINICAL LAB
-    subgraph ROW2 [" "]
-        direction LR
-        subgraph Model_Tier ["&nbsp;<b>3. Neural Training & Inference Engine</b>&nbsp;"]
-            direction LR
-            subgraph Model_Engine ["&nbsp;<b>Step 3: GraphSAGE Training</b>&nbsp;"]
-                direction TB
-                SAGE["<b>&nbsp;Hetero GraphSAGE&nbsp;<br/>&nbsp;(Encoder-Decoder)&nbsp;</b>"]
-                Loss["<b>&nbsp;BCEWithLogitsLoss&nbsp;</b>"]
-                Weights["<b>&nbsp;Model Checkpoint (.pth)&nbsp;</b>"]
-                SAGE --> Loss --> Weights
-            end
-
-            subgraph Discovery_Inference ["&nbsp;<b>Step 4: Discovery Inference</b>&nbsp;"]
-                direction TB
-                Inference["<b>&nbsp;Embedding Inference&nbsp;</b>"]
-                Scoring["<b>&nbsp;Novel Pair Scoring&nbsp;</b>"]
-                Ranking["<b>&nbsp;Top 50 Ranked Pairs&nbsp;</b>"]
-                Inference --> Scoring --> Ranking
-            end
-            Weights --> Inference
-        end
-
-        subgraph Dashboard_UX ["&nbsp;<b>4. Clinical Discovery Lab Interface (web.py)</b>&nbsp;"]
-            direction TB
-            Streamlit["<b>&nbsp;Interactive Clinical Dashboard&nbsp;<br/>&nbsp;(Streamlit Web UI)&nbsp;</b>"]
-            subgraph Aux_Services ["&nbsp;<b>Augmented Intelligence Services</b>&nbsp;"]
-                direction LR
-                LLM["<b>&nbsp;Ollama / LLaMA 3.2&nbsp;<br/>&nbsp;(Mechanistic Reasoning)&nbsp;</b>"]
-                APIs["<b>&nbsp;External APIs&nbsp;<br/>&nbsp;(PubChem / PubMed)&nbsp;</b>"]
-            end
-            Streamlit <--> Aux_Services
-        end
-
-        Ranking --> Streamlit
-    end
-
-    %% INTER-ROW CONNECTION
-    ROW1 ==>|"&nbsp;<b>131-dim Multimodal Features & Disjoint Adjacency Tensors</b>&nbsp;"| ROW2
-
-    %% Styling
-    style ROW1 fill:none,stroke:none
-    style ROW2 fill:none,stroke:none
-
-    style Data_Tier fill:#ffffff,stroke:#86198f,stroke-width:2.5px
-    style Processing_Tier fill:#ffffff,stroke:#15803d,stroke-width:2.5px
-    style Model_Tier fill:#ffffff,stroke:#1d4ed8,stroke-width:2.5px
-    style Dashboard_UX fill:#ffffff,stroke:#b91c1c,stroke-width:2.5px
-
-    style Feature_Engineering fill:#f0fdf4,stroke:#16a34a,stroke-width:1.8px
-    style Graph_Logic fill:#f0fdf4,stroke:#16a34a,stroke-width:1.8px
-    style Model_Engine fill:#eff6ff,stroke:#2563eb,stroke-width:1.8px
-    style Discovery_Inference fill:#eff6ff,stroke:#2563eb,stroke-width:1.8px
-    style Aux_Services fill:#fef2f2,stroke:#ef4444,stroke-width:1.8px
-
-    style PrimeKG fill:#fae8ff,stroke:#86198f,stroke-width:2.8px,color:#000000
-    style SAGE fill:#dbeafe,stroke:#1d4ed8,stroke-width:2.8px,color:#000000
-    style Streamlit fill:#fee2e2,stroke:#b91c1c,stroke-width:2.8px,color:#000000
-    style LLM fill:#ede9fe,stroke:#6d28d9,stroke-width:2.2px,color:#000000
-    style APIs fill:#e0e7ff,stroke:#3730a3,stroke-width:2.2px,color:#000000
-    style Ranking fill:#fef3c7,stroke:#b45309,stroke-width:2.8px,color:#000000
-    style Concat fill:#dcfce7,stroke:#15803d,stroke-width:2.2px,color:#000000
-    style NegSamp fill:#dcfce7,stroke:#15803d,stroke-width:2.2px,color:#000000
+     PKG:::dataNode
+     NODES:::processNode
+     MOL:::processNode
+     EDGES:::processNode
+     TFIDF:::processNode
+     SCALER:::processNode
+     CONCAT:::greenNode
+     UNDIRECTED:::processNode
+     SPLIT:::processNode
+     NEG:::greenNode
+     GSAGE:::blueNode
+     LOSS:::processNode
+     CHECK:::processNode
+     EMB:::processNode
+     SCORE:::processNode
+     TOP50:::orangeNode
+     OLLAMA:::purpleNode
+     APIS:::apiNode
+     DASH:::dashboardNode
+    classDef dataNode fill:#f5d9f5,stroke:#9c27b0,stroke-width:2px,color:#111
+    classDef processNode fill:#ffffff,stroke:#777,stroke-width:1px,color:#111
+    classDef greenNode fill:#d9f5e3,stroke:#16833b,stroke-width:2px,color:#111
+    classDef blueNode fill:#dcecff,stroke:#2558d9,stroke-width:2px,color:#111
+    classDef orangeNode fill:#fff0c7,stroke:#c76b00,stroke-width:2px,color:#111
+    classDef purpleNode fill:#e9ddff,stroke:#7625d9,stroke-width:2px,color:#111
+    classDef apiNode fill:#dfe4ff,stroke:#3d50b5,stroke-width:2px,color:#111
+    classDef dashboardNode fill:#ffdede,stroke:#e22b2b,stroke-width:2px,color:#111
+    style FEATURE fill:#effff3,stroke:#16833b,stroke-width:1px
+    style TOPO fill:#effff3,stroke:#16833b,stroke-width:1px
+    style AI fill:#fff1f1,stroke:#e22b2b,stroke-width:1px
+    style DISCOVERY fill:#eaf3ff,stroke:#2558d9,stroke-width:2px
+    style LAB fill:#ffffff,stroke:#e22b2b,stroke-width:2px
+    style DATA fill:#ffffff,stroke:#a020c0,stroke-width:2px
+    style PRE fill:#ffffff,stroke:#16833b,stroke-width:2px
+    style TRAIN fill:#eaf3ff,stroke:#2558d9,stroke-width:2px
+    style DOWNSTREAM fill:transparent,stroke:transparent
