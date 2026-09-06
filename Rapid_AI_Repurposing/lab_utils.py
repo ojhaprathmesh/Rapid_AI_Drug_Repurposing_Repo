@@ -261,9 +261,10 @@ class PathSaliencyEngine:
     pathway-specific target proteins while down-weighting promiscuous hubs.
     Formalized in Section VI-G of the Rapid AI manuscript.
     """
-    def __init__(self):
+    def __init__(self, embeddings=None):
         import numpy as np
         self.np = np
+        self.embeddings = embeddings
         self.nodes_df = pd.read_csv(NODES_PATH)
         self.edges_path = os.path.join(DATAVERSE_DIR, "edges_subset.csv")
         self.edges_df = pd.read_csv(self.edges_path) if os.path.exists(self.edges_path) else pd.DataFrame()
@@ -305,10 +306,28 @@ class PathSaliencyEngine:
                 self.adj[u].append((v, rel))
                 self.adj[v].append((u, rel))
 
+    def _compute_saliency(self, drug_idx, p_idx, dis_idx, deg):
+        """
+        Computes degree-penalized path saliency S(u -> p -> v):
+        S = [sigma(z_u^T z_p) + sigma(z_p^T z_v)] / [2 * sqrt(deg(p))]
+        Formalized in Equation (11) of the Rapid AI manuscript.
+        """
+        if self.embeddings is not None and TORCH_AVAILABLE and isinstance(self.embeddings, torch.Tensor):
+            try:
+                zu = self.embeddings[drug_idx]
+                zp = self.embeddings[p_idx]
+                zv = self.embeddings[dis_idx]
+                aff_up = float(torch.sigmoid((zu * zp).sum()))
+                aff_pv = float(torch.sigmoid((zp * zv).sum()))
+                return float(((aff_up + aff_pv) / 2.0) / self.np.sqrt(deg))
+            except Exception:
+                pass
+        return float(1.0 / self.np.sqrt(deg))
+
     def extract_paths(self, drug_name, disease_name, top_k=5):
         """
         Extracts 2-hop biological bridges (Drug -> Protein -> Disease) penalized
-        by inverse square-root structural degree: S(u -> p -> v) = 1 / sqrt(deg(p)).
+        by inverse square-root structural degree: S(u -> p -> v) = [sigma(z_u^T z_p) + sigma(z_p^T z_v)] / [2 * sqrt(deg(p))].
         """
         drug_match = self.name_to_node.get(str(drug_name).lower())
         dis_match = self.name_to_node.get(str(disease_name).lower())
@@ -345,7 +364,7 @@ class PathSaliencyEngine:
         if shared_proteins:
             for p_idx in shared_proteins:
                 deg = self.degrees.get(p_idx, 1)
-                saliency = 1.0 / self.np.sqrt(deg)
+                saliency = self._compute_saliency(drug_idx, p_idx, dis_idx, deg)
                 scored_paths.append({
                     "protein_idx": p_idx,
                     "protein_name": self.idx_to_name.get(p_idx, f"Protein_{p_idx}"),
@@ -362,7 +381,7 @@ class PathSaliencyEngine:
             # Rank drug targets by degree specificity to identify primary mechanism
             for p_idx, rel in drug_targets.items():
                 deg = self.degrees.get(p_idx, 1)
-                saliency = 1.0 / self.np.sqrt(deg)
+                saliency = self._compute_saliency(drug_idx, p_idx, dis_idx, deg)
                 scored_paths.append({
                     "protein_idx": p_idx,
                     "protein_name": self.idx_to_name.get(p_idx, f"Protein_{p_idx}"),

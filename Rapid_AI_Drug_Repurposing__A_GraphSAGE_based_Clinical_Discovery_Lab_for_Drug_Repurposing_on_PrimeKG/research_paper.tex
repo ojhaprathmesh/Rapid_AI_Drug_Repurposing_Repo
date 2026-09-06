@@ -11,6 +11,14 @@
 \graphicspath{{images/}}
 \hyphenation{op-tical net-works semi-conduc-tor}
 
+% Float placement parameters to prevent float queue blockage
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.80}
+\renewcommand{\dbltopfraction}{0.95}
+\renewcommand{\dblfloatpagefraction}{0.80}
+
 \DeclareRobustCommand*{\IEEEauthorrefmark}[1]{\raisebox{0pt}[0pt][0pt]{\textsuperscript{\footnotesize #1}}}
 
 \begin{document}
@@ -58,7 +66,7 @@ Drug Repurposing, Knowledge Graphs, Graph Neural Networks, GraphSAGE, Link Predi
 
 The pharmaceutical industry is currently facing an ``Eroom's Law'' phenomenon, where the cost of developing a new drug doubles every nine years despite technological progress. Drug repurposing offers a strategic bypass by leveraging the known safety profiles of existing compounds~\cite{ref6,ref7}.
 
-Drug discovery is widely recognized as a complex, time-intensive, and costly process, often taking more than a decade to bring a new drug to market. Despite continuous advancements in biomedical science, the probability of failure during clinical trials remains high, leading to significant financial and resource losses~\cite{ref6}. In response to these challenges, drug repurposing has emerged as an effective alternative approach. Instead of developing new drugs from scratch, this approach focuses on identifying new therapeutic uses for already existing drugs, thereby reducing both development time and associated risks by leveraging compounds~\cite{ref7}.
+Drug discovery is widely recognized as a complex, time-intensive, and costly process, often taking more than a decade to bring a new drug to market. Despite continuous advancements in biomedical science, the probability of failure during clinical trials remains high, leading to significant financial and resource losses~\cite{ref6}. In response to these challenges, drug repurposing has emerged as an effective alternative approach. Instead of developing new drugs from scratch, this approach focuses on identifying new therapeutic uses for approved or investigational drugs, thereby substantially reducing both development timelines and safety risks~\cite{ref7}.
 
 With the growing availability of biomedical data, artificial intelligence has emerged as a powerful tool to accelerate drug repurposing efforts. In particular, graph-based approaches have proven highly effective in representing complex relationships among biological entities such as drugs, diseases, and proteins~\cite{ref3,ref18}. By modeling these interactions as networks, it becomes possible to uncover hidden patterns and predict novel associations. Techniques like Graph Neural Networks (GNNs)~\cite{ref2,ref4}, especially GraphSAGE~\cite{ref1}, enable efficient representation learning across complex biomedical networks~\cite{ref17,ref24}.
 
@@ -72,7 +80,7 @@ In this work, we present Rapid AI, an integrated framework that combines the pre
 Traditional computational drug repurposing primarily relied on chemical structure similarity matching, high-throughput phenotypic screening, and transcriptional expression profiling (such as the Connectivity Map)~\cite{ref6,ref7}. While insightful, ligand-centric and differential expression approaches often fail to account for the multi-target, system-level mechanisms that underlie complex multifactorial diseases. Network medicine emerged as an alternative paradigm, conceptualizing human pathologies not as localized molecular lesions, but as emergent perturbations propagated through the human cellular interactome~\cite{ref3}. Early network-based methods utilized Random Walk with Restart (RWR), diffusion state metrics, and shortest-path proximity to prioritize molecules based on topological proximity to disease-associated gene modules. However, these classical topological heuristics operate transductively, struggle with multi-relational edge semantics, and cannot integrate continuous physicochemical molecular properties with network connectivity.
 
 \subsection{Biomedical Knowledge Graphs in Precision Medicine}
-The integration of disparate biomedical databases into unified Knowledge Graphs (KGs) has revolutionized translational bioinformatics. Foundational benchmarks such as Hetionet~\cite{ref18} integrated compound, gene, disease, and pharmacological side-effect ontologies to systematically evaluate disease indication mechanisms. More recently, multi-modal precision medicine knowledge graphs have synthesized clinical registries, experimental bioassays, and high-throughput multi-omics repositories into dense networks. Prominent resources include the Drug Repurposing Knowledge Graph (DRKG) and the Precision Medicine Knowledge Graph (PrimeKG)~\cite{ref29}. PrimeKG, in particular, integrates 20 primary biomedical databases across 129,375 entities and over 8.1 million relational interactions, capturing curated indications, contraindications, and molecular mechanisms across diverse clinical conditions. Nonetheless, navigating PrimeKG's vast multi-relational topology presents substantial computational challenges, demanding principled subgraph curation protocols and scalable message-passing architectures.
+The integration of disparate biomedical databases into unified Knowledge Graphs (KGs) has significantly advanced translational bioinformatics. Foundational benchmarks such as Hetionet~\cite{ref18} integrated compound, gene, disease, and pharmacological side-effect ontologies to systematically evaluate disease indication mechanisms. More recently, multi-modal precision medicine knowledge graphs have synthesized clinical registries, experimental bioassays, and high-throughput multi-omics repositories into dense networks. Prominent resources include the Drug Repurposing Knowledge Graph (DRKG) and the Precision Medicine Knowledge Graph (PrimeKG)~\cite{ref29}. PrimeKG, in particular, integrates 20 primary biomedical databases across 129,375 entities and over 8.1 million relational interactions, capturing curated indications, contraindications, and molecular mechanisms across diverse clinical conditions. Nonetheless, navigating PrimeKG's vast multi-relational topology presents substantial computational challenges, demanding principled subgraph curation protocols and scalable message-passing architectures.
 
 \subsection{Graph Representation Learning for Interaction Prediction}
 Early graph-based machine learning for link prediction relied on shallow embedding techniques, including matrix factorization, translational distance formulations (TransE, RotatE), and random-walk-based skip-gram models (Node2Vec)~\cite{ref18}. While computationally lightweight, these methods are intrinsically transductive; they cannot infer representations for novel, unobserved compounds without re-optimizing the global objective, nor can they effectively parameterize high-dimensional node feature vectors.
@@ -162,12 +170,12 @@ To ensure data quality and experimental consistency, the following preprocessing
     Candidate associations were partitioned into training (80\%), validation (10\%), and testing (10\%) subsets with balanced negative sampling to ensure unbiased generalization assessment.
 \end{itemize}
 
-\begin{figure*}[!t]
+\begin{figure}[!t]
     \centering
     \includegraphics[width=\linewidth,keepaspectratio]{images/dataset_split_distribution.png}
     \caption{Distribution of drug--disease indication pairs across the 80/10/10 split.}
     \label{fig:dataset_split}
-\end{figure*}
+\end{figure}
 
 \section{Graph Construction}
 To enable effective representation learning, the curated biomedical data is structured as a multi-relational knowledge graph, denoted as $\mathcal{G}=(\mathcal{V},\mathcal{E})$, where $\mathcal{V}$ represents the set of biological entities (nodes) and $\mathcal{E}$ represents the set of relational interactions (edges).
@@ -328,7 +336,7 @@ This structured context is ingested by an on-premise Large Language Model (quant
     \item \textbf{Downstream Cellular Signaling:} Cascades connecting intermediate targets to disease pathology.
     \item \textbf{Pharmacological Considerations:} Bioavailability and clearance parameters inferred from physicochemical properties.
 \end{enumerate}
-Crucially, on-premise local execution guarantees zero external API data transmission, satisfying stringent institutional data governance frameworks.
+Crucially, on-premise local execution of the LLM guarantees zero transmission of proprietary candidate queries or patient data to commercial third-party model providers, satisfying institutional data governance frameworks, while clinical evidence validation queries remain restricted to public biological identifiers via PubMed and ClinicalTrials.gov.
 
 \section{Results and Analysis}
 
@@ -494,7 +502,7 @@ A pharmacological investigation into the misclassified cases reveals key biologi
 \end{itemize}
 
 \subsection{Candidate Prioritization and Clinical Validation}
-To evaluate the translational utility of the trained GraphSAGE model beyond retrospective benchmark splits, we conducted candidate prioritization across unannotated drug--disease pairs. Latent representations were generated across all biological entities, and the inner-product decoder scored candidate therapeutic interactions. The top-ranked repositioning hypotheses were qualitatively evaluated against biomedical literature and pharmacological mechanisms, as summarized in Table~\ref{tab:case_studies}.
+To evaluate the translational utility of the trained GraphSAGE model beyond retrospective benchmark splits, we conducted candidate prioritization across unannotated drug--disease pairs. Latent representations were generated across all biological entities, and the inner-product decoder scored candidate therapeutic interactions. The top-ranked repositioning hypotheses were qualitatively evaluated against biomedical literature and pharmacological mechanisms, as summarized in Table~\ref{tab:case_studies}. In the underlying knowledge graph ontology, all four prioritized bone-healing candidates converge computationally on the standardized disease entity \textit{tibia fracture} (MONDO:00010568, an unannotated pair during training), while Table~\ref{tab:case_studies} reports the specific clinical phenotypes and trial endpoints evaluated in cited literature.
 
 \begin{table*}[!t]
     \centering

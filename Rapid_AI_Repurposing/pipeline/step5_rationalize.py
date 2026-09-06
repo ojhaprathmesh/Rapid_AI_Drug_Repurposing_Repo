@@ -2,7 +2,7 @@ import sys
 import os
 import time
 import pandas as pd
-from lab_utils import PathSaliencyEngine, check_ollama_status
+from lab_utils import PathSaliencyEngine, DiscoveryEngine, check_ollama_status
 
 try:
     import ollama
@@ -25,8 +25,9 @@ MODEL_NAME = "llama3.2"
 
 print(f"--- STARTING STEP 5: Path-Constrained Grounded Clinical Rationalization ({MODEL_NAME}) ---")
 
-# Initialize Degree-Penalized Path Saliency Engine (Section VI-G)
-saliency_engine = PathSaliencyEngine()
+# Initialize Degree-Penalized Path Saliency Engine with GNN Embeddings (Section VI-G, Eq. 11)
+engine = DiscoveryEngine()
+saliency_engine = PathSaliencyEngine(embeddings=engine.embeddings)
 
 def generate_rationale(drug, disease, score, rank, path_data):
     """

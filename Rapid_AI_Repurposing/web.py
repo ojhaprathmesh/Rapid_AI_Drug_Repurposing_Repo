@@ -153,7 +153,8 @@ def get_discovery_lab_engine():
 
 @st.cache_resource
 def get_saliency_engine():
-    return PathSaliencyEngine()
+    eng = get_discovery_lab_engine()
+    return PathSaliencyEngine(embeddings=eng.embeddings)
 
 engine = get_discovery_lab_engine()
 saliency_engine = get_saliency_engine()
