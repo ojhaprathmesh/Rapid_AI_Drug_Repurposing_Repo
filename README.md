@@ -38,10 +38,10 @@ Evaluated against classical heuristics and neural architectures on the held-out 
 
 | Candidate Compound | Approved Indication | Predicted Indication | $\hat{y}_{uv}$ | Biological Mechanism & Literature Validation |
 |---|---|---|:---:|---|
-| **Somatotropin** (rhGH) | Growth hormone deficiency | Tibia fracture union | **0.999** | GHR/IGF-1 stimulation of osteoblast proliferation; validated in clinical trials (*J Bone Joint Surg*). |
-| **Menatetrenone** (Vit $\text{K}_2$) | Postmenopausal osteoporosis | Traumatic fracture repair | **0.998** | Osteocalcin $\gamma$-carboxylation & hydroxyapatite binding (*J Bone Miner Res*). |
-| **Anakinra** (IL-1Ra) | Rheumatoid arthritis | Fracture non-union repair | **0.996** | IL-1R1 blockade of trauma-induced hyper-inflammatory osteoclastogenesis (*Blood*). |
-| **Mecasermin** (rhIGF-1) | Primary IGF-1 deficiency | Tibial bone repair | **0.999** | Direct IGF-1R tyrosine kinase activation and chondrocyte differentiation. |
+| **Niacin** (Vitamin $\text{B}_3$) | Dyslipidemia / pellagra | Ocular hypertension | **0.9999** | Restores depleted neuronal NAD$^+$, preventing retinal ganglion cell mitochondrial dysfunction (*Clin Exp Ophthalmol*). |
+| **Vardenafil** | Erectile dysfunction | Hypertension | **0.9998** | Selective PDE5 inhibition elevating cGMP to drive vascular smooth muscle relaxation and reduce arterial resistance (*J Am Coll Cardiol*). |
+| **Doxorubicin** | Solid tumors / sarcoma | T-cell leukemia | **0.9998** | Topoisomerase II$\alpha$ inhibition and DNA intercalation inducing apoptotic arrest in malignant T-lymphoblasts (*Blood*). |
+| **Polaprezinc** (Zinc L-carnosine) | Gastric mucosal lesions | Drug-induced osteoporosis | **0.9997** | Dual regulation: stimulates osteoblastic collagen synthesis while inhibiting NF-$\kappa$B osteoclastogenesis (*Mol Cell Biochem*). |
 
 ---
 

@@ -2,6 +2,13 @@ import sys
 import os
 import time
 import pandas as pd
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
+BASE_DIR = PROJECT_DIR
+if PROJECT_DIR not in sys.path:
+    sys.path.insert(0, PROJECT_DIR)
+
 from lab_utils import PathSaliencyEngine, DiscoveryEngine, check_ollama_status
 
 try:
@@ -10,12 +17,6 @@ try:
 except ImportError:
     ollama = None
     OLLAMA_AVAILABLE = False
-
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
-BASE_DIR = PROJECT_DIR
-if PROJECT_DIR not in sys.path:
-    sys.path.insert(0, PROJECT_DIR)
 PREDICTIONS_PATH = os.path.join(PROJECT_DIR, "top_50_repurposing_predictions.csv")
 OUTPUT_PATH = os.path.join(PROJECT_DIR, "reports", "clinical_rationalization_report.md")
 

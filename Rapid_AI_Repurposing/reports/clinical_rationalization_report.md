@@ -1,214 +1,216 @@
 # Rapid AI Clinical Discovery Lab: Grounded Rationalization Report
 
-- **Generated:** 2026-09-04 01:01:54
+- **Generated:** 2026-09-07 16:41:08
 - **Algorithm:** Degree-Penalized 2-Hop Path Saliency S(u -> p -> v) = [sigma(z_u^T z_p) + sigma(z_p^T z_v)] / [2 * sqrt(deg(p))]
 - **LLM Engine:** llama3.2 (On-Premise via Ollama)
 
 ---
 
-## Rank #1: Mecasermin rinfabate → tibia fracture
+## Rank #1: Ataluren → hepatitis C virus infection
 
-- **AI Repurposing Confidence:** `1.0000`
+- **AI Repurposing Confidence:** `0.9999`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `IGF2R` (Degree: 26, Saliency: `0.1961`)
-  - `INSR` (Degree: 33, Saliency: `0.1741`)
-  - `IGF1R` (Degree: 50, Saliency: `0.1414`)
-- **Physicochemical Properties:** MW: `The molecular weight is 36404.45.` | TPSA: `Mecasermin rinfabate has a topological polar surface area of 12082.97.`
+  - `SLCO1B3` (Degree: 89, Saliency: `0.0986`)
+  - `UGT1A9` (Degree: 56, Saliency: `0.0980`)
+  - `SLC22A8` (Degree: 111, Saliency: `0.0560`)
+- **Physicochemical Properties:** MW: `The molecular weight is 284.25.` | TPSA: `Ataluren has a topological polar surface area of 76.22.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Mecasermin rinfabate** for **tibia fracture** is grounded in its high-affinity interaction with **IGF2R** (degree-penalized path saliency S = 0.1961, structural degree k = 26). By selectively engaging IGF2R, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Mecasermin rinfabate supplies recombinant-DNA-origin IGF-1 (rhIGF-1) bound to recombinant-DNA-origin IGFBP-3. 80% of IGF-1 is naturally bound to IGFBP-3 so the binding of rhIGF-1 to rhIGFBP-3 increases the half life of rhIGF-1 compared to. rhIGF-1 binds to the Type I IGF-1 receptor. This receptor exerts intra-cellular signaling activity in a number of processes involved in statural growth, including mitogenesis in multiple tissue types, chondrocyte growth and division along cartilage growth plates, and increases in organ growth.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Ataluren** for **hepatitis C virus infection** is grounded in its high-affinity interaction with **SLCO1B3** (degree-penalized path saliency S = 0.0986, structural degree k = 89). By selectively engaging SLCO1B3, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Ataluren enables ribosomal readthrough of mRNA containing premature stop codons that otherwise would result in premature termination of protein chains. Use of ataluren allows cellular machinery to bypass nonsense mutations in genetic material, continue the translation process, and thereby restore the production of a full-length, functional protein.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of tibia fracture, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Mecasermin rinfabate -> IGF2R -> tibia fracture) demonstrates that Mecasermin rinfabate suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
+In the context of hepatitis C virus infection, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Ataluren -> SLCO1B3 -> hepatitis C virus infection) demonstrates that Ataluren suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Mecasermin rinfabate exhibits defined physiological descriptors (MW: The molecular weight is 36404.45., TPSA: Mecasermin rinfabate has a topological polar surface area of 12082.97., elimination half-life: Half life ranges from 10 to 16 hours with a mean of 13 hours. Mecasermin rinfabate is said to have a longer half life than.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Mecasermin rinfabate represents a biologically grounded, translational opportunity for tibia fracture.
+From a biophysical standpoint, Ataluren exhibits defined physiological descriptors (MW: The molecular weight is 284.25., TPSA: Ataluren has a topological polar surface area of 76.22., elimination half-life: Ataluren plasma half-life ranges from 2-6 hours and is unaffected either by dose or repeated administration.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Ataluren represents a biologically grounded, translational opportunity for hepatitis C virus infection.
 
 ---
 
-## Rank #2: Dibotermin alfa → Laron syndrome
+## Rank #2: Maxacalcitol → anorexia nervosa
 
-- **AI Repurposing Confidence:** `1.0000`
-- **Mediating Protein Targets (Topological Saliency):**
-  - `BMPR1A` (Degree: 6, Saliency: `0.4082`)
-  - `BMPR2` (Degree: 12, Saliency: `0.2887`)
-- **Physicochemical Properties:** MW: `The molecular weight is 25795.62.` | TPSA: `Dibotermin alfa has a topological polar surface area of 10367.0.`
+- **AI Repurposing Confidence:** `0.9999`
+- **Physicochemical Properties:** MW: `The molecular weight is 418.62.` | TPSA: `Maxacalcitol has a topological polar surface area of 69.92.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Dibotermin alfa** for **Laron syndrome** is grounded in its high-affinity interaction with **BMPR1A** (degree-penalized path saliency S = 0.4082, structural degree k = 6). By selectively engaging BMPR1A, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (In the same pathway shared by endogenous BMPs, recombinant human BMP-2 (rhBMP-2) binds and initiates intracellular signal cascade through an oligomeric transmembrane receptor complex formed by type I and II serine/threonine kinase receptor proteins. These BMP receptors are expressed on the surface of mesenchymal cells and upon binding of BMP-2 to the BMP receptor type II, type II receptor phosphorylates and activates type I receptor. Type I receptor may also undergo autophosphorylation. Activated BMP type I receptor then phosphorylates intracellular effector proteins, the receptor-regulated Smads (R-Smads). Smad1, Smad 5 and Smad 8 associate with the Co-Smad, Smad4 and once activated via complex formation, they translocate to the nucleus where they associate with other transcription factors and bind promoters of target genes to control their expression. This ultimately results in bone formation at the site of implantation. Dibotermin alfa causes mesenchymal cells to differentiate into cartilage- and bone-forming cells. Implantation of dibotermin alfa in trabecular bone results in transient resorption of the bone surrounding the implant, followed by replacement of degraded matrix by newly differentiated cells.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Maxacalcitol** for **anorexia nervosa** is grounded in its high-affinity interaction with **target receptor** (degree-penalized path saliency S = 0.4000, structural degree k = 5). By selectively engaging target receptor, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (nan) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of Laron syndrome, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Dibotermin alfa -> BMPR1A -> Laron syndrome) demonstrates that Dibotermin alfa suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
+In the context of anorexia nervosa, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Maxacalcitol -> target receptor -> anorexia nervosa) demonstrates that Maxacalcitol suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Dibotermin alfa exhibits defined physiological descriptors (MW: The molecular weight is 25795.62., TPSA: Dibotermin alfa has a topological polar surface area of 10367.0., elimination half-life: When injected intravenously, the terminal half-life of dibotermin alfa was 16 minutes in rats and 6.7 minutes in cynomolgus monkeys.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Dibotermin alfa represents a biologically grounded, translational opportunity for Laron syndrome.
+From a biophysical standpoint, Maxacalcitol exhibits defined physiological descriptors (MW: The molecular weight is 418.62., TPSA: Maxacalcitol has a topological polar surface area of 69.92., elimination half-life: nan). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Maxacalcitol represents a biologically grounded, translational opportunity for anorexia nervosa.
 
 ---
 
-## Rank #3: Dibotermin alfa → growth hormone insensitivity syndrome
+## Rank #3: Niacin → ocular hypertension
 
-- **AI Repurposing Confidence:** `1.0000`
+- **AI Repurposing Confidence:** `0.9999`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `BMPR1A` (Degree: 6, Saliency: `0.4082`)
-  - `BMPR2` (Degree: 12, Saliency: `0.2887`)
-- **Physicochemical Properties:** MW: `The molecular weight is 25795.62.` | TPSA: `Dibotermin alfa has a topological polar surface area of 10367.0.`
+  - `QPRT` (Degree: 1, Saliency: `0.9660`)
+  - `NNMT` (Degree: 11, Saliency: `0.1818`)
+  - `SLC5A8` (Degree: 9, Saliency: `0.1284`)
+- **Physicochemical Properties:** MW: `The molecular weight is 123.11.` | TPSA: `Niacin has a topological polar surface area of 50.19.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Dibotermin alfa** for **growth hormone insensitivity syndrome** is grounded in its high-affinity interaction with **BMPR1A** (degree-penalized path saliency S = 0.4082, structural degree k = 6). By selectively engaging BMPR1A, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (In the same pathway shared by endogenous BMPs, recombinant human BMP-2 (rhBMP-2) binds and initiates intracellular signal cascade through an oligomeric transmembrane receptor complex formed by type I and II serine/threonine kinase receptor proteins. These BMP receptors are expressed on the surface of mesenchymal cells and upon binding of BMP-2 to the BMP receptor type II, type II receptor phosphorylates and activates type I receptor. Type I receptor may also undergo autophosphorylation. Activated BMP type I receptor then phosphorylates intracellular effector proteins, the receptor-regulated Smads (R-Smads). Smad1, Smad 5 and Smad 8 associate with the Co-Smad, Smad4 and once activated via complex formation, they translocate to the nucleus where they associate with other transcription factors and bind promoters of target genes to control their expression. This ultimately results in bone formation at the site of implantation. Dibotermin alfa causes mesenchymal cells to differentiate into cartilage- and bone-forming cells. Implantation of dibotermin alfa in trabecular bone results in transient resorption of the bone surrounding the implant, followed by replacement of degraded matrix by newly differentiated cells.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Niacin** for **ocular hypertension** is grounded in its high-affinity interaction with **QPRT** (degree-penalized path saliency S = 0.9660, structural degree k = 1). By selectively engaging QPRT, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Niacin performs a number of functions in the body and so has many mechanisms, not all of which have been fully described. Niacin can decrease lipids and apolipoprotein B (apo B)-containing lipoproteins by modulating triglyceride synthesis in the liver, which degrades apo B, or by modulating lipolysis in adipose tissue.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of growth hormone insensitivity syndrome, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Dibotermin alfa -> BMPR1A -> growth hormone insensitivity syndrome) demonstrates that Dibotermin alfa suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
+In the context of ocular hypertension, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Niacin -> QPRT -> ocular hypertension) demonstrates that Niacin suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Dibotermin alfa exhibits defined physiological descriptors (MW: The molecular weight is 25795.62., TPSA: Dibotermin alfa has a topological polar surface area of 10367.0., elimination half-life: When injected intravenously, the terminal half-life of dibotermin alfa was 16 minutes in rats and 6.7 minutes in cynomolgus monkeys.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Dibotermin alfa represents a biologically grounded, translational opportunity for growth hormone insensitivity syndrome.
+From a biophysical standpoint, Niacin exhibits defined physiological descriptors (MW: The molecular weight is 123.11., TPSA: Niacin has a topological polar surface area of 50.19., elimination half-life: The half life of niacin is 0.9h, nicotinuric acid is 1.3h, and nicotinamide is 4.3h.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Niacin represents a biologically grounded, translational opportunity for ocular hypertension.
 
 ---
 
-## Rank #4: Tasonermin → tibia fracture
+## Rank #4: Migalastat → ocular hypertension
 
-- **AI Repurposing Confidence:** `1.0000`
+- **AI Repurposing Confidence:** `0.9999`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `TNFRSF1B` (Degree: 18, Saliency: `0.2357`)
-  - `TNFRSF1A` (Degree: 19, Saliency: `0.2294`)
-- **Physicochemical Properties:** MW: `The molecular weight is 17350.75.` | TPSA: `Tasonermin has a topological polar surface area of 7163.87.`
+  - `GLA` (Degree: 6, Saliency: `0.3881`)
+  - `UGT1A1` (Degree: 95, Saliency: `0.0386`)
+- **Physicochemical Properties:** MW: `The molecular weight is 163.17.` | TPSA: `Migalastat has a topological polar surface area of 92.95.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Tasonermin** for **tibia fracture** is grounded in its high-affinity interaction with **TNFRSF1B** (degree-penalized path saliency S = 0.2357, structural degree k = 18). By selectively engaging TNFRSF1B, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Since tasonermin is recombinant TNF-&alpha;, it functions exactly as endogenous TNF-&alpha; does. The direct cytotoxic effect of TNF-&alpha; is mediated by TNF-&alpha; receptor 1. The bound receptor activates the well-reviewed death receptor pathway involving the activation of initiator caspases 8 and 9 then ultimately ending in the activation of effector caspase 3 which begins the process of apoptosis.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Migalastat** for **ocular hypertension** is grounded in its high-affinity interaction with **GLA** (degree-penalized path saliency S = 0.3881, structural degree k = 6). By selectively engaging GLA, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Fabry disease is a progressive X-linked lysosomal storage disorder which affects males and females. Fabry disease-causing mutations occur in the galactosidase alpha (GLA) gene and result in a deficiency of the lysosomal enzyme alpha-galactosidase A (alpha-Gal A) that is required for glycosphingolipid substrate (GL-3 and lyso-Gb3) metabolism. Reduced alpha-Gal A activity is, therefore, associated with the progressive accumulation of glycosphingolipid substrate in vulnerable organs and tissues, which ultimately leads to the morbidity and mortality associated with Fabry disease.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of tibia fracture, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Tasonermin -> TNFRSF1B -> tibia fracture) demonstrates that Tasonermin suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
+In the context of ocular hypertension, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Migalastat -> GLA -> ocular hypertension) demonstrates that Migalastat suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Tasonermin exhibits defined physiological descriptors (MW: The molecular weight is 17350.75., TPSA: Tasonermin has a topological polar surface area of 7163.87., elimination half-life: Tasonermin has a terminal half life of 20-30 min at doses of 150 μg/m². This value increases as dosage increases.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Tasonermin represents a biologically grounded, translational opportunity for tibia fracture.
+From a biophysical standpoint, Migalastat exhibits defined physiological descriptors (MW: The molecular weight is 163.17., TPSA: Migalastat has a topological polar surface area of 92.95., elimination half-life: The mean elimination half-life (t1/2) of migalastat ranges from approximately 3 to 5 hours.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Migalastat represents a biologically grounded, translational opportunity for ocular hypertension.
 
 ---
 
-## Rank #5: Somatotropin → tibia fracture
+## Rank #5: Migalastat → open-angle glaucoma
 
-- **AI Repurposing Confidence:** `1.0000`
+- **AI Repurposing Confidence:** `0.9999`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `PRLR` (Degree: 11, Saliency: `0.3015`)
-  - `GHR` (Degree: 20, Saliency: `0.2236`)
-- **Physicochemical Properties:** MW: `The molecular weight is 22125.07.` | TPSA: `Somatotropin has a topological polar surface area of 9147.67.`
+  - `GLA` (Degree: 6, Saliency: `0.3831`)
+  - `UGT1A1` (Degree: 95, Saliency: `0.0447`)
+- **Physicochemical Properties:** MW: `The molecular weight is 163.17.` | TPSA: `Migalastat has a topological polar surface area of 92.95.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Somatotropin** for **tibia fracture** is grounded in its high-affinity interaction with **PRLR** (degree-penalized path saliency S = 0.3015, structural degree k = 11). By selectively engaging PRLR, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (hGH binds to the human growth hormone receptor (GHR). Upon binding, hGH causes dimerization of GHR, activation of the GHR-associated JAK2 tyrosine kinase, and tyrosyl phosphorylation of both JAK2 and GHR. These events recruit and/or activate a variety of signaling molecules, including MAP kinases, insulin receptor substrates, phosphatidylinositol 3' phosphate kinase, diacylglycerol, protein kinase C, intracellular calcium, and Stat transcription factors. These signaling molecules contribute to the GH-induced changes in enzymatic activity, transport function, and gene expression that ultimately culminate in changes in growth and metabolism.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Migalastat** for **open-angle glaucoma** is grounded in its high-affinity interaction with **GLA** (degree-penalized path saliency S = 0.3831, structural degree k = 6). By selectively engaging GLA, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Fabry disease is a progressive X-linked lysosomal storage disorder which affects males and females. Fabry disease-causing mutations occur in the galactosidase alpha (GLA) gene and result in a deficiency of the lysosomal enzyme alpha-galactosidase A (alpha-Gal A) that is required for glycosphingolipid substrate (GL-3 and lyso-Gb3) metabolism. Reduced alpha-Gal A activity is, therefore, associated with the progressive accumulation of glycosphingolipid substrate in vulnerable organs and tissues, which ultimately leads to the morbidity and mortality associated with Fabry disease.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of tibia fracture, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Somatotropin -> PRLR -> tibia fracture) demonstrates that Somatotropin suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
+In the context of open-angle glaucoma, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Migalastat -> GLA -> open-angle glaucoma) demonstrates that Migalastat suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Somatotropin exhibits defined physiological descriptors (MW: The molecular weight is 22125.07., TPSA: Somatotropin has a topological polar surface area of 9147.67., elimination half-life: nan). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Somatotropin represents a biologically grounded, translational opportunity for tibia fracture.
+From a biophysical standpoint, Migalastat exhibits defined physiological descriptors (MW: The molecular weight is 163.17., TPSA: Migalastat has a topological polar surface area of 92.95., elimination half-life: The mean elimination half-life (t1/2) of migalastat ranges from approximately 3 to 5 hours.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Migalastat represents a biologically grounded, translational opportunity for open-angle glaucoma.
 
 ---
 
-## Rank #6: Metreleptin → tibia fracture
+## Rank #6: Ataluren → chronic hepatitis C virus infection
 
-- **AI Repurposing Confidence:** `1.0000`
+- **AI Repurposing Confidence:** `0.9999`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `LEPR` (Degree: 24, Saliency: `0.2041`)
-- **Physicochemical Properties:** MW: `The molecular weight is 16155.67.` | TPSA: `Metreleptin has a topological polar surface area of 6610.67.`
+  - `UGT1A9` (Degree: 56, Saliency: `0.1042`)
+  - `SLCO1B3` (Degree: 89, Saliency: `0.0991`)
+  - `SLC22A8` (Degree: 111, Saliency: `0.0639`)
+- **Physicochemical Properties:** MW: `The molecular weight is 284.25.` | TPSA: `Ataluren has a topological polar surface area of 76.22.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Metreleptin** for **tibia fracture** is grounded in its high-affinity interaction with **LEPR** (degree-penalized path saliency S = 0.2041, structural degree k = 24). By selectively engaging LEPR, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Metreleptin functions by binding to and activating the human leptin receptor (ObR), which belongs to the Class I cytokine family of receptors that signals through the JAK/STAT transduction pathway.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Ataluren** for **chronic hepatitis C virus infection** is grounded in its high-affinity interaction with **UGT1A9** (degree-penalized path saliency S = 0.1042, structural degree k = 56). By selectively engaging UGT1A9, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Ataluren enables ribosomal readthrough of mRNA containing premature stop codons that otherwise would result in premature termination of protein chains. Use of ataluren allows cellular machinery to bypass nonsense mutations in genetic material, continue the translation process, and thereby restore the production of a full-length, functional protein.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of tibia fracture, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Metreleptin -> LEPR -> tibia fracture) demonstrates that Metreleptin suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
+In the context of chronic hepatitis C virus infection, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Ataluren -> UGT1A9 -> chronic hepatitis C virus infection) demonstrates that Ataluren suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Metreleptin exhibits defined physiological descriptors (MW: The molecular weight is 16155.67., TPSA: Metreleptin has a topological polar surface area of 6610.67., elimination half-life: The half-life is 3.8 to 4.7 hours). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Metreleptin represents a biologically grounded, translational opportunity for tibia fracture.
+From a biophysical standpoint, Ataluren exhibits defined physiological descriptors (MW: The molecular weight is 284.25., TPSA: Ataluren has a topological polar surface area of 76.22., elimination half-life: Ataluren plasma half-life ranges from 2-6 hours and is unaffected either by dose or repeated administration.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Ataluren represents a biologically grounded, translational opportunity for chronic hepatitis C virus infection.
 
 ---
 
-## Rank #7: Anakinra → tibia fracture
+## Rank #7: Doxorubicin → T-cell leukemia
 
-- **AI Repurposing Confidence:** `1.0000`
+- **AI Repurposing Confidence:** `0.9998`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `IL1R1` (Degree: 5, Saliency: `0.4472`)
-- **Physicochemical Properties:** MW: `The molecular weight is 17257.66.` | TPSA: `Anakinra has a topological polar surface area of 7115.02.`
+  - `ABCG2` (Degree: 170, Saliency: `0.0497`)
+- **Physicochemical Properties:** MW: `The molecular weight is 543.52.` | TPSA: `Doxorubicin has a topological polar surface area of 206.07.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Anakinra** for **tibia fracture** is grounded in its high-affinity interaction with **IL1R1** (degree-penalized path saliency S = 0.4472, structural degree k = 5). By selectively engaging IL1R1, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Anakinra binds competitively to the Interleukin-1 type I receptor (IL-1RI), thereby inhibiting the action of elevated levels IL-1 which normally can lead to cartilage degradation and bone resorption.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Doxorubicin** for **T-cell leukemia** is grounded in its high-affinity interaction with **ABCG2** (degree-penalized path saliency S = 0.0497, structural degree k = 170). By selectively engaging ABCG2, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Doxorubicin has antimitotic and cytotoxic activity through a number of proposed mechanisms of action: Doxorubicin forms complexes with DNA by intercalation between base pairs, and it inhibits topoisomerase II activity by stabilizing the DNA-topoisomerase II complex, preventing the religation portion of the ligation-religation reaction that topoisomerase II catalyzes.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of tibia fracture, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Anakinra -> IL1R1 -> tibia fracture) demonstrates that Anakinra suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
+In the context of T-cell leukemia, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Doxorubicin -> ABCG2 -> T-cell leukemia) demonstrates that Doxorubicin suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Anakinra exhibits defined physiological descriptors (MW: The molecular weight is 17257.66., TPSA: Anakinra has a topological polar surface area of 7115.02., elimination half-life: Healthy subjects = 4 - 6 hours;). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Anakinra represents a biologically grounded, translational opportunity for tibia fracture.
+From a biophysical standpoint, Doxorubicin exhibits defined physiological descriptors (MW: The molecular weight is 543.52., TPSA: Doxorubicin has a topological polar surface area of 206.07., elimination half-life: Terminal half life = 20 - 48 hours. ). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Doxorubicin represents a biologically grounded, translational opportunity for T-cell leukemia.
 
 ---
 
-## Rank #8: Eteplirsen → tibia fracture
+## Rank #8: Vardenafil → hypertension
 
-- **AI Repurposing Confidence:** `1.0000`
-- **Physicochemical Properties:** MW: `The molecular weight is 10305.89.` | TPSA: `Eteplirsen has a topological polar surface area of 3305.26.`
+- **AI Repurposing Confidence:** `0.9998`
+- **Mediating Protein Targets (Topological Saliency):**
+  - `CYP3A5` (Degree: 224, Saliency: `0.0442`)
+- **Physicochemical Properties:** MW: `The molecular weight is 488.61.` | TPSA: `Vardenafil has a topological polar surface area of 109.13.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Eteplirsen** for **tibia fracture** is grounded in its high-affinity interaction with **target receptor** (degree-penalized path saliency S = 0.4000, structural degree k = 5). By selectively engaging target receptor, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Eteplirsen, is a targeted oligonucleotide that causes exon skipping of exon 51 and restores the translational reading frame. (2) The expected result is production of an internally deleted but functional dystrophin protein. (2) ) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Vardenafil** for **hypertension** is grounded in its high-affinity interaction with **CYP3A5** (degree-penalized path saliency S = 0.0442, structural degree k = 224). By selectively engaging CYP3A5, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Vardenafil inhibits the cGMP specific phosphodiesterase type 5 (PDE5) which is responsible for degradation of cGMP in the corpus cavernosum located around the penis. Penile erection during sexual stimulation is caused by increased penile blood flow resulting from the relaxation of penile arteries and corpus cavernosal smooth muscle. This response is mediated by the release of nitric oxide (NO) from nerve terminals and endothelial cells, which stimulates the synthesis of cGMP in smooth muscle cells. Cyclic GMP causes smooth muscle relaxation and increased blood flow into the corpus cavernosum. The inhibition of phosphodiesterase type 5 (PDE5) by vardenafil enhances erectile function by increasing the amount of cGMP.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of tibia fracture, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Eteplirsen -> target receptor -> tibia fracture) demonstrates that Eteplirsen suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
+In the context of hypertension, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Vardenafil -> CYP3A5 -> hypertension) demonstrates that Vardenafil suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Eteplirsen exhibits defined physiological descriptors (MW: The molecular weight is 10305.89., TPSA: Eteplirsen has a topological polar surface area of 3305.26., elimination half-life: Mean half-life (dose of 30 mg/kg) = 3.3 hours, and mean half-life (dose of 50 mg/kg) = 3.2 hours (3)). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Eteplirsen represents a biologically grounded, translational opportunity for tibia fracture.
+From a biophysical standpoint, Vardenafil exhibits defined physiological descriptors (MW: The molecular weight is 488.61., TPSA: Vardenafil has a topological polar surface area of 109.13., elimination half-life: The half-life is 4-5 hours). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Vardenafil represents a biologically grounded, translational opportunity for hypertension.
 
 ---
 
-## Rank #9: Cenegermin → tibia fracture
+## Rank #9: Urokinase → cardiovascular disease
 
-- **AI Repurposing Confidence:** `1.0000`
+- **AI Repurposing Confidence:** `0.9998`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `NTRK1` (Degree: 23, Saliency: `0.2085`)
-- **Physicochemical Properties:** MW: `The molecular weight is 13261.1.` | TPSA: `Cenegermin has a topological polar surface area of 5485.74.`
+  - `NID1` (Degree: 2, Saliency: `0.5876`)
+  - `SERPINA5` (Degree: 4, Saliency: `0.3724`)
+  - `ST14` (Degree: 5, Saliency: `0.2984`)
+- **Physicochemical Properties:** MW: `nan` | TPSA: `nan`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Cenegermin** for **tibia fracture** is grounded in its high-affinity interaction with **NTRK1** (degree-penalized path saliency S = 0.2085, structural degree k = 23). By selectively engaging NTRK1, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Cenegermin is a recombinant form of human nerve growth factor.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Urokinase** for **cardiovascular disease** is grounded in its high-affinity interaction with **NID1** (degree-penalized path saliency S = 0.5876, structural degree k = 2). By selectively engaging NID1, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Urokinase is a serine protease. It cleaves plasminogen to form the active fibrinolytic protease, plasmin.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of tibia fracture, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Cenegermin -> NTRK1 -> tibia fracture) demonstrates that Cenegermin suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
+In the context of cardiovascular disease, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Urokinase -> NID1 -> cardiovascular disease) demonstrates that Urokinase suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Cenegermin exhibits defined physiological descriptors (MW: The molecular weight is 13261.1., TPSA: Cenegermin has a topological polar surface area of 5485.74., elimination half-life: nan). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Cenegermin represents a biologically grounded, translational opportunity for tibia fracture.
+From a biophysical standpoint, Urokinase exhibits defined physiological descriptors (MW: nan, TPSA: nan, elimination half-life: Urokinase has a half life of 12.6±6.2 minutes.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Urokinase represents a biologically grounded, translational opportunity for cardiovascular disease.
 
 ---
 
-## Rank #10: Mecasermin → tibia fracture
+## Rank #10: Stanozolol → hepatitis C virus infection
 
-- **AI Repurposing Confidence:** `1.0000`
+- **AI Repurposing Confidence:** `0.9998`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `IGFBP4` (Degree: 1, Saliency: `1.0000`)
-  - `IGFBP2` (Degree: 7, Saliency: `0.3780`)
-  - `IGFBP1` (Degree: 9, Saliency: `0.3333`)
-- **Physicochemical Properties:** MW: `The molecular weight is 7648.71.` | TPSA: `Mecasermin has a topological polar surface area of 3126.93.`
+  - `AR` (Degree: 68, Saliency: `0.0743`)
+- **Physicochemical Properties:** MW: `The molecular weight is 328.5.` | TPSA: `Stanozolol has a topological polar surface area of 48.91.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Mecasermin** for **tibia fracture** is grounded in its high-affinity interaction with **IGFBP4** (degree-penalized path saliency S = 1.0000, structural degree k = 1). By selectively engaging IGFBP4, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Mecasermin supplies recombinant-DNA-origin IGF-1, which binds to the Type I IGF-1 receptor. This receptor exerts intra-cellular signaling activity in a number of processes involved in statural growth, including mitogenesis in multiple tissue types, chondrocyte growth and division along cartilage growth plates, and increases in organ growth. ) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Stanozolol** for **hepatitis C virus infection** is grounded in its high-affinity interaction with **AR** (degree-penalized path saliency S = 0.0743, structural degree k = 68). By selectively engaging AR, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Stanozolol binds to androgen receptors, such as membrane bound receptor proteins LAGS and stanozolol-binding protein (STBP). ) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of tibia fracture, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Mecasermin -> IGFBP4 -> tibia fracture) demonstrates that Mecasermin suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
+In the context of hepatitis C virus infection, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork (Stanozolol -> AR -> hepatitis C virus infection) demonstrates that Stanozolol suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Mecasermin exhibits defined physiological descriptors (MW: The molecular weight is 7648.71., TPSA: Mecasermin has a topological polar surface area of 3126.93., elimination half-life: Mean half life of 5.8 hours ). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Mecasermin represents a biologically grounded, translational opportunity for tibia fracture.
+From a biophysical standpoint, Stanozolol exhibits defined physiological descriptors (MW: The molecular weight is 328.5., TPSA: Stanozolol has a topological polar surface area of 48.91., elimination half-life: The half-life is 24 hours). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Stanozolol represents a biologically grounded, translational opportunity for hepatitis C virus infection.
 
 ---
 

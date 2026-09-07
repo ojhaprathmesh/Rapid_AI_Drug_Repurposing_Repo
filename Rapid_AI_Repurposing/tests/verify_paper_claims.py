@@ -181,14 +181,31 @@ def main():
     # AUDIT 6: Clinical Case Studies & PubMed ID Grounding (Table V)
     # ─────────────────────────────────────────────────────────
     print(f"\n{CYAN}{BOLD}--- [6/7] AUDITING CLINICAL CANDIDATE GROUNDING & PMIDs (Table V) ---{RESET}")
+    top50_csv = os.path.join(BASE_DIR, "top_50_repurposing_predictions.csv")
+    df_top50 = pd.read_csv(top50_csv) if os.path.exists(top50_csv) else pd.DataFrame()
+
+    if not df_top50.empty:
+        max_per_dis = int(df_top50['disease_name'].value_counts().max())
+        num_dis = int(df_top50['disease_name'].nunique())
+        max_score = float(df_top50['repurposing_score'].max())
+        print_check("Hub-Norm Mitigation: Scores Bounded in [0, 1]", max_score <= 1.0, f"Max score = {max_score:.6f}")
+        print_check("Disease Diversity Constraint (max 2 per condition)", max_per_dis <= 2, f"Max count per disease: {max_per_dis}, Unique diseases: {num_dis}")
+
     candidates = [
-        ("Somatotropin",  "Tibia fracture repair",   "0.999", "17974883", "J Bone Joint Surg (Am)"),
-        ("Menatetrenone", "Traumatic bone fracture", "0.998", "10700140", "J Bone Miner Res"),
-        ("Anakinra",      "Fracture non-union",      "0.996", "21304047", "Blood"),
-        ("Mecasermin",    "Tibial bone union",       "0.999", "12235108", "J Clin Invest"),
+        ("Niacin",      "ocular hypertension",       "0.999", "32710486", "Clin Exp Ophthalmol"),
+        ("Vardenafil",  "hypertension",              "0.999", "15464333", "J Am Coll Cardiol"),
+        ("Doxorubicin", "T-cell leukemia",           "0.999", "18388179", "Blood"),
+        ("Polaprezinc", "drug-induced osteoporosis", "0.999", "20035439", "Mol Cell Biochem"),
     ]
     for drug, disease, prob, pmid, journal in candidates:
-        print_check(f"{drug} -> {disease}", True, f"p >= {prob} | PMID: {pmid} ({journal})")
+        found_score = None
+        if not df_top50.empty:
+            match = df_top50[(df_top50['drug_name'].str.lower() == drug.lower()) & 
+                             (df_top50['disease_name'].str.lower() == disease.lower())]
+            if len(match) > 0:
+                found_score = float(match.iloc[0]['repurposing_score'])
+        detail = f"p = {found_score:.4f} | PMID: {pmid} ({journal})" if found_score else f"p >= {prob} | PMID: {pmid} ({journal})"
+        print_check(f"{drug} -> {disease}", found_score is not None, detail)
 
     # ─────────────────────────────────────────────────────────
     # AUDIT 7: Inference Latency & Scalability (Table VI)

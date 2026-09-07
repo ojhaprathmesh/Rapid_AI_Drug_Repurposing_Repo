@@ -141,6 +141,7 @@ class DiscoveryEngine:
         with torch.no_grad():
             # EXACT match to Step 3 logic
             self.z = self.model.encode(self.x, self.edge_index)
+            self.embeddings = self.z
 
     def fuzzy_search(self, query, top_n=3):
         all_names = list(self.name_to_gid.keys())
@@ -294,6 +295,14 @@ class PathSaliencyEngine:
             self.idx_to_name[n_idx] = n_name
             self.idx_to_type[n_idx] = n_type
 
+        # Load node_map for sequential embedding indexing
+        node_map_path = os.path.join(DATA_DIR, "node_map.json")
+        if os.path.exists(node_map_path):
+            with open(node_map_path, "r") as f:
+                self.node_map = json.load(f)
+        else:
+            self.node_map = {}
+
         # Build adjacency for fast 2-hop lookup
         self.adj = {}
         if not self.edges_df.empty:
@@ -314,12 +323,16 @@ class PathSaliencyEngine:
         """
         if self.embeddings is not None and TORCH_AVAILABLE and isinstance(self.embeddings, torch.Tensor):
             try:
-                zu = self.embeddings[drug_idx]
-                zp = self.embeddings[p_idx]
-                zv = self.embeddings[dis_idx]
-                aff_up = float(torch.sigmoid((zu * zp).sum()))
-                aff_pv = float(torch.sigmoid((zp * zv).sum()))
-                return float(((aff_up + aff_pv) / 2.0) / self.np.sqrt(deg))
+                gid_u = self.node_map.get(str(drug_idx))
+                gid_p = self.node_map.get(str(p_idx))
+                gid_v = self.node_map.get(str(dis_idx))
+                if gid_u is not None and gid_p is not None and gid_v is not None:
+                    zu = self.embeddings[gid_u]
+                    zp = self.embeddings[gid_p]
+                    zv = self.embeddings[gid_v]
+                    aff_up = float(torch.sigmoid((zu * zp).sum()))
+                    aff_pv = float(torch.sigmoid((zp * zv).sum()))
+                    return float(((aff_up + aff_pv) / 2.0) / self.np.sqrt(deg))
             except Exception:
                 pass
         return float(1.0 / self.np.sqrt(deg))

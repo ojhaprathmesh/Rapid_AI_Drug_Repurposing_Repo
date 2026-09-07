@@ -1,51 +1,51 @@
-rank,drug_seq_idx,disease_seq_idx,drug_name,disease_name,repurposing_score,raw_logit
-1,7153,10568,Mecasermin rinfabate,tibia fracture,1.0,413.186554
-2,7545,8197,Dibotermin alfa,Laron syndrome,1.0,230.048813
-3,7545,8401,Dibotermin alfa,growth hormone insensitivity syndrome,1.0,224.145416
-4,7442,10568,Tasonermin,tibia fracture,1.0,209.079193
-5,7189,10568,Somatotropin,tibia fracture,1.0,203.355774
-6,7501,10568,Metreleptin,tibia fracture,1.0,199.076813
-7,7363,10568,Anakinra,tibia fracture,1.0,186.50589
-8,7828,10568,Eteplirsen,tibia fracture,1.0,153.622314
-9,7457,10568,Cenegermin,tibia fracture,1.0,148.228836
-10,6419,10568,Mecasermin,tibia fracture,1.0,144.21727
-11,7442,8197,Tasonermin,Laron syndrome,1.0,129.423065
-12,7189,8197,Somatotropin,Laron syndrome,1.0,128.880188
-13,7442,8401,Tasonermin,growth hormone insensitivity syndrome,1.0,127.282578
-14,7189,8401,Somatotropin,growth hormone insensitivity syndrome,1.0,126.675987
-15,7501,8197,Metreleptin,Laron syndrome,1.0,124.332329
-16,7501,8401,Metreleptin,growth hormone insensitivity syndrome,1.0,122.050598
-17,7363,8197,Anakinra,Laron syndrome,1.0,114.475639
-18,7363,8401,Anakinra,growth hormone insensitivity syndrome,1.0,110.366348
-19,7497,10568,Ecallantide,tibia fracture,1.0,104.892418
-20,7836,10568,Menatetrenone,tibia fracture,1.0,104.880676
-21,7828,8197,Eteplirsen,Laron syndrome,1.0,98.050415
-22,7828,8401,Eteplirsen,growth hormone insensitivity syndrome,1.0,97.468811
-23,7482,10568,Teduglutide,tibia fracture,1.0,94.238091
-24,7457,8197,Cenegermin,Laron syndrome,1.0,91.318588
-25,7457,8401,Cenegermin,growth hormone insensitivity syndrome,1.0,88.991554
-26,7571,10568,Gramicidin D,tibia fracture,1.0,86.798874
-27,7666,10568,Paromomycin,tibia fracture,1.0,74.864494
-28,7153,10034,Mecasermin rinfabate,pituitary dwarfism,1.0,74.645523
-29,7836,8197,Menatetrenone,Laron syndrome,1.0,69.212402
-30,7836,8401,Menatetrenone,growth hormone insensitivity syndrome,1.0,69.027466
-31,7153,8317,Mecasermin rinfabate,monosomy X,1.0,67.875793
-32,7497,8197,Ecallantide,Laron syndrome,1.0,63.787281
-33,7153,9751,Mecasermin rinfabate,soft tissue sarcoma,1.0,63.542599
-34,6894,10568,Azithromycin,tibia fracture,1.0,63.187302
-35,7153,8177,Mecasermin rinfabate,CINCA syndrome,1.0,62.893925
-36,7497,8401,Ecallantide,growth hormone insensitivity syndrome,1.0,62.193436
-37,7153,10109,Mecasermin rinfabate,intervertebral disc degenerative disorder,1.0,61.181564
-38,7545,10034,Dibotermin alfa,pituitary dwarfism,1.0,60.700554
-39,7545,8177,Dibotermin alfa,CINCA syndrome,1.0,60.110516
-40,7836,9846,Menatetrenone,head and neck neoplasm,1.0,59.628525
-41,7482,8197,Teduglutide,Laron syndrome,1.0,58.648712
-42,7545,8317,Dibotermin alfa,monosomy X,1.0,58.122482
-43,6948,10568,Rifaximin,tibia fracture,1.0,57.18148
-44,7812,10568,Tavaborole,tibia fracture,1.0,57.145157
-45,7482,8401,Teduglutide,growth hormone insensitivity syndrome,1.0,56.491158
-46,6261,10568,Ketoconazole,tibia fracture,1.0,55.805145
-47,6953,10568,Posaconazole,tibia fracture,1.0,54.771904
-48,7545,9751,Dibotermin alfa,soft tissue sarcoma,1.0,54.760811
-49,7153,8338,Mecasermin rinfabate,Turner syndrome,1.0,54.370842
-50,7897,10568,Nusinersen,tibia fracture,1.0,54.253517
+rank,drug_seq_idx,disease_seq_idx,drug_name,disease_name,repurposing_score
+1,6523,9934,Ataluren,hepatitis C virus infection,0.999914
+2,7870,10271,Maxacalcitol,anorexia nervosa,0.999881
+3,6396,10260,Niacin,ocular hypertension,0.999863
+4,7105,10260,Migalastat,ocular hypertension,0.999862
+5,7105,9743,Migalastat,open-angle glaucoma,0.999856
+6,6523,10234,Ataluren,chronic hepatitis C virus infection,0.999855
+7,6256,9879,Doxorubicin,T-cell leukemia,0.999835
+8,6646,9745,Vardenafil,hypertension,0.999827
+9,6545,9701,Urokinase,cardiovascular disease,0.999811
+10,7219,9934,Stanozolol,hepatitis C virus infection,0.999811
+11,6396,8436,Niacin,hypertensive disorder,0.999802
+12,7105,8436,Migalastat,hypertensive disorder,0.999801
+13,6337,8218,Ticagrelor,hypoalphalipoproteinemia,0.999785
+14,7811,10271,Oxypertine,anorexia nervosa,0.99976
+15,6509,8047,Polaprezinc,orthostatic hypotension,0.999734
+16,7219,10234,Stanozolol,chronic hepatitis C virus infection,0.999733
+17,6396,9743,Niacin,open-angle glaucoma,0.99973
+18,7845,8147,Ibopamine,pernicious anemia,0.99972
+19,7300,9879,Oprelvekin,T-cell leukemia,0.999718
+20,7845,8363,Ibopamine,chronic thromboembolic pulmonary hypertension,0.999717
+21,7393,9745,Acetyldigitoxin,hypertension,0.999711
+22,7105,8434,Migalastat,diabetes mellitus (disease),0.999704
+23,7845,9682,Ibopamine,vitamin B12 deficiency,0.999691
+24,6199,8423,Testosterone,pituitary gigantism,0.999686
+25,6256,9921,Doxorubicin,mature T-cell and NK-cell non-Hodgkin lymphoma,0.999679
+26,6523,10372,Ataluren,vulvovaginal candidiasis,0.999669
+27,6493,10510,Ferrous sulfate anhydrous,pyridoxine deficiency anemia,0.999659
+28,6509,10094,Polaprezinc,drug-induced osteoporosis,0.999656
+29,7105,8450,Migalastat,hypotensive disorder,0.999624
+30,7860,8363,Azosemide,chronic thromboembolic pulmonary hypertension,0.999622
+31,7105,9987,Migalastat,intracranial hypertension,0.999621
+32,7105,8052,Migalastat,type 2 diabetes mellitus,0.999614
+33,7300,9921,Oprelvekin,mature T-cell and NK-cell non-Hodgkin lymphoma,0.999596
+34,6256,10462,Doxorubicin,"peripheral T-cell lymphoma, not otherwise specified",0.999592
+35,7105,10008,Migalastat,sulfhemoglobinemia,0.999588
+36,7219,10372,Stanozolol,vulvovaginal candidiasis,0.999585
+37,7300,10503,Oprelvekin,T-cell/histiocyte rich large B cell lymphoma,0.999584
+38,6513,10426,Chlorambucil,acute diarrhea,0.999574
+39,7300,8163,Oprelvekin,Burkitt lymphoma,0.999574
+40,7300,9715,Oprelvekin,diffuse large B-cell lymphoma,0.999566
+41,6256,10426,Doxorubicin,acute diarrhea,0.999562
+42,7845,9941,Ibopamine,influenza,0.999554
+43,7130,10320,Betahistine,Reye syndrome,0.999553
+44,7300,10462,Oprelvekin,"peripheral T-cell lymphoma, not otherwise specified",0.999548
+45,6337,8391,Ticagrelor,homozygous familial hypercholesterolemia,0.999546
+46,6256,10488,Doxorubicin,giant cell glioblastoma,0.999545
+47,7105,8210,Migalastat,pseudotumor cerebri,0.999537
+48,7860,9941,Azosemide,influenza,0.999534
+49,6256,8271,Doxorubicin,acute erythroid leukemia,0.999534
+50,7888,9701,Monoxerutin,cardiovascular disease,0.999528

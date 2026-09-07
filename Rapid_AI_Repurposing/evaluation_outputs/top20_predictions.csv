@@ -1,21 +1,21 @@
-rank,drug_name,disease_name,probability,raw_logit
-1,Enfuvirtide,tibia fracture,1.0,26.196209
-2,Dibotermin alfa,soft tissue sarcoma,1.0,38.234371
-3,Ledipasvir,growth hormone insensitivity syndrome,1.0,16.569637
-4,Mecasermin rinfabate,vulvovaginal candidiasis,1.0,15.31847
-5,Menatetrenone,kidney angiomyolipoma,1.0,15.168417
-6,Menatetrenone,head and neck neoplasm,1.0,27.438692
-7,Ecallantide,growth hormone insensitivity syndrome,1.0,33.522408
-8,Insulin detemir,tibia fracture,1.0,36.501213
-9,Mecasermin,cancer,1.0,18.752607
-10,Menatetrenone,cytomegalovirus infection,1.0,19.290541
-11,Prednisolone,rheumatologic disorder,1.0,15.172965
-12,Insulin human,growth hormone insensitivity syndrome,1.0,25.071154
-13,Insulin glargine,growth hormone insensitivity syndrome,1.0,23.839243
-14,Insulin glargine,Laron syndrome,1.0,24.416119
-15,Insulin aspart,Laron syndrome,1.0,25.976694
-16,Ecallantide,tibia fracture,1.0,49.794514
-17,Menatetrenone,growth hormone insensitivity syndrome,1.0,25.576694
-18,Mecasermin,soft tissue sarcoma,1.0,17.603619
-19,Stanozolol,tibia fracture,1.0,27.897432
-20,Ecallantide,Laron syndrome,1.0,33.684647
+rank,drug_seq_idx,disease_seq_idx,drug_name,disease_name,repurposing_score
+1,6523,9934,Ataluren,hepatitis C virus infection,0.999914
+2,7870,10271,Maxacalcitol,anorexia nervosa,0.999881
+3,6396,10260,Niacin,ocular hypertension,0.999863
+4,7105,10260,Migalastat,ocular hypertension,0.999862
+5,7105,9743,Migalastat,open-angle glaucoma,0.999856
+6,6523,10234,Ataluren,chronic hepatitis C virus infection,0.999855
+7,6256,9879,Doxorubicin,T-cell leukemia,0.999835
+8,6646,9745,Vardenafil,hypertension,0.999827
+9,6545,9701,Urokinase,cardiovascular disease,0.999811
+10,7219,9934,Stanozolol,hepatitis C virus infection,0.999811
+11,6396,8436,Niacin,hypertensive disorder,0.999802
+12,7105,8436,Migalastat,hypertensive disorder,0.999801
+13,6337,8218,Ticagrelor,hypoalphalipoproteinemia,0.999785
+14,7811,10271,Oxypertine,anorexia nervosa,0.99976
+15,6509,8047,Polaprezinc,orthostatic hypotension,0.999734
+16,7219,10234,Stanozolol,chronic hepatitis C virus infection,0.999733
+17,6396,9743,Niacin,open-angle glaucoma,0.99973
+18,7845,8147,Ibopamine,pernicious anemia,0.99972
+19,7300,9879,Oprelvekin,T-cell leukemia,0.999718
+20,7845,8363,Ibopamine,chronic thromboembolic pulmonary hypertension,0.999717
