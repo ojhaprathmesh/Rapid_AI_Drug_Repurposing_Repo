@@ -19,6 +19,15 @@ print("--- STARTING STEP 3: GraphSAGE Neural Network Training (Full-Batch) ---")
 train_data = torch.load(os.path.join(DATA_DIR, "train_data.pt"), weights_only=False)
 val_data = torch.load(os.path.join(DATA_DIR, "val_data.pt"), weights_only=False)
 
+"""
+Leakage-free message-passing adjacencies
+Each split's Data object carries a `msg_edge_index` attribute that has the
+split's own positive (supervision) edges excised from the global graph.
+Using `data.edge_index` here would re-introduce message-passing leakage.
+"""
+train_msg_ei = train_data.msg_edge_index   # global − val_pos − test_pos
+val_msg_ei   = val_data.msg_edge_index     # same topology as train_msg_ei
+
 class LinkPredictorSAGE(torch.nn.Module):
     def __init__(self, in_channels, hidden_channels, out_channels):
         super().__init__()
@@ -44,22 +53,19 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=1e-4)
 # Criterion forces model to map true drug-disease paths to 1.0, and fake paths to 0.0
 criterion = torch.nn.BCEWithLogitsLoss()
 
-# The original topology (connections between all nodes) drives message passing
-msg_edge_index = train_data.edge_index
-
 def train():
     model.train()
     optimizer.zero_grad()
-    
-    # 1. Forward Pass Embeddings
-    z = model.encode(train_data.x, msg_edge_index)
-    
+
+    # 1. Forward Pass Embeddings — use train_msg_ei (val+test pos edges excised)
+    z = model.encode(train_data.x, train_msg_ei)
+
     # 2. Score specifically our filtered Drug-Disease boundaries
     pred = model.decode(z, train_data.edge_label_index)
-    
+
     # 3. Compute loss against 1s and 0s
     loss = criterion(pred, train_data.edge_label)
-    
+
     # 4. Backpropagation
     loss.backward()
     optimizer.step()
@@ -68,13 +74,14 @@ def train():
 @torch.no_grad()
 def test(data):
     model.eval()
-    z = model.encode(data.x, msg_edge_index)
+    # Use the split's own leakage-free message-passing graph
+    z = model.encode(data.x, data.msg_edge_index)
     pred = model.decode(z, data.edge_label_index)
-    
+
     # Apply sigmoid strictly to convert logit boundaries to 0-1 probabilities
     pred_prob = torch.sigmoid(pred).cpu().numpy()
     target = data.edge_label.cpu().numpy()
-    
+
     auc = roc_auc_score(target, pred_prob)
     ap = average_precision_score(target, pred_prob)
     return auc, ap
@@ -88,7 +95,7 @@ for epoch in range(1, 101):
     if epoch % 10 == 0:
         val_auc, val_ap = test(val_data)
         print(f"Epoch: {epoch:03d} | Train Loss: {loss:.4f} | Validation AUC-ROC: {val_auc:.4f} | Validation AP: {val_ap:.4f}")
-        
+
         # Save absolute best generalization model automatically
         if val_auc > best_val_auc:
             best_val_auc = val_auc

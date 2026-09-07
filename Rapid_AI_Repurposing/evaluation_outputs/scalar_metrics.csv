@@ -1,2 +1,2 @@
 AUC_ROC,AUPRC,Accuracy,Precision,Recall,Specificity,F1_Score,NPV,True_Positives,True_Negatives,False_Positives,False_Negatives,Total_Test_Samples
-0.9734,0.9652,0.9197,0.9071,0.9351,0.9043,0.9209,0.933,879,850,90,61,1880
+0.9235,0.9125,0.8479,0.8457,0.8511,0.8447,0.8484,0.8501,800,794,146,140,1880

@@ -87,8 +87,97 @@ train_neg = sample_negatives(train_pos.shape[1], used_edges)
 val_neg   = sample_negatives(val_pos.shape[1],   used_edges)
 test_neg  = sample_negatives(test_pos.shape[1],  used_edges)
 
-print("5. Building Final Data Objects...")
-def build_data(pos_ei, neg_ei):
+# ─────────────────────────────────────────────────────────────────────────────
+# 5. Build Per-Split Message-Passing Graphs (DATA LEAKAGE PREVENTION)
+# ─────────────────────────────────────────────────────────────────────────────
+"""
+The GNN encoder must NOT see any edge it is later asked to score.
+We excise both the forward and reverse direction of every held-out positive
+edge from the message-passing adjacency (edge_index).
+
+Protocol (strict transductive):
+  train_msg_ei  = global  |  val_pos  |  test_pos   (both directions)
+  val_msg_ei    = global  |  val_pos  |  test_pos   (same; val scored during training)
+  test_msg_ei   = global  |  test_pos               (both directions)
+"""
+print("5. Building Leakage-Free Per-Split Message-Passing Graphs...")
+
+def pos_to_set_bidirectional(pos_ei):
+    """Return the set of directed edges (u,v) AND (v,u) for a positive split."""
+    s = set()
+    for i in range(pos_ei.shape[1]):
+        u, v = pos_ei[0, i].item(), pos_ei[1, i].item()
+        s.add((u, v))
+        s.add((v, u))
+    return s
+
+def excise_edges(base_ei, edges_to_remove):
+    """
+    Remove all edges in `edges_to_remove` (a set of (u,v) tuples) from
+    `base_ei` (shape [2, E]) and return the filtered edge index.
+    """
+    src_list = base_ei[0].tolist()
+    dst_list = base_ei[1].tolist()
+    keep_mask = [
+        (u, v) not in edges_to_remove
+        for u, v in zip(src_list, dst_list)
+    ]
+    keep_idx = torch.tensor(keep_mask, dtype=torch.bool)
+    return base_ei[:, keep_idx]
+
+val_excise_set  = pos_to_set_bidirectional(val_pos)
+test_excise_set = pos_to_set_bidirectional(test_pos)
+
+# Train/Val encoder: remove val + test positives
+train_val_msg_ei = excise_edges(edge_index, val_excise_set | test_excise_set)
+# Test encoder: remove test positives only
+test_msg_ei      = excise_edges(edge_index, test_excise_set)
+
+print(f"   Global edge_index     : {edge_index.shape[1]:,} directed edges")
+print(f"   Val  excision set     : {len(val_excise_set):,}  directed edges removed  (val pos × 2)")
+print(f"   Test excision set     : {len(test_excise_set):,}  directed edges removed  (test pos × 2)")
+print(f"   train_msg_ei / val_msg_ei : {train_val_msg_ei.shape[1]:,} edges  "
+      f"(removed {edge_index.shape[1] - train_val_msg_ei.shape[1]:,})")
+print(f"   test_msg_ei           : {test_msg_ei.shape[1]:,} edges  "
+      f"(removed {edge_index.shape[1] - test_msg_ei.shape[1]:,})")
+
+# ── Sanity checks ──────────────────────────────────────────────────────────
+print("   Verifying excision correctness...")
+train_msg_set = set(zip(train_val_msg_ei[0].tolist(), train_val_msg_ei[1].tolist()))
+test_msg_set  = set(zip(test_msg_ei[0].tolist(),      test_msg_ei[1].tolist()))
+
+val_leak  = sum(1 for e in val_excise_set  if e in train_msg_set)
+test_leak = sum(1 for e in test_excise_set if e in test_msg_set)
+print(f"   Val  pos edges remaining in train_msg_ei : {val_leak}  (must be 0)")
+print(f"   Test pos edges remaining in test_msg_ei  : {test_leak}  (must be 0)")
+assert val_leak  == 0, "FATAL: Val positive edges still present in train message-passing graph!"
+assert test_leak == 0, "FATAL: Test positive edges still present in test message-passing graph!"
+print("   PASSED — zero leakage confirmed.")
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 6. Build Final Data Objects (each carrying its own msg_edge_index)
+# ─────────────────────────────────────────────────────────────────────────────
+print("6. Building Final Data Objects...")
+
+def build_data(pos_ei, neg_ei, msg_ei):
+    """
+    Construct a PyG Data object for one split.
+
+    Args:
+        pos_ei: Positive supervision edges for this split (shape [2, P]).
+        neg_ei: Negative supervision edges for this split (shape [2, N]).
+        msg_ei: Leakage-free message-passing adjacency — the global edge_index
+                with this split's positive edges (both directions) excised.
+                This is the ONLY adjacency that should be passed to
+                model.encode(); passing edge_index instead would reintroduce
+                message-passing topological label leakage.
+
+    Note:
+        edge_index (the full global graph) is retained on the object solely
+        for reference and novel-candidate discovery (step4_predict.py).
+        It must NOT be used as the message-passing adjacency during training
+        or evaluation.
+    """
     edge_label_index = torch.cat([pos_ei, neg_ei], dim=1)
     edge_label = torch.cat([
         torch.ones(pos_ei.shape[1]),
@@ -96,6 +185,7 @@ def build_data(pos_ei, neg_ei):
     ])
     d = Data(
         x=x,
+        msg_edge_index=msg_ei,
         edge_index=edge_index,
         edge_type=edge_type,
         node_type=node_type,
@@ -104,11 +194,11 @@ def build_data(pos_ei, neg_ei):
     )
     return d
 
-train_data = build_data(train_pos, train_neg)
-val_data   = build_data(val_pos,   val_neg)
-test_data  = build_data(test_pos,  test_neg)
+train_data = build_data(train_pos, train_neg, train_val_msg_ei)
+val_data   = build_data(val_pos,   val_neg,   train_val_msg_ei)  # same MP graph as train
+test_data  = build_data(test_pos,  test_neg,  test_msg_ei)
 
-print("6. Verifying Zero Positive Overlap...")
+print("7. Verifying Zero Positive Overlap...")
 def get_pos_set(split):
     return set([
         (u.item(), v.item())
@@ -135,7 +225,7 @@ all_zero = (
 )
 print("RESULT:", "CLEAN - Zero Positive Leakage!" if all_zero else "WARNING: Leakage detected!")
 
-print("7. Saving...")
+print("8. Saving...")
 torch.save(train_data, os.path.join(DATA_DIR, "train_data.pt"))
 torch.save(val_data,   os.path.join(DATA_DIR, "val_data.pt"))
 torch.save(test_data,  os.path.join(DATA_DIR, "test_data.pt"))

@@ -5,9 +5,9 @@ step_evaluate.py
 Comprehensive evaluation of the trained GraphSAGE Link Prediction model.
 
 Outputs:
-  1. y_true  – actual test labels
-  2. y_pred  – predicted binary labels (threshold = 0.5)
-  3. y_prob  – sigmoid probabilities
+  1. y_true  : actual test labels
+  2. y_pred  : predicted binary labels (threshold = 0.5)
+  3. y_prob  : sigmoid probabilities
   4. AUC-ROC score
   5. Precision, Recall, F1-score, Accuracy
   6. ROC curve values (FPR, TPR, thresholds)
@@ -82,8 +82,16 @@ class LinkPredictorSAGE(torch.nn.Module):
         dst = edge_label_index[1]
         return (z[src] * z[dst]).sum(dim=-1)
 
-criterion        = torch.nn.BCEWithLogitsLoss()
-msg_edge_index   = train_data.edge_index   # structural edges for message passing
+criterion = torch.nn.BCEWithLogitsLoss()
+"""
+── Leakage-free message-passing adjacencies ─────────────────────────────────
+Each Data split carries `msg_edge_index`: the global graph with that split's
+own positive (supervision) edges excised.  Using `edge_index` (full global
+graph) here would reintroduce message-passing topological label leakage.
+"""
+train_msg_ei = train_data.msg_edge_index   # global − val_pos − test_pos
+val_msg_ei   = val_data.msg_edge_index     # same topology as train_msg_ei
+test_msg_ei  = test_data.msg_edge_index    # global − test_pos
 
 # ─────────────────────────────────────────────
 # 3. Re-train from scratch — capturing every epoch's loss
@@ -104,7 +112,8 @@ for epoch in range(1, EPOCHS + 1):
     # ── Train step ──────────────────────────────
     model.train()
     optimizer.zero_grad()
-    z    = model.encode(train_data.x, msg_edge_index)
+    # Encode with the train-split MP graph (val+test pos edges excised)
+    z    = model.encode(train_data.x, train_msg_ei)
     pred = model.decode(z, train_data.edge_label_index)
     tr_loss = criterion(pred, train_data.edge_label)
     tr_loss.backward()
@@ -113,7 +122,8 @@ for epoch in range(1, EPOCHS + 1):
     # ── Val step (no_grad) ──────────────────────
     model.eval()
     with torch.no_grad():
-        z_v      = model.encode(val_data.x, msg_edge_index)
+        # Encode with val MP graph (val+test pos edges excised)
+        z_v      = model.encode(val_data.x, val_msg_ei)
         pred_v   = model.decode(z_v, val_data.edge_label_index)
         vl_loss  = criterion(pred_v, val_data.edge_label)
 
@@ -141,7 +151,8 @@ print(f"\n   >> Best val-loss: {best_val_loss:.4f}  -- weights re-saved.")
 print("\n[3/5] Evaluating on test set …")
 model.eval()
 with torch.no_grad():
-    z_test   = model.encode(test_data.x, msg_edge_index)
+    # Encode with test MP graph (test pos edges excised — no leakage)
+    z_test   = model.encode(test_data.x, test_msg_ei)
     logits   = model.decode(z_test, test_data.edge_label_index)
     y_prob   = torch.sigmoid(logits).cpu().numpy()
     y_true   = test_data.edge_label.cpu().numpy().astype(int)
@@ -249,6 +260,11 @@ global_edges = set(
 
 model.eval()
 with torch.no_grad():
+    """
+    Novel-candidate discovery: we score ONLY (drug, disease) pairs that do NOT
+    exist in the global graph (filtered by `global_edges` below), so using the
+    full edge_index here does not introduce leakage for this specific task.
+    """
     z_full = model.encode(x_all, edge_index)
 
 results = []
