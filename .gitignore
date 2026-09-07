@@ -53,9 +53,10 @@ dataverse_files/nodes.csv
 *.fls
 *.fdb_latexmk
 
-# --- Temporary Caches ---
+# --- Temporary Caches & Helper Scripts ---
 scratch/
 brain/
+scripts/
 
 # --- Confidential Submission Packages ---
 elsevier_submission_package.md

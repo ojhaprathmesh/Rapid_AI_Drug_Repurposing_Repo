@@ -94,7 +94,7 @@ if not drug_nums.empty:
         seq_idx = node_map[int(row['node_index'])]
         num_features[seq_idx] = [row['w'], row['t'], row['c']]
 
-# Final Normalization Step: Merge independent scales (TF-IDF L2 norm + MinMaxScaler 0-1 norm)
+# Final Normalization Step: Merge independent representations (TF-IDF L2 norm + StandardScaler z-score)
 final_node_features = np.concatenate([text_features, num_features], axis=1)
 final_node_features = np.nan_to_num(final_node_features, nan=0.0, posinf=1.0, neginf=-1.0)
 x_tensor = torch.tensor(final_node_features, dtype=torch.float)
