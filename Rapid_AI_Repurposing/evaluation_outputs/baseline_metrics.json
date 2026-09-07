@@ -1,0 +1,34 @@
+{
+  "Common Neighbors": {
+    "AUC_ROC": 0.5869,
+    "AUPRC": 0.5772,
+    "Accuracy": 0.5027,
+    "Precision": 1.0,
+    "Recall": 0.0053,
+    "F1_Score": 0.0106
+  },
+  "Feature-Only MLP": {
+    "AUC_ROC": 0.8836,
+    "AUPRC": 0.877,
+    "Accuracy": 0.8021,
+    "Precision": 0.7829,
+    "Recall": 0.8362,
+    "F1_Score": 0.8086
+  },
+  "GCN": {
+    "AUC_ROC": 0.9156,
+    "AUPRC": 0.9059,
+    "Accuracy": 0.8431,
+    "Precision": 0.8159,
+    "Recall": 0.8862,
+    "F1_Score": 0.8496
+  },
+  "GAT": {
+    "AUC_ROC": 0.9255,
+    "AUPRC": 0.8996,
+    "Accuracy": 0.858,
+    "Precision": 0.8289,
+    "Recall": 0.9021,
+    "F1_Score": 0.864
+  }
+}

@@ -119,23 +119,23 @@ def main():
     auprc = float(np.sum((rec_arr[1:] - rec_arr[:-1]) * prec_arr[1:]))
 
     # Compare with paper claims
-    print_check("AUC-ROC Score (Paper: 0.9734)", abs(auc_roc - 0.9734) < 0.005, f"Empirical: {auc_roc:.4f}")
-    print_check("PR-AUC / Average Precision (Paper: 0.9652)", abs(auprc - 0.9652) < 0.005, f"Empirical: {auprc:.4f}")
-    print_check("Accuracy @ tau=0.5 (Paper: 91.97%)", abs(acc - 0.9197) < 0.005, f"Empirical: {acc*100:.2f}% ({tp+tn}/{len(y_true)})")
-    print_check("Sensitivity / Recall (Paper: 93.51%)", abs(rec - 0.9351) < 0.005, f"Empirical: {rec*100:.2f}% ({tp}/{tp+fn})")
-    print_check("Specificity (Paper: 90.43%)", abs(spec - 0.9043) < 0.005, f"Empirical: {spec*100:.2f}% ({tn}/{tn+fp})")
-    print_check("Precision / PPV (Paper: 90.71%)", abs(prec - 0.9071) < 0.005, f"Empirical: {prec*100:.2f}% ({tp}/{tp+fp})")
-    print_check("Negative Predictive Value (Paper: 93.30%)", abs(npv - 0.9330) < 0.005, f"Empirical: {npv*100:.2f}% ({tn}/{tn+fn})")
-    print_check("F1-Score @ tau=0.5 (Paper: 92.09%)", abs(f1 - 0.9209) < 0.005, f"Empirical: {f1*100:.2f}%")
+    print_check("AUC-ROC Score (Paper: 0.9235)", abs(auc_roc - 0.9235) < 0.005, f"Empirical: {auc_roc:.4f}")
+    print_check("PR-AUC / Average Precision (Paper: 0.9125)", abs(auprc - 0.9125) < 0.005, f"Empirical: {auprc:.4f}")
+    print_check("Accuracy @ tau=0.5 (Paper: 84.79%)", abs(acc - 0.8479) < 0.005, f"Empirical: {acc*100:.2f}% ({tp+tn}/{len(y_true)})")
+    print_check("Sensitivity / Recall (Paper: 85.11%)", abs(rec - 0.8511) < 0.005, f"Empirical: {rec*100:.2f}% ({tp}/{tp+fn})")
+    print_check("Specificity (Paper: 84.47%)", abs(spec - 0.8447) < 0.005, f"Empirical: {spec*100:.2f}% ({tn}/{tn+fp})")
+    print_check("Precision / PPV (Paper: 84.57%)", abs(prec - 0.8457) < 0.005, f"Empirical: {prec*100:.2f}% ({tp}/{tp+fp})")
+    print_check("Negative Predictive Value (Paper: 85.01%)", abs(npv - 0.8501) < 0.005, f"Empirical: {npv*100:.2f}% ({tn}/{tn+fn})")
+    print_check("F1-Score @ tau=0.5 (Paper: 84.84%)", abs(f1 - 0.8484) < 0.005, f"Empirical: {f1*100:.2f}%")
 
     # ─────────────────────────────────────────────────────────
     # AUDIT 3: Empirical Confusion Matrix (Table IV & Fig 9)
     # ─────────────────────────────────────────────────────────
     print(f"\n{CYAN}{BOLD}--- [3/7] AUDITING CONFUSION MATRIX BREAKDOWN (Table IV & Fig 9) ---{RESET}")
-    print_check("True Positives (TP = 879)", tp == 879, f"{tp} samples (46.76%)")
-    print_check("True Negatives (TN = 850)", tn == 850, f"{tn} samples (45.21%)")
-    print_check("False Positives (FP = 90)", fp == 90, f"{fp} samples (4.79% - Latent Repurposing Targets)")
-    print_check("False Negatives (FN = 61)", fn == 61, f"{fn} samples (3.24% - Sparse Biological Nodes)")
+    print_check("True Positives (TP = 800)", tp == 800, f"{tp} samples (42.55%)")
+    print_check("True Negatives (TN = 794)", tn == 794, f"{tn} samples (42.23%)")
+    print_check("False Positives (FP = 146)", fp == 146, f"{fp} samples (7.77% - Latent Repurposing Targets)")
+    print_check("False Negatives (FN = 140)", fn == 140, f"{fn} samples (7.45% - Sparse Biological Nodes)")
     print_check("Total Test Sample Balance (940 Pos / 940 Neg)", len(y_true) == 1880 and len(pos_probs) == 940, "1,880 pairs (Strict 1:1)")
 
     # ─────────────────────────────────────────────────────────
@@ -143,9 +143,9 @@ def main():
     # ─────────────────────────────────────────────────────────
     print(f"\n{CYAN}{BOLD}--- [4/7] AUDITING CLINICAL OPERATING REGIMES (Table III) ---{RESET}")
     tau_targets = {
-        0.30: (0.8804, 0.9628, 0.8691, 0.9197, "Regime I: High-Sensitivity Screening"),
-        0.50: (0.9071, 0.9351, 0.9043, 0.9209, "Regime II: Balanced Prioritization"),
-        0.70: (0.9359, 0.8851, 0.9394, 0.9098, "Regime III: High-Confidence Validation"),
+        0.30: (0.7967, 0.9106, 0.7681, 0.8499, "Regime I: High-Sensitivity Screening"),
+        0.50: (0.8457, 0.8511, 0.8447, 0.8484, "Regime II: Balanced Prioritization"),
+        0.70: (0.8848, 0.7681, 0.9000, 0.8224, "Regime III: High-Confidence Validation"),
     }
     for tau, (p_exp, r_exp, s_exp, f1_exp, regime) in tau_targets.items():
         t_pred = (y_prob >= tau).astype(int)

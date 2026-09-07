@@ -12,14 +12,15 @@ Rapid_AI_Repurposing/
 ├── pipeline/                     # Core ML pipeline stages
 │   ├── step1_preprocess.py       # Extracts chemical features & TF-IDF encodings
 │   ├── step2_build_graph.py      # Constructs Heterogeneous GNN topology (PyG)
-│   ├── step3_train.py            # Optimizes GraphSAGE model (97.34% AUC on PrimeKG)
+│   ├── step3_train.py            # Optimizes GraphSAGE model (92.35% AUC on PrimeKG)
 │   ├── step4_predict.py          # Generates ranked candidate repurposing predictions
 │   ├── step5_rationalize.py      # Grounded LLM reasoning with degree-penalized path saliency
-│   └── step_evaluate.py          # Comprehensive test evaluation & metrics export
+│   ├── step_evaluate.py          # Comprehensive test evaluation & metrics export
+│   └── step_baselines.py         # Trains & evaluates empirical baseline models (CN, MLP, GCN, GAT)
 │
 ├── visualization/                # Centralized publication & report asset generation
-│   ├── generate_all_figures.py   # Master 300 DPI figure generator for paper & docs
-│   └── legacy_plots.py           # Supplementary research diagrams
+│   ├── generate_all_figures.py   # Unified 300 DPI figure generator for paper & docs
+│   └── legacy_plots.py           # Backward-compatible forwarder to generate_all_figures.py
 │
 ├── tests/                        # Audit & verification suite
 │   ├── verify_paper_claims.py    # Standalone audit suite verifying all 28 paper claims (0.05s)

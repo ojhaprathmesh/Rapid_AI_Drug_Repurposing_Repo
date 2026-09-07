@@ -2,52 +2,52 @@
 config:
   layout: fixed
 ---
-flowchart LR
- subgraph DATA["**1. Data Ingestion &amp; Harvesting (PrimeKG)**"]
+flowchart TB
+ subgraph DATA["`**1. Data Ingestion &amp; Harvesting (PrimeKG)**`"]
     direction TB
         PKG[("`**Precision Medicine<br>Knowledge Graph<br>(PrimeKG Repository)**`")]
         NODES["`**Nodes Subset (CSV)**`"]
         MOL["`**Molecular Features<br>(CSV)**`"]
         EDGES["`**Edges Subset (CSV)**`"]
   end
- subgraph FEATURE["Step I: Feature Pipeline"]
+ subgraph FEATURE["`**Step I: Feature Pipeline**`"]
     direction TB
-        TFIDF["TF-IDF Vectorizer (128-dim)"]
-        SCALER["StandardScaler (3-dim)"]
-        CONCAT["Concatenation Engine<br>(131-dim Tensor)"]
+        TFIDF["`**TF-IDF Vectorizer (128-dim)**`"]
+        SCALER["`**StandardScaler (3-dim)**`"]
+        CONCAT["`**Concatenation Engine<br>(131-dim Tensor)**`"]
   end
- subgraph TOPO["Step II: Topology & Sampling"]
+ subgraph TOPO["`**Step II: Topology & Sampling**`"]
     direction TB
-        UNDIRECTED["Undirected Mapping<br>(r + r_rev)"]
-        SPLIT["Disjoint Split<br>(80/10/10)"]
-        NEG["Collision-Free<br>Neg. Sampling"]
+        UNDIRECTED["`**Undirected Mapping<br>(r + r_rev)**`"]
+        SPLIT["`**Disjoint Split<br>(80/10/10)**`"]
+        NEG["`**Collision-Free<br>Neg. Sampling**`"]
   end
- subgraph PRE["2. Multimodal Preprocessing & Topology"]
+ subgraph PRE["`**2. Multimodal Preprocessing & Topology**`"]
     direction LR
         FEATURE
         TOPO
   end
- subgraph TRAIN["Step III: GraphSAGE Training"]
+ subgraph TRAIN["`**Step III: GraphSAGE Training**`"]
     direction TB
-        GSAGE["Hetero GraphSAGE<br>(Encoder-Decoder)"]
-        LOSS["BCEWithLogitsLoss"]
-        CHECK["Model Checkpoint (.pth)"]
+        GSAGE["`**Hetero GraphSAGE<br>(Encoder-Decoder)**`"]
+        LOSS["`**BCEWithLogitsLoss**`"]
+        CHECK["`**Model Checkpoint (.pth)**`"]
   end
- subgraph DISCOVERY["3. Step IV: Discovery Inference"]
+ subgraph DISCOVERY["`**3. Step IV: Discovery Inference**`"]
     direction TB
-        EMB["Embedding Inference"]
-        SCORE["Novel Pair Scoring"]
-        TOP50["Top 50<br>Ranked Pairs"]
+        EMB["`**Embedding Inference**`"]
+        SCORE["`**Novel Pair Scoring**`"]
+        TOP50["`**Top 50<br>Ranked Pairs**`"]
   end
- subgraph AI["Augmented Intelligence Services"]
+ subgraph AI["`**Augmented Intelligence Services**`"]
     direction TB
-        OLLAMA["Ollama / LLaMA 3.2<br>(Mechanistic Reasoning)"]
-        APIS["External APIs<br>(PubChem / PubMed)"]
+        OLLAMA["`**Ollama / LLaMA 3.2<br>(Mechanistic Reasoning)**`"]
+        APIS["`**External APIs<br>(PubChem / PubMed)**`"]
   end
- subgraph LAB["4. Clinical Discovery Lab Interface (web.py)"]
+ subgraph LAB["`**4. Clinical Discovery Lab Interface (web.py)**`"]
     direction TB
         AI
-        DASH["Interactive Clinical<br>Dashboard<br>(Streamlit Web UI)"]
+        DASH["`**Interactive Clinical<br>Dashboard<br>(Streamlit Web UI)**`"]
   end
  subgraph DOWNSTREAM[" "]
     direction LR
@@ -55,15 +55,15 @@ flowchart LR
         LAB
   end
     PKG --> NODES & MOL & EDGES
-    TFIDF --> CONCAT
+    TFIDF L_TFIDF_CONCAT_0@--> CONCAT
     SCALER --> CONCAT
     UNDIRECTED --> SPLIT
     SPLIT --> NEG
     NODES --> TFIDF
     MOL --> SCALER
     EDGES --> UNDIRECTED
-    CONCAT -- "131-dim Multimodal<br>Features &amp; Disjoint<br>Adjacency" --> GSAGE
-    NEG -- "131-dim Multimodal<br>Features &amp; Disjoint<br>Adjacency" --> GSAGE
+    CONCAT -- "`**131-dim Multimodal<br>Features &amp; Disjoint<br>Adjacency**`" --> GSAGE
+    NEG -- "`**131-dim Multimodal<br>Features &amp; Disjoint<br>Adjacency**`" --> GSAGE
     GSAGE --> LOSS
     LOSS --> CHECK
     EMB --> SCORE
@@ -71,7 +71,7 @@ flowchart LR
     OLLAMA --> DASH
     APIS --> DASH
     CHECK --> EMB
-    TOP50 -- Prioritized Repurposing<br>Candidates --> DASH
+    TOP50 -- "`**Prioritized Repurposing<br>Candidates**`" --> DASH
 
      PKG:::dataNode
      NODES:::processNode
@@ -109,3 +109,5 @@ flowchart LR
     style PRE fill:#ffffff,stroke:#16833b,stroke-width:2px
     style TRAIN fill:#eaf3ff,stroke:#2558d9,stroke-width:2px
     style DOWNSTREAM fill:transparent,stroke:transparent
+
+    L_TFIDF_CONCAT_0@{ curve: linear }

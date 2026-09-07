@@ -56,3 +56,6 @@ dataverse_files/nodes.csv
 # --- Temporary Caches ---
 scratch/
 brain/
+
+# --- Confidential Submission Packages ---
+elsevier_submission_package.md
