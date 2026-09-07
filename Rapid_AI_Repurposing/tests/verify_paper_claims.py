@@ -44,6 +44,11 @@ TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.abspath(os.path.join(TESTS_DIR, ".."))
 BASE_DIR = PROJECT_DIR
 PROJECT_ROOT = os.path.abspath(os.path.join(PROJECT_DIR, ".."))
+if PROJECT_DIR not in sys.path:
+    sys.path.insert(0, PROJECT_DIR)
+
+import torch
+from lab_utils import LinkPredictorSAGE
 EVAL_DIR = os.path.join(BASE_DIR, "evaluation_outputs")
 PREPROC_DIR = os.path.join(BASE_DIR, "preprocessed_data")
 DATAVERSE_DIR = os.path.join(PROJECT_ROOT, "dataverse_files")
@@ -211,24 +216,84 @@ def main():
     # AUDIT 7: Inference Latency & Scalability (Table VI)
     # ─────────────────────────────────────────────────────────
     print(f"\n{CYAN}{BOLD}--- [7/7] BENCHMARKING REAL-TIME BED-SIDE CPU LATENCY (Table VI) ---{RESET}")
-    # Microbenchmark dot product scoring across 10,000 simulated candidate links
-    z_dummy = np.random.randn(10597, 32).astype(np.float32)
-    u_idx = np.random.randint(0, 10597, size=10000)
-    v_idx = np.random.randint(0, 10597, size=10000)
+    x_path = os.path.join(PREPROC_DIR, "x.pt")
+    ei_path = os.path.join(PREPROC_DIR, "edge_index.pt")
+    
+    x = torch.load(x_path, weights_only=False)
+    edge_index = torch.load(ei_path, weights_only=False)
+    model = LinkPredictorSAGE(131, 64, 32)
+    model.load_state_dict(torch.load(model_path, weights_only=False))
+    model.eval()
+
+    # 1. Precomputed Embedding Scoring on Real Embeddings
+    with torch.no_grad():
+        z_real = model.encode(x, edge_index)
+
+    u_idx = torch.randint(0, z_real.size(0), (10000,))
+    v_idx = torch.randint(0, z_real.size(0), (10000,))
 
     t0 = time.perf_counter()
-    logits = np.sum(z_dummy[u_idx] * z_dummy[v_idx], axis=1)
-    probs = 1.0 / (1.0 + np.exp(-logits))
+    with torch.no_grad():
+        scores = torch.sigmoid((z_real[u_idx] * z_real[v_idx]).sum(dim=-1))
     t1 = time.perf_counter()
 
     batch_time = (t1 - t0)
     scoring_throughput = 10000.0 / batch_time
     single_us = (batch_time / 10000.0) * 1e6
 
-    print_check("Precomputed Embedding Scoring Latency", True, f"{single_us:.2f} microseconds per pair")
+    print_check("Precomputed Embedding Scoring Latency", single_us < 2.50, f"{single_us:.2f} microseconds per pair")
     print_check("Batch Evaluation Throughput", scoring_throughput > 1e6, f"{scoring_throughput:,.0f} link evaluations/sec")
-    print_check("Dynamic 2-Hop CPU Latency Bound (Paper: <2.5 ms)", True, "< 2.50 ms / query on commodity CPU")
-    print_check("Runtime RAM Consumption Bound (Paper: <120 MB)", True, "< 120 MB RAM (Fits in standard workstation)")
+
+    # 2. Dynamic 2-Hop Inductive Inference Benchmark (Empirical Measurement)
+    adj_list = {}
+    src_list = edge_index[0].tolist()
+    dst_list = edge_index[1].tolist()
+    for u, v in zip(src_list, dst_list):
+        adj_list.setdefault(u, []).append(v)
+
+    def dynamic_2hop_infer(u, v):
+        nodes = {u, v}
+        for seed in (u, v):
+            nbrs1 = adj_list.get(seed, [])[:25]  # bounded sample budget S1=25
+            nodes.update(nbrs1)
+            for n1 in nbrs1:
+                nodes.update(adj_list.get(n1, [])[:10])  # S2=10
+        node_list = list(nodes)
+        mapping = {nid: i for i, nid in enumerate(node_list)}
+        sub_x = x[node_list]
+        node_set = set(node_list)
+        sub_src, sub_dst = [], []
+        for n in node_list:
+            for d in adj_list.get(n, []):
+                if d in node_set:
+                    sub_src.append(mapping[n])
+                    sub_dst.append(mapping[d])
+        sub_ei = torch.tensor([sub_src, sub_dst], dtype=torch.long)
+        with torch.no_grad():
+            sub_z = model.encode(sub_x, sub_ei)
+            prob = float(torch.sigmoid((sub_z[mapping[u]] * sub_z[mapping[v]]).sum()))
+        return prob
+
+    # Benchmark 20 random dynamic candidate queries
+    dynamic_2hop_infer(0, 1)  # Warmup
+    dyn_times = []
+    for _ in range(20):
+        u_rand = int(torch.randint(0, x.size(0), (1,)).item())
+        v_rand = int(torch.randint(0, x.size(0), (1,)).item())
+        t_start = time.perf_counter()
+        _ = dynamic_2hop_infer(u_rand, v_rand)
+        t_end = time.perf_counter()
+        dyn_times.append((t_end - t_start) * 1000.0)
+
+    mean_dynamic_ms = float(np.mean(dyn_times))
+    print_check("Dynamic 2-Hop CPU Latency Bound (Paper: <2.5 ms)", mean_dynamic_ms < 2.50, f"Empirical: {mean_dynamic_ms:.3f} ms / query on commodity CPU")
+
+    # 3. Core Inference RAM Consumption Footprint (Empirical Measurement)
+    x_mb = (x.element_size() * x.nelement()) / (1024.0 * 1024.0)
+    ei_mb = (edge_index.element_size() * edge_index.nelement()) / (1024.0 * 1024.0)
+    model_mb = sum(p.element_size() * p.nelement() for p in model.parameters()) / (1024.0 * 1024.0)
+    core_ram_mb = x_mb + ei_mb + model_mb
+    print_check("Runtime RAM Consumption Bound (Paper: <120 MB)", core_ram_mb < 120.0, f"Empirical: {core_ram_mb:.2f} MB (< 120 MB)")
 
     # ─────────────────────────────────────────────────────────
     # AUDIT SUMMARY
