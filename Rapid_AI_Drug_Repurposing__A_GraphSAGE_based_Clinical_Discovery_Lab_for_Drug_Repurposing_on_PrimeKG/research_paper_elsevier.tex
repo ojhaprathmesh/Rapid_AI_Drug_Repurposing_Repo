@@ -1,4 +1,4 @@
-\documentclass[conference,a4paper]{IEEEtran}
+\documentclass[preprint,12pt]{elsarticle}
 
 \usepackage{graphicx}
 \usepackage{float}
@@ -6,53 +6,44 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{booktabs}
-\usepackage{stfloats}
 \usepackage{url}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\corref#1{}%
+}
 \graphicspath{{images/}}
-\hyphenation{op-tical net-works semi-conduc-tor}
 
 % Float placement parameters to prevent float queue blockage
 \renewcommand{\topfraction}{0.95}
 \renewcommand{\bottomfraction}{0.85}
 \renewcommand{\textfraction}{0.05}
 \renewcommand{\floatpagefraction}{0.80}
-\renewcommand{\dbltopfraction}{0.95}
-\renewcommand{\dblfloatpagefraction}{0.80}
 
-\DeclareRobustCommand*{\IEEEauthorrefmark}[1]{\raisebox{0pt}[0pt][0pt]{\textsuperscript{\footnotesize #1}}}
+\journal{Computers in Biology and Medicine}
 
 \begin{document}
 
+\begin{frontmatter}
+
 \title{Rapid AI Drug Repurposing: A GraphSAGE-based Clinical Discovery Lab for Drug Repurposing on PrimeKG}
 
-\author{
-    \IEEEauthorblockN{
-        Prathmesh Ojha\IEEEauthorrefmark{1},
-        Jhankar Bansal\IEEEauthorrefmark{1},
-        Nikhil Kumar\IEEEauthorrefmark{1}\IEEEauthorrefmark{*}
-    }
+\author[inst1]{Prathmesh Ojha}
+\author[inst1]{Jhankar Bansal}
+\author[inst1]{Nikhil Kumar\corref{cor1}}
+\ead{nikhil.kumar@bmu.edu.in}
 
-    \IEEEauthorblockA{
-        \IEEEauthorrefmark{1}
-        School of Engineering and Technology\\
-        BML Munjal University, Gurugram, India\\
-        \{prathmesh.ojha.23cse, jhankar.bansal.23cse, nikhil.kumar\}@bmu.edu.in
-    }
-
-    \IEEEauthorblockA{
-        \IEEEauthorrefmark{*}Corresponding Author: nikhil.kumar@bmu.edu.in
-    }
-}
-
-\maketitle
+\cortext[cor1]{Corresponding author}
+\address[inst1]{School of Engineering and Technology, BML Munjal University, Gurugram, Haryana, India}
 
 \begin{abstract}
 Drug repurposing offers an accelerated, cost-effective alternative to de novo therapeutics, yet translating graph-based link predictions into clinical pipelines requires both scalable inductive architectures and interpretable biological mechanisms. In this paper, we present Rapid AI Drug Repurposing, an end-to-end computational framework that leverages GraphSAGE over a curated multimodal subnetwork of the Precision Medicine Knowledge Graph (PrimeKG). By modeling drug--protein--disease interactions with multimodal textual and physicochemical descriptors, the inductive framework achieves superior discriminative performance on a held-out benchmark of 1,880 pairs, attaining an AUC-ROC of 0.9734, an Accuracy of 91.97\%, a Recall of 93.51\%, and an F1-score of 92.09\%. To bridge the clinical interpretability gap, Rapid AI couples high-throughput CPU inference ($2.50\,\mu\mathrm{s}$ cached scoring) with an on-premise Large Language Model that synthesizes literature-grounded mechanistic rationales from verified 2-hop subgraphs, offering a scalable, privacy-preserving, on-premise computational platform for translational drug discovery.
 \end{abstract}
 
-\begin{IEEEkeywords}
-Drug Repurposing, Knowledge Graphs, Graph Neural Networks, GraphSAGE, Link Prediction, Explainable AI, Biomedical Informatics
-\end{IEEEkeywords}
+\begin{keyword}
+Drug Repurposing \sep Knowledge Graphs \sep Graph Neural Networks \sep GraphSAGE \sep Link Prediction \sep Explainable AI \sep Biomedical Informatics
+\end{keyword}
+
+\end{frontmatter}
 
 \section{Introduction}
 

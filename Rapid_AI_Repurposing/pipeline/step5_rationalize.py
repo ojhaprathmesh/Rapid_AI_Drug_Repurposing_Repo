@@ -97,10 +97,10 @@ Format as polished, peer-reviewed clinical prose."""
     top_deg = paths[0]["degree"] if paths else 5
 
     return f"""**1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **{drug}** for **{disease}** is grounded in its high-affinity interaction with **{top_target}** (degree-penalized path saliency S = {top_saliency:.4f}, structural degree k = {top_deg}). By selectively engaging {top_target}, the drug modulates specific downstream enzymatic cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence ({moa}) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **{drug}** for **{disease}** is grounded in its high-affinity interaction with **{top_target}** (degree-penalized path saliency S = {top_saliency:.4f}, structural degree k = {top_deg}). By selectively engaging {top_target}, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence ({moa}) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of {disease}, aberrant activation of inflammatory and apoptotic signaling perpetuates structural tissue degeneration. Topological message passing across the 2-hop subnetwork ({drug} -> {top_target} -> {disease}) demonstrates that {drug} suppresses pathological pathway hyperactivity. Mesenchymal differentiation and cellular survival are reinforced, reversing the underlying histological damage.
+In the context of {disease}, aberrant network signaling connected to {top_target} contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork ({drug} -> {top_target} -> {disease}) indicates that {drug} perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
 
 **3. Pharmacological and Clearance Considerations:**
 From a biophysical standpoint, {drug} exhibits defined physiological descriptors (MW: {mw}, TPSA: {tpsa}, elimination half-life: {half_life}). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning {drug} represents a biologically grounded, translational opportunity for {disease}."""

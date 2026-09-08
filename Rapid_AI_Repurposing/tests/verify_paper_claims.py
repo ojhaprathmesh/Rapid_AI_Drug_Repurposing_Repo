@@ -175,12 +175,52 @@ def main():
         df_edges = pd.read_csv(edges_csv)
         ind_edges = df_edges[df_edges["display_relation"] == "indication"]
         print_check("Knowledge Graph Therapeutic Indications", len(ind_edges) > 0, f"{len(ind_edges):,} indication edges indexed")
-        print_check("Strict Edge Set Disjointness (|E_train ∩ E_val| = 0)", True, "0 edge leakage confirmed")
-        print_check("Strict Edge Set Disjointness (|E_train ∩ E_test| = 0)", True, "0 edge leakage confirmed")
-        print_check("Transductive Adjacency Masking Enforcement", True, "Evaluation pairs excised from training adjacency")
-        print_check("Reciprocal Edge Purging Protocol", True, "Bidirectional shortcuts purged during aggregation")
     else:
         print_check("Edges Dataset Integrity", False, "Missing edges_subset.csv")
+
+    train_data = torch.load(os.path.join(PREPROC_DIR, "train_data.pt"), weights_only=False)
+    val_data   = torch.load(os.path.join(PREPROC_DIR, "val_data.pt"),   weights_only=False)
+    test_data  = torch.load(os.path.join(PREPROC_DIR, "test_data.pt"),  weights_only=False)
+
+    def get_pos_set(d):
+        edge_pairs = set()
+        pos_mask = (d.edge_label == 1)
+        src = d.edge_label_index[0][pos_mask]
+        dst = d.edge_label_index[1][pos_mask]
+        for u, v in zip(src.tolist(), dst.tolist()):
+            edge_pairs.add((u, v))
+        return edge_pairs
+
+    train_pos = get_pos_set(train_data)
+    val_pos   = get_pos_set(val_data)
+    test_pos  = get_pos_set(test_data)
+
+    train_val_leak  = len(train_pos & val_pos)
+    train_test_leak = len(train_pos & test_pos)
+    val_test_leak   = len(val_pos & test_pos)
+
+    def to_directed_set(ei):
+        return set(zip(ei[0].tolist(), ei[1].tolist()))
+
+    def make_bidirectional(edge_set):
+        return edge_set | set((v, u) for (u, v) in edge_set)
+
+    val_pos_bi  = make_bidirectional(val_pos)
+    test_pos_bi = make_bidirectional(test_pos)
+
+    train_msg_set = to_directed_set(train_data.msg_edge_index)
+    val_msg_set   = to_directed_set(val_data.msg_edge_index)
+    test_msg_set  = to_directed_set(test_data.msg_edge_index)
+
+    val_in_train  = len(val_pos_bi & train_msg_set)
+    test_in_train = len(test_pos_bi & train_msg_set)
+    val_in_val    = len(val_pos_bi & val_msg_set)
+    test_in_test  = len(test_pos_bi & test_msg_set)
+
+    print_check("Strict Edge Set Disjointness (|E_train ∩ E_val| = 0)", train_val_leak == 0, f"{train_val_leak} edge overlap confirmed")
+    print_check("Strict Edge Set Disjointness (|E_train ∩ E_test| = 0)", train_test_leak == 0, f"{train_test_leak} edge overlap confirmed")
+    print_check("Transductive Adjacency Masking Enforcement", (val_in_train == 0 and test_in_train == 0), f"{val_in_train + test_in_train} val/test edges in train_msg_ei")
+    print_check("Reciprocal Edge Purging Protocol", (val_in_val == 0 and test_in_test == 0), f"{val_in_val + test_in_test} evaluation edges in eval msg_ei")
 
     # ─────────────────────────────────────────────────────────
     # AUDIT 6: Clinical Case Studies & PubMed ID Grounding (Table V)
