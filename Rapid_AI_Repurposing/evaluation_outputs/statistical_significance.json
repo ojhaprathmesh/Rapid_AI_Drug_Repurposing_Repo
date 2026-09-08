@@ -1,0 +1,409 @@
+{
+  "seeds": [
+    42,
+    123,
+    456,
+    789,
+    1024
+  ],
+  "n_seeds": 5,
+  "cv_mean_std": {
+    "Common Neighbors": {
+      "AUC_ROC": {
+        "mean": 0.5869,
+        "std": 0.0,
+        "formatted": "58.69% \u00b1 0.00%"
+      },
+      "Accuracy": {
+        "mean": 0.5027,
+        "std": 0.0,
+        "formatted": "50.27% \u00b1 0.00%"
+      },
+      "Precision": {
+        "mean": 1.0,
+        "std": 0.0,
+        "formatted": "100.00% \u00b1 0.00%"
+      },
+      "Recall": {
+        "mean": 0.0053,
+        "std": 0.0,
+        "formatted": "0.53% \u00b1 0.00%"
+      },
+      "F1_Score": {
+        "mean": 0.0106,
+        "std": 0.0,
+        "formatted": "1.06% \u00b1 0.00%"
+      }
+    },
+    "MLP": {
+      "AUC_ROC": {
+        "mean": 0.8844,
+        "std": 0.0022,
+        "formatted": "88.44% \u00b1 0.22%"
+      },
+      "Accuracy": {
+        "mean": 0.806,
+        "std": 0.0081,
+        "formatted": "80.60% \u00b1 0.81%"
+      },
+      "Precision": {
+        "mean": 0.7975,
+        "std": 0.0087,
+        "formatted": "79.75% \u00b1 0.87%"
+      },
+      "Recall": {
+        "mean": 0.8202,
+        "std": 0.0097,
+        "formatted": "82.02% \u00b1 0.97%"
+      },
+      "F1_Score": {
+        "mean": 0.8087,
+        "std": 0.008,
+        "formatted": "80.87% \u00b1 0.80%"
+      }
+    },
+    "GCN": {
+      "AUC_ROC": {
+        "mean": 0.9102,
+        "std": 0.0035,
+        "formatted": "91.02% \u00b1 0.35%"
+      },
+      "Accuracy": {
+        "mean": 0.841,
+        "std": 0.0075,
+        "formatted": "84.10% \u00b1 0.75%"
+      },
+      "Precision": {
+        "mean": 0.8147,
+        "std": 0.0087,
+        "formatted": "81.47% \u00b1 0.87%"
+      },
+      "Recall": {
+        "mean": 0.8828,
+        "std": 0.0066,
+        "formatted": "88.28% \u00b1 0.66%"
+      },
+      "F1_Score": {
+        "mean": 0.8474,
+        "std": 0.0069,
+        "formatted": "84.74% \u00b1 0.69%"
+      }
+    },
+    "GAT": {
+      "AUC_ROC": {
+        "mean": 0.9243,
+        "std": 0.0024,
+        "formatted": "92.43% \u00b1 0.24%"
+      },
+      "Accuracy": {
+        "mean": 0.8573,
+        "std": 0.0038,
+        "formatted": "85.73% \u00b1 0.38%"
+      },
+      "Precision": {
+        "mean": 0.8298,
+        "std": 0.0056,
+        "formatted": "82.98% \u00b1 0.56%"
+      },
+      "Recall": {
+        "mean": 0.8991,
+        "std": 0.005,
+        "formatted": "89.91% \u00b1 0.50%"
+      },
+      "F1_Score": {
+        "mean": 0.8631,
+        "std": 0.0034,
+        "formatted": "86.31% \u00b1 0.34%"
+      }
+    },
+    "GraphSAGE": {
+      "AUC_ROC": {
+        "mean": 0.9263,
+        "std": 0.0041,
+        "formatted": "92.63% \u00b1 0.41%"
+      },
+      "Accuracy": {
+        "mean": 0.852,
+        "std": 0.0093,
+        "formatted": "85.20% \u00b1 0.93%"
+      },
+      "Precision": {
+        "mean": 0.8523,
+        "std": 0.0043,
+        "formatted": "85.23% \u00b1 0.43%"
+      },
+      "Recall": {
+        "mean": 0.8517,
+        "std": 0.021,
+        "formatted": "85.17% \u00b1 2.10%"
+      },
+      "F1_Score": {
+        "mean": 0.8519,
+        "std": 0.011,
+        "formatted": "85.19% \u00b1 1.10%"
+      }
+    }
+  },
+  "delong_tests": {
+    "GraphSAGE_vs_Common Neighbors": {
+      "model_a": "GraphSAGE",
+      "model_b": "Common Neighbors",
+      "auc_graphsage": 0.9302,
+      "auc_baseline": 0.5869,
+      "delta_auc": 0.3432,
+      "std_error": 0.0095,
+      "z_statistic": 36.322,
+      "p_value": 0.0,
+      "significant_p001": true,
+      "significant_p05": true
+    },
+    "GraphSAGE_vs_MLP": {
+      "model_a": "GraphSAGE",
+      "model_b": "MLP",
+      "auc_graphsage": 0.9302,
+      "auc_baseline": 0.883,
+      "delta_auc": 0.0472,
+      "std_error": 0.0067,
+      "z_statistic": 7.02,
+      "p_value": 2.2222224060897133e-12,
+      "significant_p001": true,
+      "significant_p05": true
+    },
+    "GraphSAGE_vs_GCN": {
+      "model_a": "GraphSAGE",
+      "model_b": "GCN",
+      "auc_graphsage": 0.9302,
+      "auc_baseline": 0.9128,
+      "delta_auc": 0.0174,
+      "std_error": 0.0059,
+      "z_statistic": 2.949,
+      "p_value": 0.003185529571680945,
+      "significant_p001": false,
+      "significant_p05": true
+    },
+    "GraphSAGE_vs_GAT": {
+      "model_a": "GraphSAGE",
+      "model_b": "GAT",
+      "auc_graphsage": 0.9302,
+      "auc_baseline": 0.926,
+      "delta_auc": 0.0042,
+      "std_error": 0.0053,
+      "z_statistic": 0.786,
+      "p_value": 0.4319456253816887,
+      "significant_p001": false,
+      "significant_p05": false
+    }
+  },
+  "bootstrap_95ci": {
+    "Common Neighbors": {
+      "AUC_ROC": {
+        "mean": 0.5872,
+        "std": 0.008,
+        "ci_95": [
+          0.5712,
+          0.6028
+        ]
+      },
+      "Accuracy": {
+        "mean": 0.5024,
+        "std": 0.0114,
+        "ci_95": [
+          0.4803,
+          0.525
+        ]
+      },
+      "Precision": {
+        "mean": 0.991,
+        "std": 0.0944,
+        "ci_95": [
+          1.0,
+          1.0
+        ]
+      },
+      "Recall": {
+        "mean": 0.0053,
+        "std": 0.0024,
+        "ci_95": [
+          0.0011,
+          0.0106
+        ]
+      },
+      "F1_Score": {
+        "mean": 0.0106,
+        "std": 0.0047,
+        "ci_95": [
+          0.0021,
+          0.021
+        ]
+      }
+    },
+    "MLP": {
+      "AUC_ROC": {
+        "mean": 0.8829,
+        "std": 0.0074,
+        "ci_95": [
+          0.869,
+          0.898
+        ]
+      },
+      "Accuracy": {
+        "mean": 0.7956,
+        "std": 0.0092,
+        "ci_95": [
+          0.7782,
+          0.8138
+        ]
+      },
+      "Precision": {
+        "mean": 0.7899,
+        "std": 0.0135,
+        "ci_95": [
+          0.763,
+          0.8152
+        ]
+      },
+      "Recall": {
+        "mean": 0.8058,
+        "std": 0.0128,
+        "ci_95": [
+          0.7817,
+          0.8303
+        ]
+      },
+      "F1_Score": {
+        "mean": 0.7977,
+        "std": 0.0101,
+        "ci_95": [
+          0.7773,
+          0.8164
+        ]
+      }
+    },
+    "GCN": {
+      "AUC_ROC": {
+        "mean": 0.9128,
+        "std": 0.007,
+        "ci_95": [
+          0.8985,
+          0.9263
+        ]
+      },
+      "Accuracy": {
+        "mean": 0.84,
+        "std": 0.0083,
+        "ci_95": [
+          0.8229,
+          0.8559
+        ]
+      },
+      "Precision": {
+        "mean": 0.8151,
+        "std": 0.0122,
+        "ci_95": [
+          0.7896,
+          0.8373
+        ]
+      },
+      "Recall": {
+        "mean": 0.8797,
+        "std": 0.0105,
+        "ci_95": [
+          0.8589,
+          0.8997
+        ]
+      },
+      "F1_Score": {
+        "mean": 0.8461,
+        "std": 0.0087,
+        "ci_95": [
+          0.8283,
+          0.8627
+        ]
+      }
+    },
+    "GAT": {
+      "AUC_ROC": {
+        "mean": 0.9258,
+        "std": 0.0062,
+        "ci_95": [
+          0.9133,
+          0.9375
+        ]
+      },
+      "Accuracy": {
+        "mean": 0.8585,
+        "std": 0.008,
+        "ci_95": [
+          0.8431,
+          0.8739
+        ]
+      },
+      "Precision": {
+        "mean": 0.8306,
+        "std": 0.0118,
+        "ci_95": [
+          0.808,
+          0.8514
+        ]
+      },
+      "Recall": {
+        "mean": 0.9009,
+        "std": 0.0097,
+        "ci_95": [
+          0.8818,
+          0.9196
+        ]
+      },
+      "F1_Score": {
+        "mean": 0.8642,
+        "std": 0.0082,
+        "ci_95": [
+          0.8474,
+          0.8801
+        ]
+      }
+    },
+    "GraphSAGE": {
+      "AUC_ROC": {
+        "mean": 0.9301,
+        "std": 0.006,
+        "ci_95": [
+          0.9179,
+          0.9418
+        ]
+      },
+      "Accuracy": {
+        "mean": 0.8599,
+        "std": 0.0079,
+        "ci_95": [
+          0.8447,
+          0.8755
+        ]
+      },
+      "Precision": {
+        "mean": 0.85,
+        "std": 0.0117,
+        "ci_95": [
+          0.826,
+          0.8725
+        ]
+      },
+      "Recall": {
+        "mean": 0.8742,
+        "std": 0.0104,
+        "ci_95": [
+          0.8538,
+          0.8951
+        ]
+      },
+      "F1_Score": {
+        "mean": 0.8619,
+        "std": 0.0085,
+        "ci_95": [
+          0.8452,
+          0.8784
+        ]
+      }
+    }
+  }
+}
