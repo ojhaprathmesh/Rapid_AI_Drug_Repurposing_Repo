@@ -126,15 +126,15 @@ def gen_confusion_matrix():
     fig, ax = plt.subplots(figsize=(7.2, 5.8), dpi=300)
 
     cm = np.array([
-        [850, 90],
-        [61, 879]
+        [794, 146],
+        [140, 800]
     ])
     cm_percent = cm / np.sum(cm) * 100
 
     colors_list = ["#F0F4FA", "#D7E3FC", "#ABC4FF", "#7286D3", "#4361EE", "#3A0CA3"]
     cmap = matplotlib.colors.LinearSegmentedColormap.from_list("custom_blue", colors_list, N=256)
 
-    im = ax.imshow(cm, interpolation='nearest', cmap=cmap, vmin=0, vmax=950)
+    im = ax.imshow(cm, interpolation='nearest', cmap=cmap, vmin=0, vmax=850)
     cbar = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
     cbar.ax.tick_params(labelsize=10, colors='#334155')
     cbar.outline.set_edgecolor('#CBD5E1')

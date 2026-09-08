@@ -10,6 +10,7 @@ if PROJECT_DIR not in sys.path:
     sys.path.insert(0, PROJECT_DIR)
 
 from lab_utils import PathSaliencyEngine, DiscoveryEngine, check_ollama_status
+from clinical_governance import PHIScrubber, TamperEvidentAuditLogger, AirGapGuard
 
 try:
     import ollama
@@ -20,11 +21,17 @@ except ImportError:
 PREDICTIONS_PATH = os.path.join(PROJECT_DIR, "top_50_repurposing_predictions.csv")
 OUTPUT_PATH = os.path.join(PROJECT_DIR, "reports", "clinical_rationalization_report.md")
 
+# Initialize Clinical Governance & Technical Safeguards Engine
+audit_logger = TamperEvidentAuditLogger()
+
 # SETTINGS
 NUM_CANDIDATES = 10  # Explain top 10 for speed, change to 50 for full report
 MODEL_NAME = "llama3.2"
 
 print(f"--- STARTING STEP 5: Path-Constrained Grounded Clinical Rationalization ({MODEL_NAME}) ---")
+print("  [Safeguard Active] PHI/PII De-identification Filter (§ 164.514)")
+print("  [Safeguard Active] Cryptographic SHA-256 Audit Trail (§ 164.312(b))")
+print("  [Safeguard Active] Zero-Egress Air-Gap Network Containment (§ 164.312(e))")
 
 # Initialize Degree-Penalized Path Saliency Engine with GNN Embeddings (Section VI-G, Eq. 11)
 engine = DiscoveryEngine()
@@ -81,22 +88,30 @@ Synthesize a concise, 3-paragraph professional scientific rationalization ground
 
 Format as polished, peer-reviewed clinical prose."""
 
-    # Execute via local Ollama if available
-    if OLLAMA_AVAILABLE and check_ollama_status():
-        try:
-            response = ollama.chat(model=MODEL_NAME, messages=[
-                {'role': 'user', 'content': prompt},
-            ])
-            return response['message']['content']
-        except Exception as e:
-            pass
+    # Technical Safeguard 1: PHI / PII Safe Harbor Sanitization (§ 164.514)
+    scrubbed_prompt, phi_meta = PHIScrubber.scrub(prompt)
 
-    # High-fidelity grounded biological fallback template when Ollama is offline
-    top_target = paths[0]["protein_name"] if paths else "target receptor"
-    top_saliency = paths[0]["saliency"] if paths else 0.4000
-    top_deg = paths[0]["degree"] if paths else 5
+    rationale_content = None
 
-    return f"""**1. Molecular Mechanism of Action:**
+    # Technical Safeguard 2: Zero-Egress Air-Gap Guard (§ 164.312(e))
+    with AirGapGuard.assert_zero_egress():
+        # Execute via local Ollama if available
+        if OLLAMA_AVAILABLE and check_ollama_status():
+            try:
+                response = ollama.chat(model=MODEL_NAME, messages=[
+                    {'role': 'user', 'content': scrubbed_prompt},
+                ])
+                rationale_content = response['message']['content']
+            except Exception as e:
+                pass
+
+        if rationale_content is None:
+            # High-fidelity grounded biological fallback template when Ollama is offline
+            top_target = paths[0]["protein_name"] if paths else "target receptor"
+            top_saliency = paths[0]["saliency"] if paths else 0.4000
+            top_deg = paths[0]["degree"] if paths else 5
+
+            rationale_content = f"""**1. Molecular Mechanism of Action:**
 The predicted therapeutic efficacy of **{drug}** for **{disease}** is grounded in its high-affinity interaction with **{top_target}** (degree-penalized path saliency S = {top_saliency:.4f}, structural degree k = {top_deg}). By selectively engaging {top_target}, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence ({moa}) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
@@ -104,6 +119,23 @@ In the context of {disease}, aberrant network signaling connected to {top_target
 
 **3. Pharmacological and Clearance Considerations:**
 From a biophysical standpoint, {drug} exhibits defined physiological descriptors (MW: {mw}, TPSA: {tpsa}, elimination half-life: {half_life}). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning {drug} represents a biologically grounded, translational opportunity for {disease}."""
+
+    # Technical Safeguard 3: Cryptographic SHA-256 Tamper-Evident Audit Logging (§ 164.312(b))
+    audit_logger.log_event(
+        event_type="CLINICAL_RATIONALE_GENERATION",
+        drug=drug,
+        disease=disease,
+        score=score,
+        prompt_payload=scrubbed_prompt,
+        rationale_output=rationale_content,
+        extra_metadata={
+            "rank": rank,
+            "phi_redactions": phi_meta.get("redactions_count", 0),
+            "model": MODEL_NAME,
+        }
+    )
+
+    return rationale_content
 
 def main():
     if not os.path.exists(PREDICTIONS_PATH):

@@ -489,19 +489,19 @@ To rigorously quantify classification characteristics on the held-out test set, 
         \toprule
         \textbf{Biological Truth} & \textbf{Predicted Negative} & \textbf{Predicted Positive} \\
         \midrule
-        \textbf{Actual Negative} & $\mathrm{TN} = 850$ (45.21\%) & $\mathrm{FP} = 90$ (4.79\%) \\
-        \textbf{Actual Positive} & $\mathrm{FN} = 61$ (3.24\%)  & $\mathrm{TP} = 879$ (46.76\%) \\
+        \textbf{Actual Negative} & $\mathrm{TN} = 794$ (42.23\%) & $\mathrm{FP} = 146$ (7.77\%) \\
+        \textbf{Actual Positive} & $\mathrm{FN} = 140$ (7.45\%)  & $\mathrm{TP} = 800$ (42.55\%) \\
         \bottomrule
     \end{tabular}%
     }
 \end{table}
 
-The model achieves a high sensitivity (recall) of $93.51\%$ ($879/940$) and a specificity of $90.43\%$ ($850/940$), with a Positive Predictive Value (precision) of $90.71\%$ ($879/969$) and a Negative Predictive Value (NPV) of $93.30\%$ ($850/911$). 
+The model achieves an empirical sensitivity (recall) of $85.11\%$ ($800/940$) and a specificity of $84.47\%$ ($794/940$), with a Positive Predictive Value (precision) of $84.57\%$ ($800/946$) and a Negative Predictive Value (NPV) of $85.01\%$ ($794/934$). 
 
 A pharmacological investigation into the misclassified cases reveals key biological insights:
 \begin{itemize}
-    \item \textbf{False Positives ($n=90$, 4.79\%):} These primarily occur when candidate drug and disease pairs share dense indirect biological pathways, such as common intermediate target proteins or overlapping phenotypic cascades. In these instances, 2-hop message aggregation produces high latent similarity due to topological proximity, even in the absence of an annotated direct indication. Rather than pure algorithmic errors, these represent highly plausible latent repositioning opportunities that warrant prospective experimental follow-up.
-    \item \textbf{False Negatives ($n=61$, 3.24\%):} These are observed when true biological interactions occur between entities that are sparsely connected or isolated within the current graph subnetwork. When intermediate protein bridges are missing or under-annotated in the knowledge base, neighborhood message passing cannot gather sufficient contextual signal, resulting in lower predicted interaction probabilities.
+    \item \textbf{False Positives ($n=146$, 7.77\%):} These primarily occur when candidate drug and disease pairs share dense indirect biological pathways, such as common intermediate target proteins or overlapping phenotypic cascades. In these instances, 2-hop message aggregation produces high latent similarity due to topological proximity, even in the absence of an annotated direct indication. Rather than pure algorithmic errors, these represent highly plausible latent repositioning opportunities that warrant prospective experimental follow-up.
+    \item \textbf{False Negatives ($n=140$, 7.45\%):} These are observed when true biological interactions occur between entities that are sparsely connected or isolated within the current graph subnetwork. When intermediate protein bridges are missing or under-annotated in the knowledge base, neighborhood message passing cannot gather sufficient contextual signal, resulting in lower predicted interaction probabilities.
 \end{itemize}
 
 \subsection{Candidate Prioritization and Clinical Validation}
@@ -571,8 +571,13 @@ The finalized GraphSAGE model parameterization occupies only $85.2\,\mathrm{KB}$
 (1)~\textit{Cached Embedding Link Scoring}: When node embeddings are precomputed and resident in memory, the inner-product decoder scores candidate drug--disease pairs at an empirical latency of $2.50\,\mu\mathrm{s}$ per pair, yielding a batch throughput exceeding $4.8 \times 10^6$ link evaluations per second;
 (2)~\textit{Dynamic Inductive Inference}: When 2-hop neighborhood aggregation and multimodal feature transformation are computed dynamically from raw node feature vectors for novel or unindexed entities, full end-to-end inference completes in $<2.50\,\mathrm{ms}$ per candidate pair with total memory consumption under $120\,\mathrm{MB}$ RAM.
 
-\subsubsection{On-Premise Clinical Governance and Data Privacy}
-Translational deployment within clinical and pharmaceutical research institutions requires rigorous adherence to institutional data governance and confidentiality standards. While comprehensive statutory compliance (such as HIPAA Security Rule 45 CFR \S 164 or GDPR Articles 25 and 32) fundamentally requires institutional administrative policies, audit logging, and access management, Rapid AI provides the prerequisite technical containment: the entire computational pipeline operates in-memory on local compute, coupled to an on-premise Ollama runtime hosting quantized Llama 3.2 (3B). Consequently, clinical researchers can evaluate proprietary candidate structures, internal biological targets, and sensitive patient-derived disease phenotypes strictly behind institutional firewalls, eliminating third-party cloud data transmission, external API logging, and unintended data egress (with external queries strictly restricted to public biological identifiers via PubMed and ClinicalTrials.gov APIs).
+\subsubsection{On-Premise Clinical Governance and Technical Safeguards}
+Translational deployment within clinical and pharmaceutical research institutions requires rigorous adherence to institutional data governance and confidentiality standards. Statutory healthcare compliance cannot be achieved through standalone algorithmic software alone, as legal certification necessitates organizational administrative controls, physical security policies, and institutional Business Associate Agreements (BAAs). Instead, Rapid AI implements the technical safeguard specifications stipulated by HIPAA 45 CFR \S 164.312 (zero network egress, SHA-256 audit logging, and in-memory execution) to facilitate integration into compliant healthcare environments:
+\begin{enumerate}
+    \item \textbf{PHI/PII De-identification Filter (\S 164.514(b)):} A pre-ingestion sanitization engine automatically scrubs 18 categories of Protected Health Information (including patient names, medical record numbers, dates, social security numbers, and contact details) from clinician queries and phenotype descriptions prior to neural embedding or LLM rationalization.
+    \item \textbf{Cryptographic Tamper-Evident Audit Trail (\S 164.312(b)):} An append-only cryptographic ledger maintains an unbroken SHA-256 hash chain recording every candidate prediction, prompt payload digest, and clinical rationale. Any retrospective alteration of historic records breaks the mathematical hash chain ($h_i = \mathrm{SHA256}(\text{payload}_i \,\|\, h_{i-1})$), ensuring verifiable provenance and forensic non-repudiation.
+    \item \textbf{Zero-Egress Air-Gap Network Containment (\S 164.312(e)):} The entire computational pipeline—from GraphSAGE link scoring to quantized Llama 3.2 generative rationalization—executes strictly in-memory on local compute. Runtime network isolation actively intercepts socket calls to prevent external WAN data transmission, ensuring proprietary candidate structures and internal patient-derived phenotypes remain strictly behind institutional firewalls without third-party API exposure.
+\end{enumerate}
 
 \section{Limitations and Future Scope}
 

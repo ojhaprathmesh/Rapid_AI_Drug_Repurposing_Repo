@@ -57,6 +57,7 @@ dataverse_files/nodes.csv
 scratch/
 brain/
 scripts/
+*benchmark_split_reference/
 
 # --- Confidential Submission Packages ---
 elsevier_submission_package.md

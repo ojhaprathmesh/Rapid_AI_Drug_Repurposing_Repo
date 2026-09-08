@@ -1,21 +1,21 @@
 rank,drug_seq_idx,disease_seq_idx,drug_name,disease_name,repurposing_score
-1,6523,9934,Ataluren,hepatitis C virus infection,0.999914
-2,7870,10271,Maxacalcitol,anorexia nervosa,0.999881
-3,6396,10260,Niacin,ocular hypertension,0.999863
-4,7105,10260,Migalastat,ocular hypertension,0.999862
-5,7105,9743,Migalastat,open-angle glaucoma,0.999856
-6,6523,10234,Ataluren,chronic hepatitis C virus infection,0.999855
-7,6256,9879,Doxorubicin,T-cell leukemia,0.999835
-8,6646,9745,Vardenafil,hypertension,0.999827
-9,6545,9701,Urokinase,cardiovascular disease,0.999811
-10,7219,9934,Stanozolol,hepatitis C virus infection,0.999811
-11,6396,8436,Niacin,hypertensive disorder,0.999802
-12,7105,8436,Migalastat,hypertensive disorder,0.999801
-13,6337,8218,Ticagrelor,hypoalphalipoproteinemia,0.999785
-14,7811,10271,Oxypertine,anorexia nervosa,0.99976
-15,6509,8047,Polaprezinc,orthostatic hypotension,0.999734
-16,7219,10234,Stanozolol,chronic hepatitis C virus infection,0.999733
-17,6396,9743,Niacin,open-angle glaucoma,0.99973
-18,7845,8147,Ibopamine,pernicious anemia,0.99972
-19,7300,9879,Oprelvekin,T-cell leukemia,0.999718
-20,7845,8363,Ibopamine,chronic thromboembolic pulmonary hypertension,0.999717
+1,7210,10429,Ferrous gluconate,cyanide poisoning,0.99992
+2,7870,10271,Maxacalcitol,anorexia nervosa,0.999918
+3,7210,8448,Ferrous gluconate,venous insufficiency (disease),0.999917
+4,7823,8085,Butylphthalide,monogenic obesity,0.999916
+5,6381,10271,Testosterone enanthate,anorexia nervosa,0.999914
+6,7209,8448,Iron,venous insufficiency (disease),0.99991
+7,6125,9752,Hydroxocobalamin,respiratory failure,0.999907
+8,7210,10303,Ferrous gluconate,folic acid deficiency anemia,0.999906
+9,6493,9752,Ferrous sulfate anhydrous,respiratory failure,0.999901
+10,7860,8085,Azosemide,monogenic obesity,0.999893
+11,7210,10277,Ferrous gluconate,hyperphosphatemia (disease),0.999893
+12,7271,9836,Vintafolide,tenosynovial giant cell tumor,0.999889
+13,6492,10429,Cyanocobalamin,cyanide poisoning,0.999888
+14,7724,10094,Calfactant,drug-induced osteoporosis,0.999884
+15,7753,10094,Succinimide,drug-induced osteoporosis,0.999881
+16,7271,10596,Vintafolide,"tenosynovial giant cell tumor, localized type",0.99988
+17,6493,10510,Ferrous sulfate anhydrous,pyridoxine deficiency anemia,0.999867
+18,7786,8042,Clortermine,developmental and epileptic encephalopathy,0.99986
+19,7210,10510,Ferrous gluconate,pyridoxine deficiency anemia,0.999852
+20,7451,9987,Fasudil,intracranial hypertension,0.999844

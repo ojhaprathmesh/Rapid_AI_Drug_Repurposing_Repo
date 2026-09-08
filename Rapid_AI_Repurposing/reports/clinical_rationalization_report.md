@@ -1,30 +1,30 @@
 # Rapid AI Clinical Discovery Lab: Grounded Rationalization Report
 
-- **Generated:** 2026-09-07 20:02:36
+- **Generated:** 2026-09-08 16:18:01
 - **Algorithm:** Degree-Penalized 2-Hop Path Saliency S(u -> p -> v) = [sigma(z_u^T z_p) + sigma(z_p^T z_v)] / [2 * sqrt(deg(p))]
 - **LLM Engine:** llama3.2 (On-Premise via Ollama)
 
 ---
 
-## Rank #1: Ataluren → hepatitis C virus infection
+## Rank #1: Ferrous gluconate → cyanide poisoning
 
 - **AI Repurposing Confidence:** `0.9999`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `SLCO1B3` (Degree: 89, Saliency: `0.0986`)
-  - `UGT1A9` (Degree: 56, Saliency: `0.0980`)
-  - `SLC22A8` (Degree: 111, Saliency: `0.0560`)
-- **Physicochemical Properties:** MW: `The molecular weight is 284.25.` | TPSA: `Ataluren has a topological polar surface area of 76.22.`
+  - `NEIL2` (Degree: 3, Saliency: `0.5755`)
+  - `AHSP` (Degree: 3, Saliency: `0.5755`)
+  - `FXN` (Degree: 4, Saliency: `0.4907`)
+- **Physicochemical Properties:** MW: `The molecular weight is 446.14.` | TPSA: `Ferrous gluconate has a topological polar surface area of 265.04.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Ataluren** for **hepatitis C virus infection** is grounded in its high-affinity interaction with **SLCO1B3** (degree-penalized path saliency S = 0.0986, structural degree k = 89). By selectively engaging SLCO1B3, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Ataluren enables ribosomal readthrough of mRNA containing premature stop codons that otherwise would result in premature termination of protein chains. Use of ataluren allows cellular machinery to bypass nonsense mutations in genetic material, continue the translation process, and thereby restore the production of a full-length, functional protein.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Ferrous gluconate** for **cyanide poisoning** is grounded in its high-affinity interaction with **NEIL2** (degree-penalized path saliency S = 0.5755, structural degree k = 3). By selectively engaging NEIL2, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Iron is necessary for the production of hemoglobin. Iron-deficiency can lead to decreased production of hemoglobin and a microcytic, hypochromic anemia.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of hepatitis C virus infection, aberrant network signaling connected to SLCO1B3 contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Ataluren -> SLCO1B3 -> hepatitis C virus infection) indicates that Ataluren perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
+In the context of cyanide poisoning, aberrant network signaling connected to NEIL2 contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Ferrous gluconate -> NEIL2 -> cyanide poisoning) indicates that Ferrous gluconate perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Ataluren exhibits defined physiological descriptors (MW: The molecular weight is 284.25., TPSA: Ataluren has a topological polar surface area of 76.22., elimination half-life: Ataluren plasma half-life ranges from 2-6 hours and is unaffected either by dose or repeated administration.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Ataluren represents a biologically grounded, translational opportunity for hepatitis C virus infection.
+From a biophysical standpoint, Ferrous gluconate exhibits defined physiological descriptors (MW: The molecular weight is 446.14., TPSA: Ferrous gluconate has a topological polar surface area of 265.04., elimination half-life: nan). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Ferrous gluconate represents a biologically grounded, translational opportunity for cyanide poisoning.
 
 ---
 
@@ -46,171 +46,171 @@ From a biophysical standpoint, Maxacalcitol exhibits defined physiological descr
 
 ---
 
-## Rank #3: Niacin → ocular hypertension
+## Rank #3: Ferrous gluconate → venous insufficiency (disease)
 
 - **AI Repurposing Confidence:** `0.9999`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `QPRT` (Degree: 1, Saliency: `0.9660`)
-  - `NNMT` (Degree: 11, Saliency: `0.1818`)
-  - `SLC5A8` (Degree: 9, Saliency: `0.1284`)
-- **Physicochemical Properties:** MW: `The molecular weight is 123.11.` | TPSA: `Niacin has a topological polar surface area of 50.19.`
+  - `NEIL2` (Degree: 3, Saliency: `0.5766`)
+  - `AHSP` (Degree: 3, Saliency: `0.5766`)
+  - `FXN` (Degree: 4, Saliency: `0.4954`)
+- **Physicochemical Properties:** MW: `The molecular weight is 446.14.` | TPSA: `Ferrous gluconate has a topological polar surface area of 265.04.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Niacin** for **ocular hypertension** is grounded in its high-affinity interaction with **QPRT** (degree-penalized path saliency S = 0.9660, structural degree k = 1). By selectively engaging QPRT, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Niacin performs a number of functions in the body and so has many mechanisms, not all of which have been fully described. Niacin can decrease lipids and apolipoprotein B (apo B)-containing lipoproteins by modulating triglyceride synthesis in the liver, which degrades apo B, or by modulating lipolysis in adipose tissue.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Ferrous gluconate** for **venous insufficiency (disease)** is grounded in its high-affinity interaction with **NEIL2** (degree-penalized path saliency S = 0.5766, structural degree k = 3). By selectively engaging NEIL2, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Iron is necessary for the production of hemoglobin. Iron-deficiency can lead to decreased production of hemoglobin and a microcytic, hypochromic anemia.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of ocular hypertension, aberrant network signaling connected to QPRT contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Niacin -> QPRT -> ocular hypertension) indicates that Niacin perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
+In the context of venous insufficiency (disease), aberrant network signaling connected to NEIL2 contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Ferrous gluconate -> NEIL2 -> venous insufficiency (disease)) indicates that Ferrous gluconate perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Niacin exhibits defined physiological descriptors (MW: The molecular weight is 123.11., TPSA: Niacin has a topological polar surface area of 50.19., elimination half-life: The half life of niacin is 0.9h, nicotinuric acid is 1.3h, and nicotinamide is 4.3h.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Niacin represents a biologically grounded, translational opportunity for ocular hypertension.
+From a biophysical standpoint, Ferrous gluconate exhibits defined physiological descriptors (MW: The molecular weight is 446.14., TPSA: Ferrous gluconate has a topological polar surface area of 265.04., elimination half-life: nan). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Ferrous gluconate represents a biologically grounded, translational opportunity for venous insufficiency (disease).
 
 ---
 
-## Rank #4: Migalastat → ocular hypertension
+## Rank #4: Butylphthalide → monogenic obesity
+
+- **AI Repurposing Confidence:** `0.9999`
+- **Physicochemical Properties:** MW: `The molecular weight is 190.24.` | TPSA: `Butylphthalide has a topological polar surface area of 26.3.`
+
+### Scientific & Clinical Rationale
+
+**1. Molecular Mechanism of Action:**
+The predicted therapeutic efficacy of **Butylphthalide** for **monogenic obesity** is grounded in its high-affinity interaction with **target receptor** (degree-penalized path saliency S = 0.4000, structural degree k = 5). By selectively engaging target receptor, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (nan) corroborates this targeted molecular engagement.
+
+**2. Downstream Cellular Signaling and Pathophysiology:**
+In the context of monogenic obesity, aberrant network signaling connected to target receptor contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Butylphthalide -> target receptor -> monogenic obesity) indicates that Butylphthalide perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
+
+**3. Pharmacological and Clearance Considerations:**
+From a biophysical standpoint, Butylphthalide exhibits defined physiological descriptors (MW: The molecular weight is 190.24., TPSA: Butylphthalide has a topological polar surface area of 26.3., elimination half-life: nan). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Butylphthalide represents a biologically grounded, translational opportunity for monogenic obesity.
+
+---
+
+## Rank #5: Testosterone enanthate → anorexia nervosa
 
 - **AI Repurposing Confidence:** `0.9999`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `GLA` (Degree: 6, Saliency: `0.3881`)
-  - `UGT1A1` (Degree: 95, Saliency: `0.0386`)
-- **Physicochemical Properties:** MW: `The molecular weight is 163.17.` | TPSA: `Migalastat has a topological polar surface area of 92.95.`
+  - `SRD5A3` (Degree: 6, Saliency: `0.3750`)
+  - `CYP2A13` (Degree: 8, Saliency: `0.2983`)
+  - `CYP11A1` (Degree: 17, Saliency: `0.2013`)
+- **Physicochemical Properties:** MW: `The molecular weight is 400.6.` | TPSA: `Testosterone enanthate has a topological polar surface area of 43.37.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Migalastat** for **ocular hypertension** is grounded in its high-affinity interaction with **GLA** (degree-penalized path saliency S = 0.3881, structural degree k = 6). By selectively engaging GLA, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Fabry disease is a progressive X-linked lysosomal storage disorder which affects males and females. Fabry disease-causing mutations occur in the galactosidase alpha (GLA) gene and result in a deficiency of the lysosomal enzyme alpha-galactosidase A (alpha-Gal A) that is required for glycosphingolipid substrate (GL-3 and lyso-Gb3) metabolism. Reduced alpha-Gal A activity is, therefore, associated with the progressive accumulation of glycosphingolipid substrate in vulnerable organs and tissues, which ultimately leads to the morbidity and mortality associated with Fabry disease.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Testosterone enanthate** for **anorexia nervosa** is grounded in its high-affinity interaction with **SRD5A3** (degree-penalized path saliency S = 0.3750, structural degree k = 6). By selectively engaging SRD5A3, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (The effects of testosterone in humans and other vertebrates occur by way of two main mechanisms: by activation of the androgen receptor (directly or as DHT), and by conversion to estradiol and activation of certain estrogen receptors. Free testosterone (T) is transported into the cytoplasm of target tissue cells, where it can bind to the androgen receptor, or can be reduced to 5&alpha;-dihydrotestosterone (DHT) by the cytoplasmic enzyme 5&alpha;-reductase. DHT binds to the same androgen receptor even more strongly than T, so that its androgenic potency is about 2.5 times that of T. The T-receptor or DHT-receptor complex undergoes a structural change that allows it to move into the cell nucleus and bind directly to specific nucleotide sequences of the chromosomal DNA. The areas of binding are called hormone response elements (HREs), and influence transcriptional activity of certain genes, producing androgen effects.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of ocular hypertension, aberrant network signaling connected to GLA contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Migalastat -> GLA -> ocular hypertension) indicates that Migalastat perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
+In the context of anorexia nervosa, aberrant network signaling connected to SRD5A3 contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Testosterone enanthate -> SRD5A3 -> anorexia nervosa) indicates that Testosterone enanthate perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Migalastat exhibits defined physiological descriptors (MW: The molecular weight is 163.17., TPSA: Migalastat has a topological polar surface area of 92.95., elimination half-life: The mean elimination half-life (t1/2) of migalastat ranges from approximately 3 to 5 hours.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Migalastat represents a biologically grounded, translational opportunity for ocular hypertension.
+From a biophysical standpoint, Testosterone enanthate exhibits defined physiological descriptors (MW: The molecular weight is 400.6., TPSA: Testosterone enanthate has a topological polar surface area of 43.37., elimination half-life: Testosterone enanthate presents a long half-life in the range of 7-9 days.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Testosterone enanthate represents a biologically grounded, translational opportunity for anorexia nervosa.
 
 ---
 
-## Rank #5: Migalastat → open-angle glaucoma
+## Rank #6: Iron → venous insufficiency (disease)
 
 - **AI Repurposing Confidence:** `0.9999`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `GLA` (Degree: 6, Saliency: `0.3831`)
-  - `UGT1A1` (Degree: 95, Saliency: `0.0447`)
-- **Physicochemical Properties:** MW: `The molecular weight is 163.17.` | TPSA: `Migalastat has a topological polar surface area of 92.95.`
+  - `NEIL2` (Degree: 3, Saliency: `0.5768`)
+  - `AHSP` (Degree: 3, Saliency: `0.5768`)
+  - `FXN` (Degree: 4, Saliency: `0.4962`)
+- **Physicochemical Properties:** MW: `The molecular weight is 55.84.` | TPSA: `nan`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Migalastat** for **open-angle glaucoma** is grounded in its high-affinity interaction with **GLA** (degree-penalized path saliency S = 0.3831, structural degree k = 6). By selectively engaging GLA, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Fabry disease is a progressive X-linked lysosomal storage disorder which affects males and females. Fabry disease-causing mutations occur in the galactosidase alpha (GLA) gene and result in a deficiency of the lysosomal enzyme alpha-galactosidase A (alpha-Gal A) that is required for glycosphingolipid substrate (GL-3 and lyso-Gb3) metabolism. Reduced alpha-Gal A activity is, therefore, associated with the progressive accumulation of glycosphingolipid substrate in vulnerable organs and tissues, which ultimately leads to the morbidity and mortality associated with Fabry disease.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Iron** for **venous insufficiency (disease)** is grounded in its high-affinity interaction with **NEIL2** (degree-penalized path saliency S = 0.5768, structural degree k = 3). By selectively engaging NEIL2, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Iron is necessary for the production of hemoglobin. Iron-deficiency can lead to decreased production of hemoglobin and a microcytic, hypochromic anemia.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of open-angle glaucoma, aberrant network signaling connected to GLA contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Migalastat -> GLA -> open-angle glaucoma) indicates that Migalastat perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
+In the context of venous insufficiency (disease), aberrant network signaling connected to NEIL2 contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Iron -> NEIL2 -> venous insufficiency (disease)) indicates that Iron perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Migalastat exhibits defined physiological descriptors (MW: The molecular weight is 163.17., TPSA: Migalastat has a topological polar surface area of 92.95., elimination half-life: The mean elimination half-life (t1/2) of migalastat ranges from approximately 3 to 5 hours.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Migalastat represents a biologically grounded, translational opportunity for open-angle glaucoma.
+From a biophysical standpoint, Iron exhibits defined physiological descriptors (MW: The molecular weight is 55.84., TPSA: nan, elimination half-life: nan). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Iron represents a biologically grounded, translational opportunity for venous insufficiency (disease).
 
 ---
 
-## Rank #6: Ataluren → chronic hepatitis C virus infection
+## Rank #7: Hydroxocobalamin → respiratory failure
 
 - **AI Repurposing Confidence:** `0.9999`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `UGT1A9` (Degree: 56, Saliency: `0.1042`)
-  - `SLCO1B3` (Degree: 89, Saliency: `0.0991`)
-  - `SLC22A8` (Degree: 111, Saliency: `0.0639`)
-- **Physicochemical Properties:** MW: `The molecular weight is 284.25.` | TPSA: `Ataluren has a topological polar surface area of 76.22.`
+  - `MMAA` (Degree: 2, Saliency: `0.6933`)
+  - `AMN` (Degree: 2, Saliency: `0.6933`)
+  - `MMACHC` (Degree: 2, Saliency: `0.6933`)
+- **Physicochemical Properties:** MW: `The molecular weight is 1346.38.` | TPSA: `Hydroxocobalamin has a topological polar surface area of 508.94.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Ataluren** for **chronic hepatitis C virus infection** is grounded in its high-affinity interaction with **UGT1A9** (degree-penalized path saliency S = 0.1042, structural degree k = 56). By selectively engaging UGT1A9, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Ataluren enables ribosomal readthrough of mRNA containing premature stop codons that otherwise would result in premature termination of protein chains. Use of ataluren allows cellular machinery to bypass nonsense mutations in genetic material, continue the translation process, and thereby restore the production of a full-length, functional protein.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Hydroxocobalamin** for **respiratory failure** is grounded in its high-affinity interaction with **MMAA** (degree-penalized path saliency S = 0.6933, structural degree k = 2). By selectively engaging MMAA, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Vitamin B12 exists in four major forms referred to collectively as cobalamins; deoxyadenosylcobalamin, methylcobalamin, hydroxocobalamin, and cyanocobalamin. Two of these, methylcobalamin and 5-deoxyadenosyl cobalamin, are primarily used by the body. Methionine synthase needs methylcobalamin as a cofactor. This enzyme is involved in the conversion of the amino acid homocysteine into methionine. Methionine in turn is required for DNA methylation. 5-Deoxyadenosyl cobalamin is a cofactor needed by the enzyme that converts L-methylmalonyl-CoA to succinyl-CoA. This conversion is an important step in the extraction of energy from proteins and fats. Furthermore, succinyl CoA is necessary for the production of hemoglobin, the substances that carries oxygen in red blood cells.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of chronic hepatitis C virus infection, aberrant network signaling connected to UGT1A9 contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Ataluren -> UGT1A9 -> chronic hepatitis C virus infection) indicates that Ataluren perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
+In the context of respiratory failure, aberrant network signaling connected to MMAA contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Hydroxocobalamin -> MMAA -> respiratory failure) indicates that Hydroxocobalamin perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Ataluren exhibits defined physiological descriptors (MW: The molecular weight is 284.25., TPSA: Ataluren has a topological polar surface area of 76.22., elimination half-life: Ataluren plasma half-life ranges from 2-6 hours and is unaffected either by dose or repeated administration.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Ataluren represents a biologically grounded, translational opportunity for chronic hepatitis C virus infection.
+From a biophysical standpoint, Hydroxocobalamin exhibits defined physiological descriptors (MW: The molecular weight is 1346.38., TPSA: Hydroxocobalamin has a topological polar surface area of 508.94., elimination half-life: Approximately 6 days (peak plasma concentration after 8-12 hours from oral administration)). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Hydroxocobalamin represents a biologically grounded, translational opportunity for respiratory failure.
 
 ---
 
-## Rank #7: Doxorubicin → T-cell leukemia
+## Rank #8: Ferrous gluconate → folic acid deficiency anemia
 
-- **AI Repurposing Confidence:** `0.9998`
+- **AI Repurposing Confidence:** `0.9999`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `ABCG2` (Degree: 170, Saliency: `0.0497`)
-- **Physicochemical Properties:** MW: `The molecular weight is 543.52.` | TPSA: `Doxorubicin has a topological polar surface area of 206.07.`
+  - `NEIL2` (Degree: 3, Saliency: `0.5766`)
+  - `AHSP` (Degree: 3, Saliency: `0.5766`)
+  - `FXN` (Degree: 4, Saliency: `0.4951`)
+- **Physicochemical Properties:** MW: `The molecular weight is 446.14.` | TPSA: `Ferrous gluconate has a topological polar surface area of 265.04.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Doxorubicin** for **T-cell leukemia** is grounded in its high-affinity interaction with **ABCG2** (degree-penalized path saliency S = 0.0497, structural degree k = 170). By selectively engaging ABCG2, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Doxorubicin has antimitotic and cytotoxic activity through a number of proposed mechanisms of action: Doxorubicin forms complexes with DNA by intercalation between base pairs, and it inhibits topoisomerase II activity by stabilizing the DNA-topoisomerase II complex, preventing the religation portion of the ligation-religation reaction that topoisomerase II catalyzes.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Ferrous gluconate** for **folic acid deficiency anemia** is grounded in its high-affinity interaction with **NEIL2** (degree-penalized path saliency S = 0.5766, structural degree k = 3). By selectively engaging NEIL2, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Iron is necessary for the production of hemoglobin. Iron-deficiency can lead to decreased production of hemoglobin and a microcytic, hypochromic anemia.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of T-cell leukemia, aberrant network signaling connected to ABCG2 contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Doxorubicin -> ABCG2 -> T-cell leukemia) indicates that Doxorubicin perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
+In the context of folic acid deficiency anemia, aberrant network signaling connected to NEIL2 contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Ferrous gluconate -> NEIL2 -> folic acid deficiency anemia) indicates that Ferrous gluconate perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Doxorubicin exhibits defined physiological descriptors (MW: The molecular weight is 543.52., TPSA: Doxorubicin has a topological polar surface area of 206.07., elimination half-life: Terminal half life = 20 - 48 hours. ). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Doxorubicin represents a biologically grounded, translational opportunity for T-cell leukemia.
+From a biophysical standpoint, Ferrous gluconate exhibits defined physiological descriptors (MW: The molecular weight is 446.14., TPSA: Ferrous gluconate has a topological polar surface area of 265.04., elimination half-life: nan). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Ferrous gluconate represents a biologically grounded, translational opportunity for folic acid deficiency anemia.
 
 ---
 
-## Rank #8: Vardenafil → hypertension
+## Rank #9: Ferrous sulfate anhydrous → respiratory failure
 
-- **AI Repurposing Confidence:** `0.9998`
+- **AI Repurposing Confidence:** `0.9999`
 - **Mediating Protein Targets (Topological Saliency):**
-  - `CYP3A5` (Degree: 224, Saliency: `0.0442`)
-- **Physicochemical Properties:** MW: `The molecular weight is 488.61.` | TPSA: `Vardenafil has a topological polar surface area of 109.13.`
+  - `CYBRD1` (Degree: 2, Saliency: `0.6965`)
+  - `HEPH` (Degree: 2, Saliency: `0.6547`)
+  - `TFR2` (Degree: 12, Saliency: `0.2651`)
+- **Physicochemical Properties:** MW: `The molecular weight is 151.9.` | TPSA: `Ferrous sulfate anhydrous has a topological polar surface area of 80.26.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Vardenafil** for **hypertension** is grounded in its high-affinity interaction with **CYP3A5** (degree-penalized path saliency S = 0.0442, structural degree k = 224). By selectively engaging CYP3A5, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Vardenafil inhibits the cGMP specific phosphodiesterase type 5 (PDE5) which is responsible for degradation of cGMP in the corpus cavernosum located around the penis. Penile erection during sexual stimulation is caused by increased penile blood flow resulting from the relaxation of penile arteries and corpus cavernosal smooth muscle. This response is mediated by the release of nitric oxide (NO) from nerve terminals and endothelial cells, which stimulates the synthesis of cGMP in smooth muscle cells. Cyclic GMP causes smooth muscle relaxation and increased blood flow into the corpus cavernosum. The inhibition of phosphodiesterase type 5 (PDE5) by vardenafil enhances erectile function by increasing the amount of cGMP.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Ferrous sulfate anhydrous** for **respiratory failure** is grounded in its high-affinity interaction with **CYBRD1** (degree-penalized path saliency S = 0.6965, structural degree k = 2). By selectively engaging CYBRD1, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Iron is required to maintain optimal health, particularly for helping to form red blood cells (RBC) that carry oxygen around the body. A deficiency in iron indicates that the body cannot produce enough normal red blood cells. Iron deficiency anemia occurs when body stores of iron decrease to very low levels, and the stored iron is insufficient to support normal red blood cell (RBC) production. Insufficient dietary iron, impaired iron absorption, bleeding, pregnancy, or loss of iron through the urine can lead to iron deficiency. Symptoms of iron deficiency anemia include fatigue, breathlessness, palpitations, dizziness, and headache.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of hypertension, aberrant network signaling connected to CYP3A5 contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Vardenafil -> CYP3A5 -> hypertension) indicates that Vardenafil perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
+In the context of respiratory failure, aberrant network signaling connected to CYBRD1 contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Ferrous sulfate anhydrous -> CYBRD1 -> respiratory failure) indicates that Ferrous sulfate anhydrous perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Vardenafil exhibits defined physiological descriptors (MW: The molecular weight is 488.61., TPSA: Vardenafil has a topological polar surface area of 109.13., elimination half-life: The half-life is 4-5 hours). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Vardenafil represents a biologically grounded, translational opportunity for hypertension.
+From a biophysical standpoint, Ferrous sulfate anhydrous exhibits defined physiological descriptors (MW: The molecular weight is 151.9., TPSA: Ferrous sulfate anhydrous has a topological polar surface area of 80.26., elimination half-life: The half-life of orally administered iron is not readily available in the literature, with total effects lasting 2-4 months (congruent with the red blood cell life span) with an onset of action of 4 days and peak activity at 7-10 days.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Ferrous sulfate anhydrous represents a biologically grounded, translational opportunity for respiratory failure.
 
 ---
 
-## Rank #9: Urokinase → cardiovascular disease
+## Rank #10: Azosemide → monogenic obesity
 
-- **AI Repurposing Confidence:** `0.9998`
-- **Mediating Protein Targets (Topological Saliency):**
-  - `NID1` (Degree: 2, Saliency: `0.5876`)
-  - `SERPINA5` (Degree: 4, Saliency: `0.3724`)
-  - `ST14` (Degree: 5, Saliency: `0.2984`)
-- **Physicochemical Properties:** MW: `nan` | TPSA: `nan`
+- **AI Repurposing Confidence:** `0.9999`
+- **Physicochemical Properties:** MW: `The molecular weight is 370.83.` | TPSA: `Azosemide has a topological polar surface area of 126.65.`
 
 ### Scientific & Clinical Rationale
 
 **1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Urokinase** for **cardiovascular disease** is grounded in its high-affinity interaction with **NID1** (degree-penalized path saliency S = 0.5876, structural degree k = 2). By selectively engaging NID1, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Urokinase is a serine protease. It cleaves plasminogen to form the active fibrinolytic protease, plasmin.) corroborates this targeted molecular engagement.
+The predicted therapeutic efficacy of **Azosemide** for **monogenic obesity** is grounded in its high-affinity interaction with **target receptor** (degree-penalized path saliency S = 0.4000, structural degree k = 5). By selectively engaging target receptor, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Exact mechanism of action is unclear. However, it acts primarily on the loop of Henle, in both the medullary and cortical segments of the thick ascending limb.) corroborates this targeted molecular engagement.
 
 **2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of cardiovascular disease, aberrant network signaling connected to NID1 contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Urokinase -> NID1 -> cardiovascular disease) indicates that Urokinase perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
+In the context of monogenic obesity, aberrant network signaling connected to target receptor contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Azosemide -> target receptor -> monogenic obesity) indicates that Azosemide perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
 
 **3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Urokinase exhibits defined physiological descriptors (MW: nan, TPSA: nan, elimination half-life: Urokinase has a half life of 12.6±6.2 minutes.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Urokinase represents a biologically grounded, translational opportunity for cardiovascular disease.
-
----
-
-## Rank #10: Stanozolol → hepatitis C virus infection
-
-- **AI Repurposing Confidence:** `0.9998`
-- **Mediating Protein Targets (Topological Saliency):**
-  - `AR` (Degree: 68, Saliency: `0.0743`)
-- **Physicochemical Properties:** MW: `The molecular weight is 328.5.` | TPSA: `Stanozolol has a topological polar surface area of 48.91.`
-
-### Scientific & Clinical Rationale
-
-**1. Molecular Mechanism of Action:**
-The predicted therapeutic efficacy of **Stanozolol** for **hepatitis C virus infection** is grounded in its high-affinity interaction with **AR** (degree-penalized path saliency S = 0.0743, structural degree k = 68). By selectively engaging AR, the drug modulates specific downstream signaling cascades without the non-specific off-target toxicity typical of high-degree biological hub proteins. Known pharmacological evidence (Stanozolol binds to androgen receptors, such as membrane bound receptor proteins LAGS and stanozolol-binding protein (STBP). ) corroborates this targeted molecular engagement.
-
-**2. Downstream Cellular Signaling and Pathophysiology:**
-In the context of hepatitis C virus infection, aberrant network signaling connected to AR contributes to disease pathogenesis. Topological message passing across the 2-hop subnetwork (Stanozolol -> AR -> hepatitis C virus infection) indicates that Stanozolol perturbs this pathological subnetwork state. Modulation of target-mediated pathways restores functional cellular equilibrium, attenuating disease-associated molecular drivers.
-
-**3. Pharmacological and Clearance Considerations:**
-From a biophysical standpoint, Stanozolol exhibits defined physiological descriptors (MW: The molecular weight is 328.5., TPSA: Stanozolol has a topological polar surface area of 48.91., elimination half-life: The half-life is 24 hours). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Stanozolol represents a biologically grounded, translational opportunity for hepatitis C virus infection.
+From a biophysical standpoint, Azosemide exhibits defined physiological descriptors (MW: The molecular weight is 370.83., TPSA: Azosemide has a topological polar surface area of 126.65., elimination half-life: Terminal half life 2-3 hours.). These parameters support favorable metabolic bioavailability and predictable systemic clearance, suggesting that repositioning Azosemide represents a biologically grounded, translational opportunity for monogenic obesity.
 
 ---
 

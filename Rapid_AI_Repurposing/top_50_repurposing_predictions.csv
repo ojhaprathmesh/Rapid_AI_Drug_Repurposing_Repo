@@ -1,51 +1,51 @@
 rank,drug_seq_idx,disease_seq_idx,drug_name,disease_name,repurposing_score
-1,6523,9934,Ataluren,hepatitis C virus infection,0.999914
-2,7870,10271,Maxacalcitol,anorexia nervosa,0.999881
-3,6396,10260,Niacin,ocular hypertension,0.999863
-4,7105,10260,Migalastat,ocular hypertension,0.999862
-5,7105,9743,Migalastat,open-angle glaucoma,0.999856
-6,6523,10234,Ataluren,chronic hepatitis C virus infection,0.999855
-7,6256,9879,Doxorubicin,T-cell leukemia,0.999835
-8,6646,9745,Vardenafil,hypertension,0.999827
-9,6545,9701,Urokinase,cardiovascular disease,0.999811
-10,7219,9934,Stanozolol,hepatitis C virus infection,0.999811
-11,6396,8436,Niacin,hypertensive disorder,0.999802
-12,7105,8436,Migalastat,hypertensive disorder,0.999801
-13,6337,8218,Ticagrelor,hypoalphalipoproteinemia,0.999785
-14,7811,10271,Oxypertine,anorexia nervosa,0.99976
-15,6509,8047,Polaprezinc,orthostatic hypotension,0.999734
-16,7219,10234,Stanozolol,chronic hepatitis C virus infection,0.999733
-17,6396,9743,Niacin,open-angle glaucoma,0.99973
-18,7845,8147,Ibopamine,pernicious anemia,0.99972
-19,7300,9879,Oprelvekin,T-cell leukemia,0.999718
-20,7845,8363,Ibopamine,chronic thromboembolic pulmonary hypertension,0.999717
-21,7393,9745,Acetyldigitoxin,hypertension,0.999711
-22,7105,8434,Migalastat,diabetes mellitus (disease),0.999704
-23,7845,9682,Ibopamine,vitamin B12 deficiency,0.999691
-24,6199,8423,Testosterone,pituitary gigantism,0.999686
-25,6256,9921,Doxorubicin,mature T-cell and NK-cell non-Hodgkin lymphoma,0.999679
-26,6523,10372,Ataluren,vulvovaginal candidiasis,0.999669
-27,6493,10510,Ferrous sulfate anhydrous,pyridoxine deficiency anemia,0.999659
-28,6509,10094,Polaprezinc,drug-induced osteoporosis,0.999656
-29,7105,8450,Migalastat,hypotensive disorder,0.999624
-30,7860,8363,Azosemide,chronic thromboembolic pulmonary hypertension,0.999622
-31,7105,9987,Migalastat,intracranial hypertension,0.999621
-32,7105,8052,Migalastat,type 2 diabetes mellitus,0.999614
-33,7300,9921,Oprelvekin,mature T-cell and NK-cell non-Hodgkin lymphoma,0.999596
-34,6256,10462,Doxorubicin,"peripheral T-cell lymphoma, not otherwise specified",0.999592
-35,7105,10008,Migalastat,sulfhemoglobinemia,0.999588
-36,7219,10372,Stanozolol,vulvovaginal candidiasis,0.999585
-37,7300,10503,Oprelvekin,T-cell/histiocyte rich large B cell lymphoma,0.999584
-38,6513,10426,Chlorambucil,acute diarrhea,0.999574
-39,7300,8163,Oprelvekin,Burkitt lymphoma,0.999574
-40,7300,9715,Oprelvekin,diffuse large B-cell lymphoma,0.999566
-41,6256,10426,Doxorubicin,acute diarrhea,0.999562
-42,7845,9941,Ibopamine,influenza,0.999554
-43,7130,10320,Betahistine,Reye syndrome,0.999553
-44,7300,10462,Oprelvekin,"peripheral T-cell lymphoma, not otherwise specified",0.999548
-45,6337,8391,Ticagrelor,homozygous familial hypercholesterolemia,0.999546
-46,6256,10488,Doxorubicin,giant cell glioblastoma,0.999545
-47,7105,8210,Migalastat,pseudotumor cerebri,0.999537
-48,7860,9941,Azosemide,influenza,0.999534
-49,6256,8271,Doxorubicin,acute erythroid leukemia,0.999534
-50,7888,9701,Monoxerutin,cardiovascular disease,0.999528
+1,7210,10429,Ferrous gluconate,cyanide poisoning,0.99992
+2,7870,10271,Maxacalcitol,anorexia nervosa,0.999918
+3,7210,8448,Ferrous gluconate,venous insufficiency (disease),0.999917
+4,7823,8085,Butylphthalide,monogenic obesity,0.999916
+5,6381,10271,Testosterone enanthate,anorexia nervosa,0.999914
+6,7209,8448,Iron,venous insufficiency (disease),0.99991
+7,6125,9752,Hydroxocobalamin,respiratory failure,0.999907
+8,7210,10303,Ferrous gluconate,folic acid deficiency anemia,0.999906
+9,6493,9752,Ferrous sulfate anhydrous,respiratory failure,0.999901
+10,7860,8085,Azosemide,monogenic obesity,0.999893
+11,7210,10277,Ferrous gluconate,hyperphosphatemia (disease),0.999893
+12,7271,9836,Vintafolide,tenosynovial giant cell tumor,0.999889
+13,6492,10429,Cyanocobalamin,cyanide poisoning,0.999888
+14,7724,10094,Calfactant,drug-induced osteoporosis,0.999884
+15,7753,10094,Succinimide,drug-induced osteoporosis,0.999881
+16,7271,10596,Vintafolide,"tenosynovial giant cell tumor, localized type",0.99988
+17,6493,10510,Ferrous sulfate anhydrous,pyridoxine deficiency anemia,0.999867
+18,7786,8042,Clortermine,developmental and epileptic encephalopathy,0.99986
+19,7210,10510,Ferrous gluconate,pyridoxine deficiency anemia,0.999852
+20,7451,9987,Fasudil,intracranial hypertension,0.999844
+21,6629,10426,Vincristine,acute diarrhea,0.999844
+22,7376,9836,Carmustine,tenosynovial giant cell tumor,0.999841
+23,7870,8042,Maxacalcitol,developmental and epileptic encephalopathy,0.999838
+24,7451,8210,Fasudil,pseudotumor cerebri,0.999837
+25,7190,10053,Somatrem,beta-thalassemia and related diseases,0.999832
+26,6492,10053,Cyanocobalamin,beta-thalassemia and related diseases,0.999832
+27,7550,8410,Golodirsen,thrombocytopenic purpura,0.999829
+28,7210,8007,Ferrous gluconate,familial lipoprotein lipase deficiency,0.999828
+29,7271,10488,Vintafolide,giant cell glioblastoma,0.999826
+30,6492,8169,Cyanocobalamin,beta-thalassemia HBB/LCRB,0.99982
+31,7271,9874,Vintafolide,malignant germ cell tumor of ovary,0.99982
+32,6513,10426,Chlorambucil,acute diarrhea,0.999812
+33,6492,10444,Cyanocobalamin,anemia of prematurity,0.999811
+34,6493,10277,Ferrous sulfate anhydrous,hyperphosphatemia (disease),0.999804
+35,7376,10596,Carmustine,"tenosynovial giant cell tumor, localized type",0.999804
+36,7550,8010,Golodirsen,von Willebrand disease,0.999802
+37,6459,9987,Amyl Nitrite,intracranial hypertension,0.999799
+38,6565,10260,Ramipril,ocular hypertension,0.999799
+39,6517,10488,Niraparib,giant cell glioblastoma,0.999795
+40,6493,9810,Ferrous sulfate anhydrous,congestive heart failure,0.999794
+41,6125,9810,Hydroxocobalamin,congestive heart failure,0.99979
+42,7823,8052,Butylphthalide,type 2 diabetes mellitus,0.99979
+43,7550,9732,Golodirsen,esotropia,0.999788
+44,7451,10260,Fasudil,ocular hypertension,0.999786
+45,7550,8474,Golodirsen,potassium deficiency disease,0.999785
+46,6125,10444,Hydroxocobalamin,anemia of prematurity,0.999785
+47,7550,10090,Golodirsen,altitude sickness,0.999783
+48,6459,8210,Amyl Nitrite,pseudotumor cerebri,0.999782
+49,7823,8434,Butylphthalide,diabetes mellitus (disease),0.999782
+50,7210,9887,Ferrous gluconate,myocardial infarction (disease),0.999778
