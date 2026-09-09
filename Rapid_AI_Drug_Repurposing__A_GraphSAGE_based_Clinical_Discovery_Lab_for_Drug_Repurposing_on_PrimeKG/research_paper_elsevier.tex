@@ -76,21 +76,14 @@ Despite the high predictive accuracy of deep learning in drug discovery, practic
 \section{System Overview}
 The proposed framework, Rapid AI, is designed as an end-to-end pipeline for predicting and interpreting drug-disease associations using a combination of graph-based learning and language-based reasoning. The system integrates structured biomedical knowledge with advanced machine learning techniques to enable both accurate prediction and explainability, as illustrated in Fig.~\ref{fig:system_arch}.
 
-\begin{figure}[!t]
-    \centering
-    \includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{images/system_arch.png}
-    \caption{End-to-end framework architecture for Rapid AI Drug Repurposing, illustrating the pipeline from data ingestion to the interactive discovery interface.}
-    \label{fig:system_arch}
-\end{figure}
-
-The workflow begins with the ingestion of large-scale biomedical data derived from a knowledge graph. This data is processed and transformed into a graph structure, where entities such as drugs, diseases, and genes are represented as nodes, and their relationships are modeled as edges. The sequence of interactions within the system is detailed in Fig.~\ref{fig:interaction_workflow}. A Graph Neural Network, specifically GraphSAGE, is then employed to learn meaningful representations of these entities by aggregating information from their local neighborhoods. These learned representations are subsequently used for link prediction, enabling the identification of potential drug-disease associations.
-
 \begin{figure*}[!t]
     \centering
-    \includegraphics[width=\linewidth]{images/interaction_workflow.png}
-    \caption{Sequence diagram of the interaction workflow between the researcher, the Streamlit dashboard, and the discovery engine.}
-    \label{fig:interaction_workflow}
+    \includegraphics[width=0.98\textwidth,keepaspectratio]{images/system_arch.png}
+    \caption{End-to-end framework architecture for Rapid AI Drug Repurposing, illustrating the pipeline from data ingestion to the interactive discovery interface.}
+    \label{fig:system_arch}
 \end{figure*}
+
+The workflow begins with the ingestion of large-scale biomedical data derived from a knowledge graph. This data is processed and transformed into a graph structure, where entities such as drugs, diseases, and genes are represented as nodes, and their relationships are modeled as edges. The sequence of interactions between the clinician, the predictive inference engine, and the bedside rationalization layer is illustrated in Fig.~\ref{fig:interaction_workflow} and detailed in Section~\ref{sec:xai}. A Graph Neural Network, specifically GraphSAGE, is then employed to learn meaningful representations of these entities by aggregating information from their local neighborhoods. These learned representations are subsequently used for link prediction, enabling the identification of potential drug-disease associations.
 
 \subsection{Dataset Description and Knowledge Graph Curation}
 
@@ -311,6 +304,7 @@ Furthermore, candidate pairs are ranked according to their confidence probabilit
 The performance of the link prediction model is evaluated using standard classification metrics, including the \textbf{Area Under the Receiver Operating Characteristic Curve (AUC)}, Accuracy, Precision, Recall, and F1-score.
 
 \subsection{Explainable AI and Path-Constrained Clinical Rationalization}
+\label{sec:xai}
 While Graph Neural Networks excel at learning predictive topological representations, numerical probability scores alone do not provide mechanistic explanations for translational clinicians. To bridge the gap between computational link scoring and clinical decision-making, Rapid AI implements an Explainable AI (XAI) rationalization layer that grounds generative reasoning in verified biological pathways.
 
 \subsubsection{Topological Subgraph Traversal}
@@ -338,7 +332,14 @@ This structured context is ingested by an on-premise Large Language Model (quant
     \item \textbf{Downstream Cellular Signaling:} Cascades connecting intermediate targets to disease pathology.
     \item \textbf{Pharmacological Considerations:} Bioavailability and clearance parameters inferred from physicochemical properties.
 \end{enumerate}
-Crucially, on-premise local execution of the LLM guarantees zero transmission of proprietary candidate queries or patient data to commercial third-party model providers, satisfying institutional data governance frameworks, while clinical evidence validation queries remain restricted to public biological identifiers via PubMed and ClinicalTrials.gov.
+Crucially, on-premise local execution of the LLM guarantees zero transmission of proprietary candidate queries or patient data to commercial third-party model providers, satisfying institutional data governance frameworks, while clinical evidence validation queries remain restricted to public biological identifiers via PubMed and ClinicalTrials.gov. The end-to-end clinical interaction sequence across the researcher dashboard, discovery engine, and local reasoning runtime is illustrated in Fig.~\ref{fig:interaction_workflow}.
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=0.95\textwidth,height=0.28\textheight,keepaspectratio]{images/interaction_workflow.png}
+    \caption{Sequence diagram of the interaction workflow between the researcher, the Streamlit dashboard, and the discovery engine.}
+    \label{fig:interaction_workflow}
+\end{figure*}
 
 \section{Results and Analysis}
 

@@ -3,24 +3,24 @@ config:
   layout: fixed
 ---
 flowchart TB
- subgraph DATA["`**1. Data Ingestion &amp; Harvesting (PrimeKG)**`"]
+ subgraph DATA["`**1. Data Ingestion & Harvesting (PrimeKG)**`"]
     direction TB
         PKG[("`**Precision Medicine<br>Knowledge Graph<br>(PrimeKG Repository)**`")]
-        NODES["`**Nodes Subset (CSV)**`"]
-        MOL["`**Molecular Features<br>(CSV)**`"]
-        EDGES["`**Edges Subset (CSV)**`"]
+        NODES["`**Nodes Subset<br>(10,597 Entities)**`"]
+        MOL["`**Molecular Features<br>(Physicochemical)**`"]
+        EDGES["`**Edges Subset<br>(161,632 Directed)**`"]
   end
  subgraph FEATURE["`**Step I: Feature Pipeline**`"]
     direction TB
-        TFIDF["`**TF-IDF Vectorizer (128-dim)**`"]
-        SCALER["`**StandardScaler (3-dim)**`"]
-        CONCAT["`**Concatenation Engine<br>(131-dim Tensor)**`"]
+        TFIDF["`**TF-IDF Vectorizer<br>(128-dim)**`"]
+        SCALER["`**StandardScaler<br>(3-dim)**`"]
+        CONCAT["`**Modality Gating Engine<br>(131-dim Tensor)**`"]
   end
  subgraph TOPO["`**Step II: Topology & Sampling**`"]
     direction TB
-        UNDIRECTED["`**Undirected Mapping<br>(r + r_rev)**`"]
+        UNDIRECTED["`**Bidirectional Adjacency<br>(r + r_rev)**`"]
         SPLIT["`**Disjoint Split<br>(80/10/10)**`"]
-        NEG["`**Collision-Free<br>Neg. Sampling**`"]
+        NEG["`**Leakage-Free Masking<br>& Hard Negatives**`"]
   end
  subgraph PRE["`**2. Multimodal Preprocessing & Topology**`"]
     direction LR
@@ -29,20 +29,20 @@ flowchart TB
   end
  subgraph TRAIN["`**Step III: GraphSAGE Training**`"]
     direction TB
-        GSAGE["`**Hetero GraphSAGE<br>(Encoder-Decoder)**`"]
-        LOSS["`**BCEWithLogitsLoss**`"]
-        CHECK["`**Model Checkpoint (.pth)**`"]
+        GSAGE["`**Inductive GraphSAGE<br>(2-Layer Encoder)**`"]
+        LOSS["`**Positive-Unlabeled<br>Loss (L_PU)**`"]
+        CHECK["`**Model Checkpoint<br>(Epoch 62 .pth)**`"]
   end
  subgraph DISCOVERY["`**3. Step IV: Discovery Inference**`"]
     direction TB
-        EMB["`**Embedding Inference**`"]
-        SCORE["`**Novel Pair Scoring**`"]
-        TOP50["`**Top 50<br>Ranked Pairs**`"]
+        EMB["`**Embedding Inference<br>(32-dim)**`"]
+        SCORE["`**Cosine Link Decoder<br>(tau = 10.0)**`"]
+        TOP50["`**Top Repurposing Leads<br>(Diversity Filtered)**`"]
   end
- subgraph AI["`**Augmented Intelligence Services**`"]
+ subgraph AI["`**Clinical AI & Governance Services**`"]
     direction TB
-        OLLAMA["`**Ollama / LLaMA 3.2<br>(Mechanistic Reasoning)**`"]
-        APIS["`**External APIs<br>(PubChem / PubMed)**`"]
+        OLLAMA["`**Ollama / LLaMA 3.2<br>(Path-Saliency XAI)**`"]
+        SAFEGUARDS["`**HIPAA Technical Safeguards<br>(Air-Gap & Audit Ledger)**`"]
   end
  subgraph LAB["`**4. Clinical Discovery Lab Interface (web.py)**`"]
     direction TB
@@ -54,52 +54,59 @@ flowchart TB
         DISCOVERY
         LAB
   end
+
     PKG --> NODES & MOL & EDGES
-    TFIDF L_TFIDF_CONCAT_0@--> CONCAT
-    SCALER --> CONCAT
-    UNDIRECTED --> SPLIT
-    SPLIT --> NEG
     NODES --> TFIDF
     MOL --> SCALER
     EDGES --> UNDIRECTED
-    CONCAT -- "`**131-dim Multimodal<br>Features &amp; Disjoint<br>Adjacency**`" --> GSAGE
-    NEG -- "`**131-dim Multimodal<br>Features &amp; Disjoint<br>Adjacency**`" --> GSAGE
+
+    TFIDF --> CONCAT
+    SCALER --> CONCAT
+    UNDIRECTED --> SPLIT
+    SPLIT --> NEG
+
+    CONCAT -- "`**131-dim Gated Features<br>& Disjoint Adjacency**`" --> GSAGE
+    NEG -- "`**131-dim Gated Features<br>& Disjoint Adjacency**`" --> GSAGE
     GSAGE --> LOSS
     LOSS --> CHECK
+
+    CHECK --> EMB
     EMB --> SCORE
     SCORE --> TOP50
-    OLLAMA --> DASH
-    APIS --> DASH
-    CHECK --> EMB
-    TOP50 -- "`**Prioritized Repurposing<br>Candidates**`" --> DASH
 
-     PKG:::dataNode
-     NODES:::processNode
-     MOL:::processNode
-     EDGES:::processNode
-     TFIDF:::processNode
-     SCALER:::processNode
-     CONCAT:::greenNode
-     UNDIRECTED:::processNode
-     SPLIT:::processNode
-     NEG:::greenNode
-     GSAGE:::blueNode
-     LOSS:::processNode
-     CHECK:::processNode
-     EMB:::processNode
-     SCORE:::processNode
-     TOP50:::orangeNode
-     OLLAMA:::purpleNode
-     APIS:::apiNode
-     DASH:::dashboardNode
+    TOP50 -- "`**Prioritized Repurposing<br>Candidates**`" --> DASH
+    OLLAMA --> DASH
+    SAFEGUARDS --> DASH
+
+    PKG:::dataNode
+    NODES:::processNode
+    MOL:::processNode
+    EDGES:::processNode
+    TFIDF:::processNode
+    SCALER:::processNode
+    CONCAT:::greenNode
+    UNDIRECTED:::processNode
+    SPLIT:::processNode
+    NEG:::greenNode
+    GSAGE:::blueNode
+    LOSS:::processNode
+    CHECK:::processNode
+    EMB:::processNode
+    SCORE:::processNode
+    TOP50:::orangeNode
+    OLLAMA:::purpleNode
+    SAFEGUARDS:::hipaaNode
+    DASH:::dashboardNode
+
     classDef dataNode fill:#f5d9f5,stroke:#9c27b0,stroke-width:2px,color:#111
     classDef processNode fill:#ffffff,stroke:#777,stroke-width:1px,color:#111
     classDef greenNode fill:#d9f5e3,stroke:#16833b,stroke-width:2px,color:#111
     classDef blueNode fill:#dcecff,stroke:#2558d9,stroke-width:2px,color:#111
     classDef orangeNode fill:#fff0c7,stroke:#c76b00,stroke-width:2px,color:#111
     classDef purpleNode fill:#e9ddff,stroke:#7625d9,stroke-width:2px,color:#111
-    classDef apiNode fill:#dfe4ff,stroke:#3d50b5,stroke-width:2px,color:#111
+    classDef hipaaNode fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#111
     classDef dashboardNode fill:#ffdede,stroke:#e22b2b,stroke-width:2px,color:#111
+
     style FEATURE fill:#effff3,stroke:#16833b,stroke-width:1px
     style TOPO fill:#effff3,stroke:#16833b,stroke-width:1px
     style AI fill:#fff1f1,stroke:#e22b2b,stroke-width:1px
@@ -109,5 +116,3 @@ flowchart TB
     style PRE fill:#ffffff,stroke:#16833b,stroke-width:2px
     style TRAIN fill:#eaf3ff,stroke:#2558d9,stroke-width:2px
     style DOWNSTREAM fill:transparent,stroke:transparent
-
-    L_TFIDF_CONCAT_0@{ curve: linear }
