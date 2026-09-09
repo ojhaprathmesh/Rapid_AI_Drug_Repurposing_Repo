@@ -1,0 +1,128 @@
+{
+  "Regime I: Uniform Random": {
+    "Common Neighbors": {
+      "AUC_ROC": 0.5869,
+      "AUPRC": 0.5772,
+      "Accuracy": 0.5027,
+      "Precision": 1.0,
+      "Recall": 0.0053,
+      "F1_Score": 0.0106
+    },
+    "MLP": {
+      "AUC_ROC": 0.8836,
+      "AUPRC": 0.877,
+      "Accuracy": 0.8021,
+      "Precision": 0.7829,
+      "Recall": 0.8362,
+      "F1_Score": 0.8086
+    },
+    "GCN": {
+      "AUC_ROC": 0.9156,
+      "AUPRC": 0.9059,
+      "Accuracy": 0.8431,
+      "Precision": 0.8159,
+      "Recall": 0.8862,
+      "F1_Score": 0.8496
+    },
+    "GAT": {
+      "AUC_ROC": 0.9255,
+      "AUPRC": 0.8996,
+      "Accuracy": 0.858,
+      "Precision": 0.8289,
+      "Recall": 0.9021,
+      "F1_Score": 0.864
+    },
+    "GraphSAGE": {
+      "AUC_ROC": 0.9235,
+      "AUPRC": 0.9125,
+      "Accuracy": 0.8479,
+      "Precision": 0.8457,
+      "Recall": 0.8511,
+      "F1_Score": 0.8484
+    }
+  },
+  "Regime II: Degree-Matched": {
+    "Common Neighbors": {
+      "AUC_ROC": 0.5411,
+      "AUPRC": 0.5302,
+      "Accuracy": 0.5021,
+      "Precision": 0.8333,
+      "Recall": 0.0053,
+      "F1_Score": 0.0106
+    },
+    "MLP": {
+      "AUC_ROC": 0.8419,
+      "AUPRC": 0.8128,
+      "Accuracy": 0.7654,
+      "Precision": 0.7325,
+      "Recall": 0.8362,
+      "F1_Score": 0.7809
+    },
+    "GCN": {
+      "AUC_ROC": 0.9019,
+      "AUPRC": 0.8692,
+      "Accuracy": 0.8335,
+      "Precision": 0.8017,
+      "Recall": 0.8862,
+      "F1_Score": 0.8418
+    },
+    "GAT": {
+      "AUC_ROC": 0.9247,
+      "AUPRC": 0.9091,
+      "Accuracy": 0.8601,
+      "Precision": 0.8322,
+      "Recall": 0.9021,
+      "F1_Score": 0.8657
+    },
+    "GraphSAGE": {
+      "AUC_ROC": 0.9053,
+      "AUPRC": 0.8888,
+      "Accuracy": 0.8309,
+      "Precision": 0.818,
+      "Recall": 0.8511,
+      "F1_Score": 0.8342
+    }
+  },
+  "Regime III: 2-Hop Hard (Bio Near-Miss)": {
+    "Common Neighbors": {
+      "AUC_ROC": 0.1242,
+      "AUPRC": 0.4435,
+      "Accuracy": 0.5016,
+      "Precision": 0.7143,
+      "Recall": 0.0053,
+      "F1_Score": 0.0106
+    },
+    "MLP": {
+      "AUC_ROC": 0.847,
+      "AUPRC": 0.826,
+      "Accuracy": 0.7638,
+      "Precision": 0.7305,
+      "Recall": 0.8362,
+      "F1_Score": 0.7798
+    },
+    "GCN": {
+      "AUC_ROC": 0.8785,
+      "AUPRC": 0.8644,
+      "Accuracy": 0.7957,
+      "Precision": 0.7505,
+      "Recall": 0.8862,
+      "F1_Score": 0.8127
+    },
+    "GAT": {
+      "AUC_ROC": 0.9162,
+      "AUPRC": 0.9078,
+      "Accuracy": 0.8426,
+      "Precision": 0.8061,
+      "Recall": 0.9021,
+      "F1_Score": 0.8514
+    },
+    "GraphSAGE": {
+      "AUC_ROC": 0.8889,
+      "AUPRC": 0.8881,
+      "Accuracy": 0.8059,
+      "Precision": 0.7805,
+      "Recall": 0.8511,
+      "F1_Score": 0.8142
+    }
+  }
+}

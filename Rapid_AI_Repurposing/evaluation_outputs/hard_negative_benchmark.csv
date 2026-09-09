@@ -1,0 +1,16 @@
+Regime,Model,AUC_ROC,AUPRC,Accuracy,Precision,Recall,F1_Score
+Regime I: Uniform Random,Common Neighbors,0.5869,0.5772,0.5027,1.0,0.0053,0.0106
+Regime I: Uniform Random,MLP,0.8836,0.877,0.8021,0.7829,0.8362,0.8086
+Regime I: Uniform Random,GCN,0.9156,0.9059,0.8431,0.8159,0.8862,0.8496
+Regime I: Uniform Random,GAT,0.9255,0.8996,0.858,0.8289,0.9021,0.864
+Regime I: Uniform Random,GraphSAGE,0.9235,0.9125,0.8479,0.8457,0.8511,0.8484
+Regime II: Degree-Matched,Common Neighbors,0.5411,0.5302,0.5021,0.8333,0.0053,0.0106
+Regime II: Degree-Matched,MLP,0.8419,0.8128,0.7654,0.7325,0.8362,0.7809
+Regime II: Degree-Matched,GCN,0.9019,0.8692,0.8335,0.8017,0.8862,0.8418
+Regime II: Degree-Matched,GAT,0.9247,0.9091,0.8601,0.8322,0.9021,0.8657
+Regime II: Degree-Matched,GraphSAGE,0.9053,0.8888,0.8309,0.818,0.8511,0.8342
+Regime III: 2-Hop Hard (Bio Near-Miss),Common Neighbors,0.1242,0.4435,0.5016,0.7143,0.0053,0.0106
+Regime III: 2-Hop Hard (Bio Near-Miss),MLP,0.847,0.826,0.7638,0.7305,0.8362,0.7798
+Regime III: 2-Hop Hard (Bio Near-Miss),GCN,0.8785,0.8644,0.7957,0.7505,0.8862,0.8127
+Regime III: 2-Hop Hard (Bio Near-Miss),GAT,0.9162,0.9078,0.8426,0.8061,0.9021,0.8514
+Regime III: 2-Hop Hard (Bio Near-Miss),GraphSAGE,0.8889,0.8881,0.8059,0.7805,0.8511,0.8142

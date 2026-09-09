@@ -190,9 +190,13 @@ def gen_roc_curve():
     ax.plot([0, 1], [0, 1], color='#94a3b8', linestyle='--', linewidth=2, label='Random Classifier (AUC = 0.5000)')
 
     ax.set_title('Receiver Operating Characteristic (ROC)', fontsize=16, fontweight='bold', pad=15, color='#000000')
-    ax.set_xlabel('False Positive Rate (1 - Specificity)', fontsize=13, fontweight='bold', labelpad=8, color='#000000')
-    ax.set_ylabel('True Positive Rate (Sensitivity)', fontsize=13, fontweight='bold', labelpad=8, color='#000000')
-    ax.tick_params(axis='both', labelcolor='#000000', labelsize=11)
+    ax.set_xlabel('False Positive Rate (1 - Specificity)', fontsize=14, fontweight='bold', labelpad=10, color='#000000')
+    ax.set_ylabel('True Positive Rate (Sensitivity)', fontsize=14, fontweight='bold', labelpad=10, color='#000000')
+    ax.tick_params(axis='both', labelcolor='#000000', labelsize=12)
+    for tick in ax.get_xticklabels():
+        tick.set_fontweight('bold')
+    for tick in ax.get_yticklabels():
+        tick.set_fontweight('bold')
     ax.set_xlim([-0.02, 1.02])
     ax.set_ylim([-0.02, 1.02])
     ax.legend(loc='lower right', frameon=True, facecolor='#ffffff', edgecolor='#cbd5e1', fontsize=12)
@@ -225,9 +229,13 @@ def gen_loss_curve():
     ax.plot(epochs, val_loss, color='#8b5cf6', linewidth=2.5, label='Validation Loss')
 
     ax.set_title('GraphSAGE Training & Validation Loss Convergence', fontsize=15, fontweight='bold', pad=15, color='#000000')
-    ax.set_xlabel('Training Epoch', fontsize=13, fontweight='bold', labelpad=8, color='#000000')
-    ax.set_ylabel('Binary Cross-Entropy Loss', fontsize=13, fontweight='bold', labelpad=8, color='#000000')
-    ax.tick_params(axis='both', labelcolor='#000000', labelsize=11)
+    ax.set_xlabel('Training Epoch', fontsize=14, fontweight='bold', labelpad=10, color='#000000')
+    ax.set_ylabel('Binary Cross-Entropy Loss', fontsize=14, fontweight='bold', labelpad=10, color='#000000')
+    ax.tick_params(axis='both', labelcolor='#000000', labelsize=12)
+    for tick in ax.get_xticklabels():
+        tick.set_fontweight('bold')
+    for tick in ax.get_yticklabels():
+        tick.set_fontweight('bold')
     ax.legend(loc='upper right', frameon=True, facecolor='#ffffff', edgecolor='#cbd5e1', fontsize=12)
     ax.grid(True, linestyle=':', alpha=0.6, color='#cbd5e1')
 
@@ -342,12 +350,17 @@ def gen_detailed_metrics_bar():
                 ha="center", va="bottom", fontsize=10, fontweight="bold", color="#000000")
 
     ax.set_xticks(range(len(metrics)))
-    ax.set_xticklabels(metrics, fontsize=10, fontweight="bold", color="#000000")
+    ax.set_xticklabels(metrics, fontsize=10.5, fontweight="bold", color="#000000")
     ax.set_ylim(0, 115)
-    ax.set_ylabel("Performance (%)", fontsize=12, fontweight="bold", color="#000000")
+    ax.set_xlabel("Evaluation Metric", fontsize=14, fontweight="bold", labelpad=10, color="#000000")
+    ax.set_ylabel("Performance (%)", fontsize=14, fontweight="bold", labelpad=10, color="#000000")
     ax.set_title("Comprehensive Multi-Metric Evaluation (PrimeKG Benchmark)",
-                 fontsize=14, fontweight="bold", pad=15, color="#000000")
-    ax.tick_params(axis="both", labelcolor="#000000")
+                 fontsize=15, fontweight="bold", pad=15, color="#000000")
+    ax.tick_params(axis="both", labelcolor="#000000", labelsize=11)
+    for tick in ax.get_xticklabels():
+        tick.set_fontweight("bold")
+    for tick in ax.get_yticklabels():
+        tick.set_fontweight("bold")
     ax.grid(axis='y', linestyle=':', alpha=0.5)
     for spine in ax.spines.values():
         spine.set_edgecolor("#000000")

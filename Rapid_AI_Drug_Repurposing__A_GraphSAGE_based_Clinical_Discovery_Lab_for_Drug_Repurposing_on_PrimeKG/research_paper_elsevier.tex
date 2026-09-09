@@ -264,7 +264,7 @@ While the unconstrained inner product is effective for optimization across balan
 where setting $\tau = 10.0$ bounds the effective logit strictly to $[-\tau, \tau]$ and guarantees calibrated output probabilities in $[0, 1]$ driven purely by directional semantic alignment. Furthermore, to ensure the prioritized candidates reflect a comprehensive clinical spectrum rather than collapsing onto a single indication, Rapid AI enforces a per-disease diversity constraint (capping each disease entity at a maximum of $K = 2$ candidates in the prioritized top-50 pool).
 
 \subsection{Training Strategy and Negative Sampling}
-The model is trained in a supervised framework using verified positive indication edges and non-interacting negative candidate pairs. To maintain class balance and prevent bias toward dense subgraphs, a 1:1 negative sampling ratio is applied by uniformly drawing unobserved drug--disease pairs $(u, v) \notin \mathcal{E}$.
+The model is trained in a supervised framework using verified positive indication edges and non-interacting negative candidate pairs. To maintain class balance and prevent bias toward dense subgraphs, a 1:1 negative sampling ratio is applied during training by uniformly drawing unobserved drug--disease pairs $(u, v) \notin \mathcal{E}$. While standard supervisory optimization leverages uniform non-edges, we extensively benchmark discriminative resilience against degree-matched and biologically plausible 2-hop hard negative regimes in Section~\ref{sec:hard_negatives}.
 
 \subsection{Data Leakage Safeguards and Graph Partitioning Protocol}
 A pervasive vulnerability in biomedical link prediction benchmarks is topological data leakage, where information from evaluation splits inadvertently propagates into the model's message-passing neighborhood during training, producing artificially inflated predictive accuracy. To guarantee strictly uncontaminated generalization, Rapid AI enforces a four-tier data leakage prevention protocol:
@@ -590,18 +590,76 @@ Translational deployment within clinical and pharmaceutical research institution
     \item \textbf{Zero-Egress Air-Gap Network Containment (\S 164.312(e)):} The entire computational pipeline—from GraphSAGE link scoring to quantized Llama 3.2 generative rationalization—executes strictly in-memory on local compute. Runtime network isolation actively intercepts socket calls to prevent external WAN data transmission, ensuring proprietary candidate structures and internal patient-derived phenotypes remain strictly behind institutional firewalls without third-party API exposure.
 \end{enumerate}
 
+\subsection{Ablation of Negative Sampling Bias: Degree Matching and Biological Near-Misses}
+\label{sec:hard_negatives}
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=0.88\textwidth,height=0.25\textheight,keepaspectratio]{images/hard_negative_regime_bar.png}
+    \caption{Empirical AUC-ROC performance across three negative sampling regimes with increasing biological difficulty. Under Regime III (2-Hop Hard Biological Near-Misses), the topological Common Neighbors heuristic suffers catastrophic inversion (collapsing to $12.42\%$ AUC, well below the $0.50$ random baseline), whereas the proposed GraphSAGE framework demonstrates robust discriminative retention ($88.89\%$ AUC).}
+    \label{fig:hard_negative_regimes}
+\end{figure*}
+
+A well-documented vulnerability in biomedical link prediction benchmarks is the reliance on uniform random negative sampling. In unconstrained random sampling, non-interacting drug--disease pairs are drawn uniformly from the vast space of unobserved edges ($\approx 2.45 \times 10^6$ pairs). Because biological networks are sparse and scale-free, randomly drawn entity pairs typically reside in distant network components, share zero intermediary targets, and exhibit systematically lower vertex degrees (mean drug degree = $15.2 \pm 18.4$ for uniform negatives versus $53.3 \pm 41.2$ for positive indications). Consequently, models evaluated solely against uniform random negatives may exploit trivial degree shortcuts or topological isolation rather than learning genuine molecular pharmacology.
+
+To empirically stress-test Rapid AI against structural and biological shortcuts, we benchmarked all five architectures across three distinct negative testing regimes on the held-out test partition ($N = 940$ positive indications per regime):
+\begin{enumerate}
+    \item \textbf{Regime I: Standard Uniform Random Negatives ($N = 940$):} Non-edges sampled uniformly at random from all unobserved drug--disease pairs $(u, v) \notin \mathcal{E}$, reflecting standard benchmark literature conditions.
+    \item \textbf{Regime II: Degree-Matched Negatives ($N = 940$):} Candidate non-edges $(u', v') \notin \mathcal{E}$ sampled such that the joint degree distribution $(d(u'), d(v'))$ in the message-passing graph matches the joint degree distribution of the true positive test indications. By eliminating degree disparity between positive and negative classes, this regime guarantees that models cannot rely on vertex connectivity as an exploitable shortcut.
+    \item \textbf{Regime III: Hard Biological Near-Misses ($N = 940$):} Biologically plausible candidate pairs that share at least one intermediate protein target ($u_{\text{drug}} \to p_{\text{protein}} \to v_{\text{disease}}$), but possess no documented therapeutic indication in PrimeKG across any partition. Mining the multi-relational graph identified 109,278 such 2-hop paths. These candidate pairs represent authentic pharmacological ``near-misses''—compounds that bind disease-associated targets but fail to produce a clinical indication due to opposing downstream pathway effects, lack of tissue bioavailability, or clinical toxicity.
+\end{enumerate}
+
+\begin{table}[!t]
+    \centering
+    \renewcommand{\arraystretch}{1.15}
+    \caption{Model Robustness Across Negative Sampling Regimes on Held-Out Test Set ($N=940$ Positives/Regime)}
+    \label{tab:hard_negatives}
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{lcccccc}
+        \toprule
+        \textbf{Model Architecture} & \textbf{AUC} & \textbf{AUPRC} & \textbf{Acc.} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1} \\
+        \midrule
+        \multicolumn{7}{l}{\textit{Regime I: Standard Uniform Random Negatives ($N=940$)}} \\
+        Common Neighbors (Topology) & 58.69\% & 57.72\% & 50.27\% & 100.00\% &  0.53\% &  1.06\% \\
+        MLP (Features only, No Graph)    & 88.36\% & 87.70\% & 80.21\% &  78.29\% & 83.62\% & 80.86\% \\
+        GCN (Kipf \& Welling)~\cite{ref2} & 91.56\% & 90.59\% & 84.31\% &  81.59\% & 88.62\% & 84.96\% \\
+        GAT (Veli\v{c}kovi\'c \textit{et al.})~\cite{ref_gat} & 92.55\% & 89.96\% & 85.80\% &  82.89\% & 90.21\% & 86.40\% \\
+        \textbf{GraphSAGE (Proposed)}     & \textbf{92.35\%} & \textbf{91.25\%} & \textbf{84.79\%} &  \textbf{84.57\%} & \textbf{85.11\%} & \textbf{84.84\%} \\
+        \midrule
+        \multicolumn{7}{l}{\textit{Regime II: Degree-Matched Negatives ($N=940$)}} \\
+        Common Neighbors (Topology) & 54.11\% & 53.02\% & 50.21\% &  83.33\% &  0.53\% &  1.06\% \\
+        MLP (Features only, No Graph)    & 84.19\% & 81.28\% & 76.54\% &  73.25\% & 83.62\% & 78.09\% \\
+        GCN (Kipf \& Welling)~\cite{ref2} & 90.19\% & 86.92\% & 83.35\% &  80.17\% & 88.62\% & 84.18\% \\
+        GAT (Veli\v{c}kovi\'c \textit{et al.})~\cite{ref_gat} & 92.47\% & 90.91\% & 86.01\% &  83.22\% & 90.21\% & 86.57\% \\
+        \textbf{GraphSAGE (Proposed)}     & \textbf{90.53\%} & \textbf{88.88\%} & \textbf{83.09\%} &  \textbf{81.80\%} & \textbf{85.11\%} & \textbf{83.42\%} \\
+        \midrule
+        \multicolumn{7}{l}{\textit{Regime III: Hard Biological Near-Misses ($N=940$)}} \\
+        Common Neighbors (Topology) & 12.42\% & 44.35\% & 50.16\% &  71.43\% &  0.53\% &  1.06\% \\
+        MLP (Features only, No Graph)    & 84.70\% & 82.60\% & 76.38\% &  73.05\% & 83.62\% & 77.98\% \\
+        GCN (Kipf \& Welling)~\cite{ref2} & 87.85\% & 86.44\% & 79.57\% &  75.05\% & 88.62\% & 81.27\% \\
+        GAT (Veli\v{c}kovi\'c \textit{et al.})~\cite{ref_gat} & 91.62\% & 90.78\% & 84.26\% &  80.61\% & 90.21\% & 85.14\% \\
+        \textbf{GraphSAGE (Proposed)}     & \textbf{88.89\%} & \textbf{88.81\%} & \textbf{80.59\%} &  \textbf{78.05\%} & \textbf{85.11\%} & \textbf{81.42\%} \\
+        \bottomrule
+    \end{tabular}%
+    }
+\end{table}
+
+The empirical evaluations across all three regimes are presented in Table~\ref{tab:hard_negatives} and visualized in Fig.~\ref{fig:hard_negative_regimes}. Under Regime II (Degree-Matched), GraphSAGE exhibits remarkable resilience, experiencing only a minor $1.82\%$ drop in AUC-ROC (from $92.35\%$ to $90.53\%$) and maintaining an AUPRC of $88.88\%$ and an F1-score of $83.42\%$. This confirms that GraphSAGE's inductive representations do not depend on node degree disparity between positive indications and arbitrary background entities.
+
+Most crucially, under Regime III (Hard Biological Near-Misses), GraphSAGE retains high discriminative fidelity with an AUC-ROC of $88.89\%$, an AUPRC of $88.81\%$, and an F1-score of $81.42\%$. In stark contrast, the topological Common Neighbors heuristic undergoes a catastrophic inversion, plunging to an AUC-ROC of $12.42\%$ and an AUPRC of $44.35\%$. Because 2-hop biological near-misses deliberately share mediating protein targets, Common Neighbors naively calculates high structural overlap, predicting non-indications as positive associations even more confidently than true therapeutic pairs that operate via sparse biological bridges. GraphSAGE and GAT circumvent this pathology by coupling multi-hop relational messaging with 131-dimensional physicochemical and ontological node features, effectively distinguishing functional therapeutic mechanisms from non-productive target engagements.
+
 \section{Limitations and Future Scope}
 
 \subsection{Current Limitations}
 Although the proposed framework demonstrates strong predictive performance, several limitations should be noted. The accuracy of the predictions is inherently bounded by the completeness and veracity of the underlying knowledge graph. Missing annotations, curation biases, or noisy interactions in public biomedical repositories may propagate through neighborhood aggregation.
 
-Additionally, the current framework primarily relies on structural graph topology and static feature descriptors. It does not integrate dynamic 3D molecular conformations, binding pocket affinities, or clinical trial dosage parameters. Furthermore, the LLM-assisted rationalization layer generates inferential hypotheses based on textual synthesis and must not be interpreted as clinically validated therapeutic evidence.
+Additionally, the current framework primarily relies on structural graph topology and static feature descriptors. It does not integrate dynamic 3D molecular conformations, binding pocket affinities, or clinical trial dosage parameters. Furthermore, the LLM-assisted rationalization layer generates inferential hypotheses based on textual synthesis and must not be interpreted as clinically validated therapeutic evidence. Finally, while our degree-matched and 2-hop hard negative benchmarks demonstrate robustness against structural shortcuts, unannotated pairs in open-world biomedical knowledge graphs inevitably operate under the open-world assumption. A fraction of predicted ``false positives'' and target-sharing near-misses may represent genuine uncataloged off-label indications rather than true pharmacological negatives, underscoring the imperative for wet-lab binding assays and prospective translational validation.
 
 \subsection{Future Scope}
 Future extensions will explore expressive heterogeneous graph transformer architectures, such as HGT or path-augmented attention networks, to explicitly model typed biological relations. Incorporating temporal clinical trial registries and 3D molecular binding structures could further enhance pharmacological precision. In addition, scaling to whole-genome knowledge graphs will benefit from distributed GPU acceleration platforms (e.g., NVIDIA H200 systems) for scalable multi-hop graph representation learning.
 
 \section{Conclusion}
-In this paper, we presented Rapid AI, an end-to-end framework to predict and rationalize drug--disease interactions using a curated biomedical knowledge graph. By leveraging the representational strength of GraphSAGE over a multi-relational network, the proposed model captures meaningful structural and semantic associations between drugs, diseases, and mediating protein targets. The empirical results demonstrate strong link prediction performance (AUC = 0.9734, F1-score = 92.09\%), effectively prioritizing therapeutic candidates from non-interacting pairs.
+In this paper, we presented Rapid AI, an end-to-end framework to predict and rationalize drug--disease interactions using a curated biomedical knowledge graph. By leveraging the representational strength of GraphSAGE over a multi-relational network, the proposed model captures meaningful structural and semantic associations between drugs, diseases, and mediating protein targets. The empirical results demonstrate strong link prediction performance (AUC-ROC = 92.35\%, F1-score = 84.84\%), effectively prioritizing therapeutic candidates from non-interacting pairs.
 
 The findings highlight the efficacy of graph-based representation learning in computational pharmacology, where multi-modal biomedical knowledge is naturally modeled as networks~\cite{ref3,ref4}. Inductive neighborhood aggregation provides scalable representation learning suitable for evolving biomedical graphs~\cite{ref1}. Furthermore, integrating structured knowledge graphs such as PrimeKG is essential for systematic hypothesis generation in drug discovery~\cite{ref6,ref7,ref29}.
 
