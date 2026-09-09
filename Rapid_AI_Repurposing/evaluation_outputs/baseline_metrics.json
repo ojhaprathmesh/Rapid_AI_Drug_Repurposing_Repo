@@ -8,27 +8,35 @@
     "F1_Score": 0.0106
   },
   "Feature-Only MLP": {
-    "AUC_ROC": 0.8836,
-    "AUPRC": 0.877,
-    "Accuracy": 0.8021,
-    "Precision": 0.7829,
-    "Recall": 0.8362,
-    "F1_Score": 0.8086
+    "AUC_ROC": 0.8862,
+    "AUPRC": 0.8781,
+    "Accuracy": 0.8128,
+    "Precision": 0.8108,
+    "Recall": 0.816,
+    "F1_Score": 0.8134
   },
   "GCN": {
-    "AUC_ROC": 0.9156,
-    "AUPRC": 0.9059,
-    "Accuracy": 0.8431,
-    "Precision": 0.8159,
-    "Recall": 0.8862,
-    "F1_Score": 0.8496
+    "AUC_ROC": 0.9034,
+    "AUPRC": 0.8896,
+    "Accuracy": 0.8346,
+    "Precision": 0.8074,
+    "Recall": 0.8787,
+    "F1_Score": 0.8416
   },
   "GAT": {
-    "AUC_ROC": 0.9255,
-    "AUPRC": 0.8996,
-    "Accuracy": 0.858,
-    "Precision": 0.8289,
-    "Recall": 0.9021,
-    "F1_Score": 0.864
+    "AUC_ROC": 0.9161,
+    "AUPRC": 0.8931,
+    "Accuracy": 0.8532,
+    "Precision": 0.8268,
+    "Recall": 0.8936,
+    "F1_Score": 0.8589
+  },
+  "RGCN": {
+    "AUC_ROC": 0.9385,
+    "AUPRC": 0.9315,
+    "Accuracy": 0.8596,
+    "Precision": 0.8682,
+    "Recall": 0.8479,
+    "F1_Score": 0.8579
   }
 }

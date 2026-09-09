@@ -404,6 +404,11 @@ def main():
     ci_valid = (auc_ci[0] >= 0.90 and auc_ci[1] <= 0.96 and auc_ci[0] < auc_ci[1])
     print_check("Non-Parametric Bootstrap 95% CI (1,000 resamples)", ci_valid, f"Empirical 95% CI: [{auc_ci[0]*100:.2f}%, {auc_ci[1]*100:.2f}%]")
 
+    # 4. Relational GCN (RGCN) Benchmark Validation (Req 13)
+    rgcn_cv = stat_data["cv_mean_std"].get("RGCN", {})
+    rgcn_present = "AUC_ROC" in rgcn_cv and rgcn_cv["AUC_ROC"]["mean"] >= 0.90
+    print_check("RGCN Relational Benchmark (5-Seed Mean >= 90% AUC)", rgcn_present, f"Empirical Mean: {rgcn_cv.get('AUC_ROC', {}).get('formatted', 'N/A')}")
+
     # ─────────────────────────────────────────────────────────
     # AUDIT 10: Hard Negative Sampling Regime Robustness (Req 14)
     # ─────────────────────────────────────────────────────────

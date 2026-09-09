@@ -33,7 +33,7 @@ import torch.nn.functional as F
 import numpy as np
 import pandas as pd
 import scipy.stats as stats
-from torch_geometric.nn import SAGEConv, GCNConv, GATConv
+from torch_geometric.nn import SAGEConv, GCNConv, GATConv, RGCNConv
 from sklearn.metrics import (
     roc_auc_score, accuracy_score, precision_score,
     recall_score, f1_score, average_precision_score
@@ -75,6 +75,30 @@ val_eli      = val_data.edge_label_index
 val_labels   = val_data.edge_label
 test_eli     = test_data.edge_label_index
 test_labels  = test_data.edge_label.numpy().astype(int)
+
+# Biological edge types for Relational GCN (RGCN)
+df_edges = pd.read_csv(os.path.join(PROJECT_DIR, "..", "dataverse_files", "edges_subset.csv"))
+with open(os.path.join(DATA_DIR, "node_map.json")) as f:
+    node_map = {int(k): v for k, v in json.load(f).items()}
+
+REL_NAMES = ['indication', 'target', 'enzyme', 'transporter', 'carrier', 'associated with']
+rel_to_id = {r: i for i, r in enumerate(REL_NAMES)}
+
+edge_rel_dict = {}
+for _, row in df_edges.iterrows():
+    u = node_map[row['x_index']]
+    v = node_map[row['y_index']]
+    rel_id = rel_to_id[row['display_relation']]
+    edge_rel_dict[(u, v)] = rel_id
+    edge_rel_dict[(v, u)] = rel_id
+
+def get_edge_types(msg_ei):
+    types = [edge_rel_dict[(msg_ei[0, i].item(), msg_ei[1, i].item())] for i in range(msg_ei.shape[1])]
+    return torch.tensor(types, dtype=torch.long)
+
+train_et = get_edge_types(train_msg_ei)
+val_et   = get_edge_types(val_data.msg_edge_index)
+test_et  = get_edge_types(test_msg_ei)
 
 criterion = torch.nn.BCEWithLogitsLoss()
 
@@ -136,6 +160,19 @@ class MLP(torch.nn.Module):
     def decode(self, z, eli):
         return (z[eli[0]] * z[eli[1]]).sum(dim=-1)
 
+class RGCNLinkPredictor(torch.nn.Module):
+    def __init__(self, in_c=131, hid=64, out_c=32, num_rels=6):
+        super().__init__()
+        self.conv1 = RGCNConv(in_c, hid, num_relations=num_rels)
+        self.conv2 = RGCNConv(hid, out_c, num_relations=num_rels)
+    def encode(self, x, edge_index, edge_type=None):
+        if edge_type is None:
+            edge_type = train_et
+        x = self.conv1(x, edge_index, edge_type).relu()
+        return self.conv2(x, edge_index, edge_type)
+    def decode(self, z, eli):
+        return (z[eli[0]] * z[eli[1]]).sum(dim=-1)
+
 # Topological Baseline
 def run_common_neighbors():
     adj = {}
@@ -150,10 +187,12 @@ def run_common_neighbors():
         cn_scores = cn_scores / cn_scores.max()
     return cn_scores
 
-def train_model(model_cls, is_graph=True, seed=42):
+def train_model(model_cls, mode="homo", seed=42):
     set_seed(seed)
     if model_cls == GATLinkPredictor:
         model = model_cls(131, 16, 32, heads=4)
+    elif model_cls == RGCNLinkPredictor:
+        model = model_cls(131, 64, 32, num_rels=6)
     else:
         model = model_cls(131, 64, 32)
         
@@ -164,8 +203,10 @@ def train_model(model_cls, is_graph=True, seed=42):
     for epoch in range(1, EPOCHS + 1):
         model.train()
         optimizer.zero_grad()
-        if is_graph:
+        if mode == "homo":
             z = model.encode(train_data.x, train_msg_ei)
+        elif mode == "relational":
+            z = model.encode(train_data.x, train_msg_ei, train_et)
         else:
             z = model.encode(train_data.x)
         loss = criterion(model.decode(z, train_eli), train_labels)
@@ -174,8 +215,10 @@ def train_model(model_cls, is_graph=True, seed=42):
         
         model.eval()
         with torch.no_grad():
-            if is_graph:
+            if mode == "homo":
                 z_v = model.encode(val_data.x, val_msg_ei)
+            elif mode == "relational":
+                z_v = model.encode(val_data.x, val_msg_ei, val_et)
             else:
                 z_v = model.encode(val_data.x)
             vl = criterion(model.decode(z_v, val_eli), val_labels).item()
@@ -186,8 +229,10 @@ def train_model(model_cls, is_graph=True, seed=42):
     model.load_state_dict(best_state)
     model.eval()
     with torch.no_grad():
-        if is_graph:
+        if mode == "homo":
             z_t = model.encode(test_data.x, test_msg_ei)
+        elif mode == "relational":
+            z_t = model.encode(test_data.x, test_msg_ei, test_et)
         else:
             z_t = model.encode(test_data.x)
         y_prob = torch.sigmoid(model.decode(z_t, test_eli)).numpy()
@@ -265,10 +310,11 @@ def bootstrap_metrics(y_true, y_prob, n_bootstraps=1000, alpha=0.05, seed=42):
 def run_pipeline():
     models = {
         "Common Neighbors": None,
-        "MLP": (MLP, False),
-        "GCN": (GCNLinkPredictor, True),
-        "GAT": (GATLinkPredictor, True),
-        "GraphSAGE": (LinkPredictorSAGE, True),
+        "MLP": (MLP, "none"),
+        "GCN": (GCNLinkPredictor, "homo"),
+        "GAT": (GATLinkPredictor, "homo"),
+        "RGCN": (RGCNLinkPredictor, "relational"),
+        "GraphSAGE": (LinkPredictorSAGE, "homo"),
     }
     
     seed_predictions = {m: [] for m in models}
@@ -286,11 +332,11 @@ def run_pipeline():
     for name, conf in models.items():
         if conf is None:
             continue
-        cls, is_graph = conf
+        cls, mode = conf
         print(f"   ── Training {name} across {len(SEEDS)} stochastic seeds …")
         t0 = time.time()
         for s in SEEDS:
-            prob = train_model(cls, is_graph=is_graph, seed=s)
+            prob = train_model(cls, mode=mode, seed=s)
             m = compute_metrics(test_labels, prob)
             seed_predictions[name].append(prob)
             seed_metrics[name].append(m)
@@ -313,7 +359,7 @@ def run_pipeline():
     sage_probs = seed_predictions["GraphSAGE"][0]
         
     delong_results = {}
-    for other in ["Common Neighbors", "MLP", "GCN", "GAT"]:
+    for other in ["Common Neighbors", "MLP", "GCN", "GAT", "RGCN"]:
         other_probs = seed_predictions[other][0]
         auc_sage, auc_other, z_stat, p_val, se = delong_test_pairwise(test_labels, sage_probs, other_probs)
         delong_results[f"GraphSAGE_vs_{other}"] = {

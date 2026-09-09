@@ -264,21 +264,22 @@ def gen_baseline_comparison():
         gs_df  = pd.read_csv(graphsage_csv)
         bl_dict = dict(zip(bl_df["Model"], bl_df["AUC_ROC"]))
         graphsage_auc = float(gs_df["AUC_ROC"].iloc[0])
-        models = ["Common\nNeighbors", "Feature-Only\nMLP", "GCN", "GAT", "GraphSAGE\n(Proposed)"]
+        models = ["Common\nNeighbors", "Feature-Only\nMLP", "GCN", "GAT", "RGCN\n(Relational)", "GraphSAGE\n(Proposed)"]
         auc_scores = [
             bl_dict.get("Common Neighbors",  0.0),
             bl_dict.get("Feature-Only MLP",  0.0),
             bl_dict.get("GCN",               0.0),
             bl_dict.get("GAT",               0.0),
+            bl_dict.get("RGCN",              0.0),
             graphsage_auc,
         ]
     except Exception as e:
         print(f"  [!] Could not load baseline CSVs ({e}); skipping figure.")
         return
 
-    colors = ['#94a3b8', '#64748b', '#6366f1', '#8b5cf6', '#2563eb']
+    colors = ['#94a3b8', '#64748b', '#6366f1', '#8b5cf6', '#a855f7', '#2563eb']
 
-    fig, ax = plt.subplots(figsize=(11, 6), dpi=300)
+    fig, ax = plt.subplots(figsize=(12, 6), dpi=300)
     bars = ax.bar(models, auc_scores, color=colors, width=0.55, edgecolor='#000000', linewidth=1.5)
 
     for bar in bars:

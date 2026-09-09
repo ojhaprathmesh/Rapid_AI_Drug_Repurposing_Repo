@@ -29,7 +29,7 @@ import torch.nn.functional as F
 import numpy as np
 import pandas as pd
 
-from torch_geometric.nn import GCNConv, GATConv
+from torch_geometric.nn import GCNConv, GATConv, RGCNConv
 from sklearn.metrics import (
     roc_auc_score, average_precision_score,
     accuracy_score, precision_score, recall_score, f1_score
@@ -69,6 +69,30 @@ train_eli      = train_data.edge_label_index
 train_labels   = train_data.edge_label
 val_eli        = val_data.edge_label_index
 val_labels     = val_data.edge_label
+
+# 6 Biological relation types for Relational GCN (RGCN)
+df_edges = pd.read_csv(os.path.join(PROJECT_DIR, "..", "dataverse_files", "edges_subset.csv"))
+with open(os.path.join(DATA_DIR, "node_map.json")) as f:
+    node_map = {int(k): v for k, v in json.load(f).items()}
+
+REL_NAMES = ['indication', 'target', 'enzyme', 'transporter', 'carrier', 'associated with']
+rel_to_id = {r: i for i, r in enumerate(REL_NAMES)}
+
+edge_rel_dict = {}
+for _, row in df_edges.iterrows():
+    u = node_map[row['x_index']]
+    v = node_map[row['y_index']]
+    rel_id = rel_to_id[row['display_relation']]
+    edge_rel_dict[(u, v)] = rel_id
+    edge_rel_dict[(v, u)] = rel_id
+
+def get_edge_types(msg_ei):
+    types = [edge_rel_dict[(msg_ei[0, i].item(), msg_ei[1, i].item())] for i in range(msg_ei.shape[1])]
+    return torch.tensor(types, dtype=torch.long)
+
+train_et = get_edge_types(train_msg_ei)
+val_et   = get_edge_types(val_data.msg_edge_index)
+test_et  = get_edge_types(test_msg_ei)
 
 print(f"   Test samples : {len(test_labels):,}  "
       f"(pos={test_labels.sum()}, neg={len(test_labels)-test_labels.sum()})")
@@ -274,9 +298,56 @@ results["GAT"] = m_gat
 torch.save(best_gat_state, os.path.join(DATA_DIR, "baseline_gat.pth"))
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 6. Save Results
+# 6. Baseline 5: RGCN (Schlichtkrull et al., 2018)
 # ─────────────────────────────────────────────────────────────────────────────
-print("\n[6/6] Saving baseline results …")
+print("\n[6/7] Relational Graph Convolutional Network (RGCN) …")
+
+class RGCNLinkPredictor(torch.nn.Module):
+    def __init__(self, in_channels, hidden, out_channels, num_relations=6):
+        super().__init__()
+        self.conv1 = RGCNConv(in_channels, hidden, num_relations=num_relations)
+        self.conv2 = RGCNConv(hidden, out_channels, num_relations=num_relations)
+
+    def encode(self, x, edge_index, edge_type):
+        x = self.conv1(x, edge_index, edge_type).relu()
+        return self.conv2(x, edge_index, edge_type)
+
+    def decode(self, z, eli):
+        return (z[eli[0]] * z[eli[1]]).sum(dim=-1)
+
+rgcn       = RGCNLinkPredictor(131, 64, 32, num_relations=6)
+opt_rgcn   = torch.optim.Adam(rgcn.parameters(), lr=LR, weight_decay=WD)
+best_rgcn_state, best_rgcn_val = None, float("inf")
+
+for epoch in range(1, EPOCHS + 1):
+    rgcn.train(); opt_rgcn.zero_grad()
+    z    = rgcn.encode(train_data.x, train_msg_ei, train_et)
+    loss = criterion(rgcn.decode(z, train_eli), train_labels)
+    loss.backward(); opt_rgcn.step()
+
+    rgcn.eval()
+    with torch.no_grad():
+        z_v = rgcn.encode(val_data.x, val_data.msg_edge_index, val_et)
+        vl  = criterion(rgcn.decode(z_v, val_eli), val_labels).item()
+    if vl < best_rgcn_val:
+        best_rgcn_val   = vl
+        best_rgcn_state = {k: v.clone() for k, v in rgcn.state_dict().items()}
+
+rgcn.load_state_dict(best_rgcn_state)
+rgcn.eval()
+with torch.no_grad():
+    z_test = rgcn.encode(test_data.x, test_msg_ei, test_et)
+    y_prob = torch.sigmoid(rgcn.decode(z_test, test_eli)).numpy()
+
+m_rgcn = compute_metrics(test_labels, y_prob)
+print_metrics("RGCN", m_rgcn)
+results["RGCN"] = m_rgcn
+torch.save(best_rgcn_state, os.path.join(DATA_DIR, "baseline_rgcn.pth"))
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 7. Save Results
+# ─────────────────────────────────────────────────────────────────────────────
+print("\n[7/7] Saving baseline results …")
 
 rows = []
 for model_name, m in results.items():
